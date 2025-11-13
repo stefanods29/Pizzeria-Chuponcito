@@ -128,6 +128,12 @@ body {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
   z-index: 10;
 }
+@media (max-width: 767px) {
+  .tarjeta-caracteristica:hover {
+    transform: translateY(-4px) scale(1.08);  /* Crece menos en móvil para comodidad táctil */
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  }
+}
 
 .rejilla-menu .card {
   transition: transform .3s ease, box-shadow .3s ease;

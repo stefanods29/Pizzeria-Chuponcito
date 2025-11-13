@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchAndShowPromo(promoId) {
     try {
       setLoadingState();
-      const res = await fetch(`/promociones/${promoId}/detalles`, { method: 'GET' });
+      const res = await fetch(`/api/promociones/${promoId}/detalles`, { method: 'GET' });
       if (!res.ok) {
         console.error('[promo-modal] fetch fallo, status=', res.status);
         setErrorState();

@@ -32,7 +32,7 @@ public class ApiPromos {
     @Autowired
     private PromotionRepository promotionRepository;
 
-    @GetMapping("/promociones/{id}/detalles")
+    @GetMapping("/api/promociones/{id}/detalles")
     @ResponseBody
     public ResponseEntity<?> getPromotionDetails(@PathVariable Long id) {
 
