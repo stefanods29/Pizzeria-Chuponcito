@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title=${title},
+          cssFile=${cssFile},
+          activePage=${activePage},
+          searchPlaceholder=${searchPlaceholder},
+          content=~{::content})}">
+
+<body>
+    <div th:fragment="content">
+
+        <header class="menu-hero">
+            <div class="container">
+                <div class="row align-items-center gy-4">
+                    <div class="col-md-6 text-center text-md-start">
+                        <h1 class="fw-bold display-4">Menú Completo</h1>
+                        <p class="lead">Descubre todas nuestras pizzas artesanales, ensaladas frescas y bebidas
+                            refrescantes. ¡Personaliza tu orden!</p>
+                        <div
+                            class="mt-3 d-flex flex-wrap gap-2 justify-content-center justify-content-md-start hero-buttons">
+                            <a id="btn-ver-pizzas" class="btn btn-accion btn-lg" href="#pizzas">Ver Pizzas</a>
+                            <a class="btn btn-outline btn-lg" href="#extras">
+                                <i class="bi bi-plus-circle me-1"></i>Extras
+                            </a>
+                            <a class="btn btn-outline btn-lg" href="#bebidas">
+                                <i class="bi bi-cup-straw me-1"></i>Bebidas
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 text-center"><img loading="lazy" src="images/menu-hero.png" alt="Menú completo"
+                            class="imagen-hero-menu"></div>
+                </div>
+            </div>
+        </header>
+        <!-- seccion para pizzas -->
+        <main>
+            <section id="pizzas" class="py-5">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h2 class="fw-bold mb-0">Pizzas</h2>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 rejilla-menu"
+                        th:if="${pizzas != null and not #lists.isEmpty(pizzas)}">
+                        <div th:each="pizza : ${pizzas}" class="col">
+                            <div class="card h-100">
+                                <img th:src="@{${pizza.imageUrl}}" th:if="${pizza.imageUrl != null}"
+                                    class="card-img-top" th:alt="${pizza.name}"
+                                    onerror="this.onerror=null; this.src='/images/default-pizza.png';">
+                                <img th:src="@{/images/default-pizza.png}" th:if="${pizza.imageUrl == null}"
+                                    class="card-img-top" th:alt="Imagen no disponible">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${pizza.name}">Pizza</h5>
+                                    <p class="card-text" th:text="${pizza.description}">Descripción</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Precio default de Mediana (con check null) -->
+                                        <strong
+                                            th:text="${pizza.sizes != null and pizza.sizes['Mediana'] != null} ? 'S/' + ${#numbers.formatDecimal(pizza.sizes['Mediana'], 1, 2)} : 'S/ --'">Precio</strong>
+                                        <!-- FIX: Ingredients como string simple, sizes como toString() -->
+                                        <button class="btn btn-sm btn-outline-secondary pizza-btn"
+                                            data-bs-toggle="modal" data-bs-target="#pizzaModal"
+                                            th:attr="data-name=${pizza.name}, data-desc=${pizza.description}, data-ingredients=${pizza.ingredients.toString().replace('[', '').replace(']', '')}, data-sizes=${pizza.sizes.toString()}"
+                                            th:if="${pizza.stockQuantity > 0}">Detalles</button>
+                                        <span th:if="${pizza.stockQuantity <= 0}"
+                                            class="text-danger small">Agotado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${pizzas == null or #lists.isEmpty(pizzas)}" class="text-center">
+                        <p class="lead">No hay pizzas disponibles en este momento.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- seccion para extras -->
+            <section id="extras" class="py-5">
+                <div class="container">
+                    <h2 class="fw-bold text-center mb-5">Extras</h2>
+                    <div class="row gy-4" th:if="${extras != null and not #lists.isEmpty(extras)}">
+                        <div th:each="extra : ${extras}" class="col-md-4">
+                            <div class="text-center extras-card">
+                                <img th:src="@{${extra.imageUrl}}" th:if="${extra.imageUrl != null}" width="100"
+                                    class="mb-3" th:alt="${extra.name}"
+                                    onerror="this.onerror=null; this.src='/images/default-extra.png';">
+                                <img th:src="@{/images/default-extra.png}" th:if="${extra.imageUrl == null}" width="100"
+                                    class="mb-3" th:alt="Imagen no disponible">
+                                <h5 th:text="${extra.name}">Extra</h5>
+                                <p th:text="${extra.description}">Descripción</p>
+                                <strong th:text="'S/' + ${extra.price}">Precio</strong>
+                                <!-- FIX: Ingredients como string simple -->
+                                <button class="btn btn-sm btn-accion mt-2 extra-btn" data-bs-toggle="modal"
+                                    data-bs-target="#extraModal"
+                                    th:attr="data-name=${extra.name}, data-desc=${extra.description}, data-ingredients=${extra.ingredients.toString().replace('[', '').replace(']', '')}, data-price=${extra.price}"
+                                    th:if="${extra.stockQuantity > 0}">Detalles</button>
+                                <span th:if="${extra.stockQuantity <= 0}" class="text-danger small">Agotado</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${extras == null or #lists.isEmpty(extras)}" class="text-center">
+                        <p class="lead">No hay extras disponibles en este momento.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- seccion para bebidas -->
+            <section id="bebidas" class="py-5">
+                <div class="container">
+                    <h2 class="fw-bold text-center mb-5">Bebidas</h2>
+                    <div class="row gy-4" th:if="${bebidas != null and not #lists.isEmpty(bebidas)}">
+                        <div th:each="bebida : ${bebidas}" class="col-md-4">
+                            <div class="text-center bebida-card">
+                                <img th:src="@{${bebida.imageUrl}}" th:if="${bebida.imageUrl != null}" width="100"
+                                    class="mb-3" th:alt="${bebida.name}"
+                                    onerror="this.onerror=null; this.src='/images/default-bebida.png';">
+                                <img th:src="@{/images/default-bebida.png}" th:if="${bebida.imageUrl == null}"
+                                    width="100" class="mb-3" th:alt="Imagen no disponible">
+                                <h5 th:text="${bebida.name}">Bebida</h5>
+                                <p th:text="${bebida.description}">Descripción</p>
+                                <small th:text="${bebida.size}">Tamaño</small>
+                                <strong th:text="'S/' + ${bebida.price}">Precio</strong>
+                                <!-- FIX: Usa 'bebida' en lugar de 'pizza', y ingredients como string simple -->
+                                <button class="btn btn-sm btn-accion mt-2 bebida-btn" data-bs-toggle="modal"
+                                    data-bs-target="#bebidaModal" th:attr="data-name=${bebida.name}, data-desc=${bebida.description}, 
+                                    data-ingredients=${bebida.ingredients != null ? bebida.ingredients.toString().replace('[', '').replace(']', '') : ''}, 
+                                    data-price=${bebida.price}, data-size=${bebida.size}"
+                                    th:if="${bebida.stockQuantity > 0}">Detalles</button>
+                                <span th:if="${bebida.stockQuantity <= 0}" class="text-danger small">Agotado</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${bebidas == null or #lists.isEmpty(bebidas)}" class="text-center">
+                        <p class="lead">No hay bebidas disponibles en este momento.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- seccion para promos estaticas -->
+            <section id="promos" class="py-5">
+                <div class="container">
+                    <h2 class="fw-bold text-center mb-5">Promociones Especiales</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img src="images/promo1.png" class="card-img-top" alt="Promo 1">
+                                <div class="card-body">
+                                    <h5>Familiar Pizza + 2 Bebidas</h5>
+                                    <p class="card-text">Pizza familiar + 2 Inca Kola 1L.</p>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>S/55.00</strong>
+                                        <button class="btn btn-sm btn-outline-secondary promo-btn"
+                                            data-bs-toggle="modal" data-bs-target="#promoModal"
+                                            data-name="Familiar Pizza + 2 Bebidas"
+                                            data-desc="Pizza familiar + 2 Inca Kola 1L.">Detalles</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img src="images/promo2.png" class="card-img-top" alt="Promo 2">
+                                <div class="card-body">
+                                    <h5>Combo Vegetariano</h5>
+                                    <p class="card-text">Pizza vegetariana + ensalada + postre.</p>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>S/45.00</strong>
+                                        <button class="btn btn-sm btn-outline-secondary promo-btn"
+                                            data-bs-toggle="modal" data-bs-target="#promoModal"
+                                            data-name="Combo Vegetariano"
+                                            data-desc="Pizza vegetariana + ensalada + postre.">Detalles</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img src="images/promo3.png" class="card-img-top" alt="Promo 3">
+                                <div class="card-body">
+                                    <h5>2x1 en Pizzas Medianas</h5>
+                                    <p class="card-text">Lleva 2 pizzas medianas por el precio de una (lunes a jueves).
+                                    </p>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>S/29.90</strong>
+                                        <button class="btn btn-sm btn-outline-secondary promo-btn"
+                                            data-bs-toggle="modal" data-bs-target="#promoModal"
+                                            data-name="2x1 en Pizzas Medianas"
+                                            data-desc="Lleva 2 pizzas medianas por el precio de una (lunes a jueves).">Detalles</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal para pizzas -->
+        <div class="modal fade" id="pizzaModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pizzaTitle">Detalles de Pizza</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Descripción:</h6>
+                        <p id="pizzaDesc"></p>
+                        <h6>Ingredientes:</h6>
+                        <ul id="pizzaIngredients"></ul>
+                        <div class="mb-3">
+                            <label class="form-label">Tamaño</label>
+                            <select class="form-select" id="pizzaSize">
+                                <option value="">Selecciona un tamaño...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addPizza">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para extras -->
+        <div class="modal fade" id="extraModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="extraTitle">Detalles de Extra</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Descripción:</h6>
+                        <p id="extraDesc"></p>
+                        <h6>Ingredientes:</h6>
+                        <ul id="extraIngredients"></ul>
+                        <!-- Agrega esto si tu JS lo usa -->
+                        <div class="mb-3">
+                            <strong id="extraPrice">S/ 0.00</strong>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addExtra">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal para bebidas - FIX: Agrega ul id -->
+        <div class="modal fade" id="bebidaModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bebidaTitle">Detalles de Bebida</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Descripción:</h6>
+                        <p id="bebidaDesc"></p>
+                        <h6>Ingredientes:</h6>
+                        <ul id="bebidaIngredients"></ul>
+                        <div class="mb-3">
+                            <strong id="bebidaPrice"></strong>
+                            <small id="bebidaSize"></small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addBebida">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal para promociones -->
+        <div class="modal fade" id="promoModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="promoTitle">Detalles de Promoción</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="promoDesc"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addPromo">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/infoModals.js"></script>
+
+    </div>
+</body>
+
+</html>

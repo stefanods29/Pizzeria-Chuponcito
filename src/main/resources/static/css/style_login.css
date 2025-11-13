@@ -1,0 +1,287 @@
+[data-theme="dark"] {
+  --bg-rgb: 47, 47, 47;
+  --text-rgb: 251, 231, 205;
+  --brand-rgb: 201, 148, 62;
+  --accent-rgb: 226, 179, 86;
+  --secondary-accent-rgb: 52, 145, 42;
+  --white-rgb: 255, 255, 255;
+  --orange-rgb: 255, 170, 0;
+  --highlight-rgb: 255, 175, 15;
+  --gray-4-rgb: 173, 181, 189;
+  --background: rgb(var(--bg-rgb));
+  --text-color: rgb(var(--text-rgb));
+  --card-bg: rgba(var(--bg-rgb), 0.95);
+  --hero-bg: rgb(var(--bg-rgb));
+  --button-bg: rgb(var(--accent-rgb));
+  --button-text: rgb(var(--bg-rgb));
+  --link-color: rgb(var(--text-rgb));
+  --form-bg: rgba(var(--bg-rgb), 0.95);
+  --form-border: rgba(var(--white-rgb), 0.06);
+  --form-focus-bg: rgba(var(--orange-rgb), 0.055);
+  --form-focus-border: rgb(var(--brand-rgb));
+  --form-placeholder: rgba(var(--text-rgb), 0.5);
+  --brand: rgb(var(--brand-rgb));
+  --accent: rgb(var(--accent-rgb));
+  --secondary-accent: rgb(var(--secondary-accent-rgb));
+  --radius: 0.75rem;
+  --shadow: rgba(0, 0, 0, 0.6);
+  --shadow-light: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] {
+  --bg-rgb: 249, 251, 247;
+  --text-rgb: 33, 37, 41;
+  --brand-rgb: 201, 148, 62;
+  --accent-rgb: 226, 179, 86;
+  --secondary-accent-rgb: 52, 145, 42;
+  --gray-1-rgb: 255, 255, 255;
+  --gray-2-rgb: 248, 249, 250;
+  --gray-3-rgb: 248, 249, 250;
+  --gray-4-rgb: 173, 181, 189;
+  --orange-rgb: 255, 170, 0;
+  --highlight-rgb: 255, 175, 15;
+  --background: rgb(var(--bg-rgb));
+  --text-color: rgb(var(--text-rgb));
+  --card-bg: rgb(var(--gray-1-rgb));
+  --hero-bg: rgb(var(--gray-2-rgb));
+  --button-bg: linear-gradient(135deg, rgb(var(--brand-rgb)), rgb(var(--accent-rgb)));
+  --button-text: rgb(var(--gray-1-rgb));
+  --link-color: rgb(var(--text-rgb));
+  --form-bg: rgb(var(--gray-1-rgb));
+  --form-border: rgba(var(--gray-4-rgb), 0.5);
+  --form-focus-bg: rgba(var(--brand-rgb), 0.08);
+  --form-focus-border: rgb(var(--brand-rgb));
+  --form-placeholder: rgba(var(--text-rgb), 0.6);
+  --brand: rgb(var(--brand-rgb));
+  --accent: rgb(var(--accent-rgb));
+  --secondary-accent: rgb(var(--secondary-accent-rgb));
+  --radius: 0.75rem;
+  --shadow: rgba(0, 0, 0, 0.08);
+  --shadow-light: rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: var(--background);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: 2rem;
+}
+
+#loginForm {
+  padding: 4rem 0;
+  background: var(--hero-bg);
+}
+
+#loginForm .card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px var(--shadow-light);
+  border: 1px solid rgba(var(--gray-4-rgb), 0.1);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+#loginForm .card:hover {
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+#loginForm .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  z-index: 1;
+}
+
+#loginForm .card-body {
+  padding: 2.5rem;
+  color: var(--text-color);
+  position: relative;
+  z-index: 2;
+  background: var(--card-bg);
+}
+
+.login-logo {
+  max-height: 60px;
+  width: auto;
+  transition: transform 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.login-logo:hover {
+  transform: scale(1.05);
+}
+
+#loginForm h2 {
+  color: var(--text-color);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+#loginForm .text-muted.small {
+  color: rgba(var(--text-rgb), 0.8);
+  font-size: 0.875rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+#loginForm .form-label {
+  color: var(--text-color);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+#loginForm .form-label i.text-brand {
+  color: var(--brand);
+}
+
+#loginForm .form-control {
+  background: var(--form-bg);
+  border: 1px solid var(--form-border);
+  color: var(--text-color);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+#loginForm .form-control:focus {
+  background: var(--form-focus-bg);
+  border-color: var(--form-focus-border);
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-rgb), 0.15), 0 4px 12px var(--shadow-light);
+  color: var(--text-color);
+  outline: none;
+}
+
+#loginForm .form-control::placeholder {
+  color: var(--form-placeholder);
+}
+
+.form-check-input {
+  border: 2px solid var(--form-border);
+  background: var(--form-bg);
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.125rem;
+}
+
+.form-check-input:checked {
+  background-color: var(--brand);
+  border-color: var(--brand);
+}
+
+.form-check-label {
+  color: var(--text-color);
+  font-size: 0.875rem;
+}
+
+#submitBtn {
+  background: var(--button-bg);
+  border: none;
+  color: var(--button-text);
+  font-weight: 600;
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+#submitBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
+  filter: brightness(1.05);
+}
+
+#submitBtn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+#alertMessage {
+  border-radius: var(--radius);
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+#alertMessage.alert-success {
+  background-color: rgba(var(--secondary-accent-rgb), 0.1);
+  color: var(--secondary-accent);
+  border-left: 3px solid var(--secondary-accent);
+}
+
+#alertMessage.alert-danger {
+  background-color: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+}
+
+.text-muted {
+  color: rgba(var(--text-rgb), 0.8) !important;
+}
+
+.text-brand {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.text-brand:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 991.98px) {
+  #loginForm {
+    padding: 3rem 0;
+  }
+
+  #loginForm .card-body {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  #loginForm {
+    padding: 2rem 0;
+  }
+
+  #loginForm .card-body {
+    padding: 1.5rem;
+  }
+
+  #loginForm h2 {
+    font-size: 1.5rem;
+  }
+
+  #loginForm .form-control {
+    font-size: 0.95rem;
+  }
+
+  #submitBtn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+}

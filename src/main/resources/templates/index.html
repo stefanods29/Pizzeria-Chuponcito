@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title=${title},
+          cssFile=${cssFile},
+          activePage=${activePage},
+          searchPlaceholder=${searchPlaceholder},
+          content=~{::content})}">
+
+<body>
+  <div th:fragment="content">
+    <header class="hero">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-md-6 text-center text-md-start order-2 order-md-1">
+            <span class="insignia-caliente">PROMO</span>
+            <div class="precio">S/29.90</div>
+            <h2 class="fw-bold">Hot-N-Ready — Pizza Clásica</h2>
+            <p class="lead">La pizza recién salida del horno, lista cuando tú llegas. Masa crujiente, salsa casera y
+              queso fundente.</p>
+            <div class="mt-3">
+              <a class="btn btn-accion btn-lg me-2" href="#orden">ORDENA AHORA</a>
+              <a class="btn btn-outline btn-lg" href="menuCompleto"><i class="bi bi-card-list me-1"></i>Ver
+                Menú</a>
+            </div>
+          </div>
+          <div class="col-md-6 text-center order-1 order-md-2">
+            <img src="images/pizzaPromo.png" alt="Pizza promocional" class="imagen-hero">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="menu" class="py-5">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">Menú Destacado</h3>
+            <a href="menuCompleto" class="btn btn-outline">Ver todo</a>
+          </div>
+          <div class="row row-cols-1 row-cols-md-3 g-4 rejilla-menu">
+            <div class="col">
+              <div class="card h-100">
+                <img src="images/pizzaPepperoni.png" class="card-img-top" alt="Pizza pepperoni">
+                <div class="card-body">
+                  <h5>Pepperoni Clásica</h5>
+                  <p>Pepperoni en su punto, queso fundido y borde crujiente.</p>
+                  <div class="d-flex justify-content-between">
+                    <strong>S/29.90</strong>
+                    <a href="#orden" class="btn btn-sm btn-accion">Ordenar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="images/pizzaHawaiana.png" class="card-img-top" alt="Pizza hawaiana">
+                <div class="card-body">
+                  <h5>Hawaiana</h5>
+                  <p>Jamón, piña y nuestro toque secreto.</p>
+                  <div class="d-flex justify-content-between">
+                    <strong>S/35.00</strong>
+                    <a href="#orden" class="btn btn-sm btn-accion">Ordenar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="images/pizzaVegetariana.png" class="card-img-top" alt="Pizza vegetariana">
+                <div class="card-body">
+                  <h5>Vegetariana</h5>
+                  <p>Ingredientes frescos de la huerta.</p>
+                  <div class="d-flex justify-content-between">
+                    <strong>S/32.50</strong>
+                    <a href="#orden" class="btn btn-sm btn-accion">Ordenar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="py-5">
+        <div class="container">
+          <div class="row gy-4 text-center">
+            <div class="col-md-4">
+              <div class="tarjeta-caracteristica p-4 h-100">
+                <img src="images/pizza.png" width="72" alt="Queso">
+                <h5>Queso Premium</h5>
+                <p>Mezcla especial que se funde perfecto en cada porción.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="tarjeta-caracteristica p-4 h-100">
+                <img src="images/dough.png" width="72" alt="Masa">
+                <h5>Masa Artesanal</h5>
+                <p>Amasada diariamente para lograr ese borde crujiente.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="tarjeta-caracteristica p-4 h-100">
+                <img src="images/sauce.png" width="72" alt="Salsa">
+                <h5>Salsa Casera</h5>
+                <p>Tomates maduros y hierbas frescas, sin conservantes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="py-5">
+        <div class="container">
+          <h3 class="fw-bold text-center mb-4">Qué dicen nuestros clientes</h3>
+          <div id="carouselTestimonials" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner text-center">
+              <div class="carousel-item active">
+                <blockquote class="blockquote mx-auto" style="max-width:720px">
+                  <p>"La mejor pizza de Trujillo. Siempre caliente y deliciosa. ¡Recomendado!"</p>
+                  <p class="small">María P.</p>
+                </blockquote>
+              </div>
+              <div class="carousel-item">
+                <blockquote class="blockquote mx-auto" style="max-width:720px">
+                  <p>"Pedí para la familia y todos encantados. El delivery fue rápido."</p>
+                  <p class="small">Carlos R.</p>
+                </blockquote>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselTestimonials"
+              data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselTestimonials"
+              data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="py-5">
+        <div class="container">
+          <h3 class="fw-bold text-center mb-4">Preguntas frecuentes</h3>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne">¿Hacen delivery?</button></h2>
+              <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Sí, delivery a toda La libertad. Gratis en pedidos mayores a S/50.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo">¿Puedo personalizar mi pizza?</button></h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Claro, ofrecemos opciones de ingredientes y tamaños.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contacto" class="py-5">
+        <div class="container">
+          <div class="row gy-4">
+            <div class="col-lg-6">
+              <h3 class="fw-bold">Contáctanos</h3>
+              <form th:action="@{/contacto}" th:object="${contactRequest}" method="post">
+                <!-- CSRF hidden PRIMERO para evitar committed -->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-person-fill me-1"></i>Nombre</label>
+                  <input type="text" class="form-control" th:field="*{name}" required>
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Por favor
+                    ingresa tu nombre.</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-envelope-fill me-1"></i>Correo</label>
+                  <input type="email" class="form-control" th:field="*{email}" required>
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Por favor
+                    ingresa un correo válido.</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-telephone-fill me-1"></i>Teléfono (Opcional)</label>
+                  <input type="tel" class="form-control" th:field="*{phone}" id="telefono" maxlength="9" minlength="9">
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Por favor
+                    ingresa un número de teléfono válido (solo números).</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-chat-dots-fill me-1"></i>Mensaje</label>
+                  <textarea class="form-control" rows="4" th:field="*{message}" required
+                    placeholder="Cuéntanos cómo podemos ayudarte..."></textarea>
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Escribe
+                    tu mensaje.</div>
+                </div>
+                <button type="submit" class="btn btn-accion">Enviar</button>
+              </form>
+              <div th:if="${message}" class="alert alert-success mt-3" th:text="${message}">Mensaje</div>
+            </div>
+            <div class="col-lg-6">
+              <h3 class="fw-bold">Nuestra Ubicación</h3>
+              <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d830.3695383455052!2d-79.02930283348559!3d-8.109073357881208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ad3d93797fcc75%3A0x8e58aa3ad16e934f!2sLa%20Casona%20Hornito%20de%20Rumi%C3%B1ahui!5e0!3m2!1ses-419!2spe!4v1756434685999!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-5">
+        <div class="container text-center">
+          <h4 class="fw-bold mb-3">Suscríbete y recibe promociones</h4>
+          <form class="row justify-content-center g-2">
+            <div class="col-auto">
+              <input type="email" class="form-control form-control-lg" placeholder="Tu correo" required>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-accion btn-lg">Suscribirme</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+</body>
+
+</html>

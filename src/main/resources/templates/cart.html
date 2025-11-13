@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+    title=${title},
+    cssFile=${cssFile},
+    activePage=${activePage},
+    searchPlaceholder=${searchPlaceholder},
+    content=~{::content})}">
+<head>
+    <script src="/js/cart.js" defer></script> <!-- JS compartido para render -->
+</head>
+<body>
+    <div th:fragment="content">
+        <main class="py-5">
+            <div class="container">
+                <h1 class="mb-4"><i class="bi bi-cart"></i> Tu Carrito</h1>
+                <div id="cartItemsContainer">
+                    <!-- Se llena con JS -->
+                    <div class="text-center py-5">
+                        <i class="bi bi-cart-x fs-1 text-muted"></i>
+                        <p class="mt-2">Tu carrito está vacío</p>
+                        <small class="text-muted">Agrega productos del menú para verlos aquí</small>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <button class="btn btn-secondary" onclick="clearCartFromPage()">Limpiar Carrito</button>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div id="cartTotal" class="h3 text-brand">Total: S/ 0.00</div>
+                        <!-- Botón para checkout (futuro) -->
+                        <button class="btn btn-accion mt-2" onclick="proceedToCheckout()">Proceder al Pago</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

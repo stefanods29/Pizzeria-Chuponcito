@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title='Mis Pedidos', cssFile='style_orders.css', activePage='pedidos',
+          searchPlaceholder='Buscar...', content=~{::content})}">
+
+<body>
+  <div th:fragment="content">
+    <div class="container py-5">
+      <h1 class="fw-bold mb-4">Mis Pedidos</h1>
+      <div th:each="order : ${orders}" class="card mb-3">
+        <div class="card-body">
+          <h6 class="card-title">Pedido #<span th:text="${order.id}"></span></h6>
+          <p><strong>Estado:</strong> <span th:text="${order.status}"></span></p>
+          <p><strong>Total:</strong> S/<span th:text="${order.total}"></span></p>
+          <p><strong>Fecha:</strong> <span th:text="${order.createdAt}"></span></p>
+          <small th:text="${order.notes}">Notas</small>
+        </div>
+      </div>
+      <div th:if="${#lists.isEmpty(orders)}" class="text-center py-5">
+        <p>No tienes pedidos aún. ¡Haz tu primer pedido!</p>
+        <a href="/menuCompleto" class="btn btn-accion">Ir al Menú</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html> 

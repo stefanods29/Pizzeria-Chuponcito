@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title=${title},
+          cssFile=${cssFile},
+          activePage=${activePage},
+          searchPlaceholder=${searchPlaceholder},
+          content=~{::content})}">
+
+<body>
+  <div th:fragment="content">
+
+
+    <header class="contact-hero">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-md-6 text-center text-md-start">
+            <h1 class="fw-bold display-4">Contáctanos</h1>
+            <p class="lead">¿Tienes preguntas sobre nuestro menú, delivery o quieres dar tu opinión? ¡Estamos aquí para
+              ayudarte! Envíanos un mensaje o visítanos en nuestra sucursal.</p>
+            <div class="mt-3">
+              <a class="btn btn-accion btn-lg me-2" href="#form">Enviar Mensaje</a>
+              <a class="btn btn-outline btn-lg" href="#map"><i class="bi bi-geo-alt-fill me-1"></i>Nuestra
+                Ubicación</a>
+            </div>
+          </div>
+          <div class="col-md-6 text-center"><img loading="lazy" src="images/contact-hero.png" alt="Contacto"
+              class="imagen-hero-contact"></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="form" class="py-5">
+        <div class="container">
+          <div class="row gy-4">
+            <div class="col-lg-6">
+              <h2 class="fw-bold mb-4">Envíanos un Mensaje</h2>
+              <form id="contactForm" >
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-person-fill me-1"></i>Nombre Completo</label>
+                  <input type="text" class="form-control" required>
+                  <div class="invalid-feedback">Por favor ingresa tu nombre completo.</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-envelope-fill me-1"></i>Correo Electrónico</label>
+                  <input type="email" class="form-control" required>
+                  <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-telephone-fill me-1"></i>Teléfono (Opcional)</label>
+                  <input type="tel" class="form-control" id="telefono" maxlength="9">
+                  <div class="invalid-feedback">Por favor ingresa un número de teléfono válido (solo números).</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label"><i class="bi bi-chat-dots-fill me-1"></i>Mensaje</label>
+                  <textarea class="form-control" rows="5" required></textarea>
+                  <div class="invalid-feedback">Por favor escribe tu mensaje.</div>
+                </div>
+                <button type="submit" class="btn btn-accion">Enviar Mensaje</button>
+              </form>
+            </div>
+            <div class="col-lg-6">
+              <div class="contact-info">
+                <h2 class="fw-bold mb-4">Información de Contacto</h2>
+                <div class="info-item mb-4">
+                  <i class="bi bi-geo-alt-fill icon"></i>
+                  <div>
+                    <h6>Sucursal Principal</h6>
+                    <p>Jirón San Martín 571, Trujillo</p>
+                  </div>
+                </div>
+                <div class="info-item mb-4">
+                  <i class="bi bi-telephone-fill icon"></i>
+                  <div>
+                    <h6>Teléfono</h6>
+                    <p>(01) 123-4567</p>
+                  </div>
+                </div>
+                <div class="info-item mb-4">
+                  <i class="bi bi-envelope-fill icon"></i>
+                  <div>
+                    <h6>Email</h6>
+                    <p>info@chuponcito.pe</p>
+                  </div>
+                </div>
+                <div class="info-item mb-4">
+                  <i class="bi bi-clock-fill icon"></i>
+                  <div>
+                    <h6>Horarios</h6>
+                    <p>Lun-Dom: 11:00 AM - 11:00 PM</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="map" class="py-5">
+        <div class="container">
+          <h2 class="fw-bold text-center mb-5">Nuestra Ubicación</h2>
+          <div class="row justify-content-center">
+            <div class="col-lg-10">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d830.3695383455052!2d-79.02930283348559!3d-8.109073357881208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ad3d93797fcc75%3A0x8e58aa3ad16e934f!2sLa%20Casona%20Hornito%20de%20Rumi%C3%B1ahui!5e0!3m2!1ses-419!2spe!4v1756434685999!5m2!1ses-419!2spe"
+                width="100%" height="450"
+                style="border:0; border-radius: var(--radius); box-shadow: 0 8px 32px var(--shadow);"
+                loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+
+
+    
+  </div>
+
+
+</body>
+
+</html>

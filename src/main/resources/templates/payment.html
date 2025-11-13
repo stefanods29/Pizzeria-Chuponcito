@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title='Pago - Chuponcito',
+          cssFile='/css/style_payment.css',
+          activePage='pago',
+          searchPlaceholder='Buscar pago...',
+          content=~{::content})}">
+
+<body onload="simulatePayment()">
+  <div th:fragment="content">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+          <h2 class="fw-bold mb-4">Procesando Pago</h2>
+          <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="lead">Simulando transacción segura. No te muevas, ¡tu pizza está en camino!</p>
+          <div id="paymentStatus" class="mt-4">
+            <p class="text-muted">Verificando tarjeta...</p>
+          </div>
+          <div id="successMessage" class="d-none alert alert-success mt-4">
+            <h4>¡Pago Exitoso!</h4>
+            <p>Tu orden ha sido confirmada. Te enviaremos el número de seguimiento pronto.</p>
+            <a href="/" class="btn btn-accion">Volver al Inicio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function simulatePayment() {
+        const status = document.getElementById('paymentStatus');
+        const success = document.getElementById('successMessage');
+        const messages = [
+          'Verificando tarjeta...',
+          'Autorizando pago...',
+          'Procesando orden...',
+          '¡Listo!'
+        ];
+        let i = 0;
+        const interval = setInterval(() => {
+          status.innerHTML = `<p class="text-muted">${messages[i]}</p>`;
+          i++;
+          if (i >= messages.length) {
+            clearInterval(interval);
+            // Llama API para finalizar orden (envía datos del form anterior via session o query params)
+            fetch('/api/cart/finalizeOrder', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                address: sessionStorage.getItem('checkoutAddress') || 'Dirección default',
+                phone: sessionStorage.getItem('checkoutPhone') || 'Teléfono default',
+                notes: sessionStorage.getItem('checkoutNotes') || '',
+                paymentType: sessionStorage.getItem('paymentType') || 'Efectivo'
+              })
+            }).then(r => r.text()).then(msg => {
+              status.innerHTML = `<p class="text-success">${msg}</p>`;
+              success.classList.remove('d-none');
+            }).catch(err => {
+              status.innerHTML = `<p class="text-danger">Error: ${err}</p>`;
+            });
+          }
+        }, 1500);
+      }
+    </script>
+  </div>
+</body>
+</html>
