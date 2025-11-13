@@ -38,6 +38,7 @@
   --brand-rgb: 201, 148, 62;
   --accent-rgb: 226, 179, 86;
   --secondary-accent-rgb: 52, 145, 42;
+  --gray-0-rgb:190, 190, 190;
   --gray-1-rgb: 255, 255, 255;
   --gray-2-rgb: 248, 249, 250;
   --gray-3-rgb: 248, 249, 250;
@@ -514,8 +515,10 @@ body {
 }
 
 [data-theme="light"] .navbar-nav .dropdown-menu {
-  background: rgba(var(--gray-1-rgb), 0.95);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(var(--bg-rgb), 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .navbar-nav .dropdown-item {
