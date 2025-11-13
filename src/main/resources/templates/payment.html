@@ -12,13 +12,13 @@
       <div class="row justify-content-center">
         <div class="col-md-6 text-center">
           <h2 class="fw-bold mb-4">Procesando Pago</h2>
-          <div class="spinner-border text-primary mb-3" role="status">
+          <div class="spinner-border text-warning mb-3" role="status">
             <span class="visually-hidden">Cargando...</span>
           </div>
           <p class="lead" th:if="${session.paymentType}">Simulando transacción con <strong th:text="${session.paymentType}"></strong>. ¡Tu pizza está en camino!</p>
           <p class="lead" th:unless="${session.paymentType}">Simulando transacción segura. No te muevas, ¡tu pizza está en camino!</p>
           <div id="paymentStatus" class="mt-4">
-            <p class="text-muted">Verificando tarjeta...</p>
+            <p class="text-muted">Verificando <strong th:text="${session.paymentType}"></strong>....</p>
           </div>
           <div id="successMessage" class="d-none alert alert-success mt-4">
             <h4>¡Pago Exitoso!</h4>
