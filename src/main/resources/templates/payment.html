@@ -15,7 +15,8 @@
           <div class="spinner-border text-primary mb-3" role="status">
             <span class="visually-hidden">Cargando...</span>
           </div>
-          <p class="lead">Simulando transacción segura. No te muevas, ¡tu pizza está en camino!</p>
+          <p class="lead" th:if="${session.paymentType}">Simulando transacción con <strong th:text="${session.paymentType}"></strong>. ¡Tu pizza está en camino!</p>
+          <p class="lead" th:unless="${session.paymentType}">Simulando transacción segura. No te muevas, ¡tu pizza está en camino!</p>
           <div id="paymentStatus" class="mt-4">
             <p class="text-muted">Verificando tarjeta...</p>
           </div>
@@ -28,42 +29,43 @@
       </div>
     </div>
 
-    <script>
-      function simulatePayment() {
-        const status = document.getElementById('paymentStatus');
-        const success = document.getElementById('successMessage');
-        const messages = [
-          'Verificando tarjeta...',
-          'Autorizando pago...',
-          'Procesando orden...',
-          '¡Listo!'
-        ];
-        let i = 0;
-        const interval = setInterval(() => {
-          status.innerHTML = `<p class="text-muted">${messages[i]}</p>`;
-          i++;
-          if (i >= messages.length) {
-            clearInterval(interval);
-            // Llama API para finalizar orden (envía datos del form anterior via session o query params)
-            fetch('/api/cart/finalizeOrder', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                address: sessionStorage.getItem('checkoutAddress') || 'Dirección default',
-                phone: sessionStorage.getItem('checkoutPhone') || 'Teléfono default',
-                notes: sessionStorage.getItem('checkoutNotes') || '',
-                paymentType: sessionStorage.getItem('paymentType') || 'Efectivo'
-              })
-            }).then(r => r.text()).then(msg => {
-              status.innerHTML = `<p class="text-success">${msg}</p>`;
-              success.classList.remove('d-none');
-            }).catch(err => {
-              status.innerHTML = `<p class="text-danger">Error: ${err}</p>`;
-            });
-          }
-        }, 1500);
+    <script th:inline="javascript">
+  function simulatePayment() {
+    const status = document.getElementById('paymentStatus');
+    const success = document.getElementById('successMessage');
+    const messages = [
+      'Verificando tarjeta...',
+      'Autorizando pago...',
+      'Procesando orden...',
+      '¡Listo!'
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      status.innerHTML = `<p class="text-muted">${messages[i]}</p>`;
+      i++;
+      if (i >= messages.length) {
+        clearInterval(interval);
+        // Llama API para finalizar orden (usa datos de sesión o defaults)
+        fetch('/api/cart/finalizeOrder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            address: /*[[${checkoutAddress ?: 'Dirección default'}]]*/ 'Dirección default',
+            phone: /*[[${checkoutPhone ?: 'Teléfono default'}]]*/ 'Teléfono default',
+            notes: /*[[${checkoutNotes ?: ''}]]*/ '',
+            paymentType: /*[[${paymentType ?: 'Efectivo'}]]*/ 'Efectivo'
+          })
+        }).then(r => r.text()).then(msg => {
+          status.innerHTML = `<p class="text-success">${msg}</p>`;
+          success.classList.remove('d-none');
+        }).catch(err => {
+          status.innerHTML = `<p class="text-danger">Error: ${err}</p>`;
+        });
       }
-    </script>
+    }, 1500);
+  }
+</script>
   </div>
 </body>
+</html>
 </html>

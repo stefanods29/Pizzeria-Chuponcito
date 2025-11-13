@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
@@ -258,4 +259,26 @@ public class ControladorProyecto {
         model.addAttribute("searchPlaceholder", "Buscar pago...");
         return "payment";
     }
+
+    @PostMapping("/payment")
+    public String processPayment(@RequestParam("paymentType") String paymentType, HttpSession session, RedirectAttributes redirectAttributes) {
+    if (paymentType == null || paymentType.trim().isEmpty()) {
+        redirectAttributes.addFlashAttribute("error", "Selecciona un tipo de pago válido.");
+        return "redirect:/checkout";
+    }
+    
+    // Guarda paymentType en sesión para usarlo en la página de payment
+    session.setAttribute("paymentType", paymentType);
+    
+    // Opcional: Valida carrito no vacío (ya lo haces en GET /checkout)
+    @SuppressWarnings("unchecked")
+    Map<String, CartItem> cartMap = (Map<String, CartItem>) session.getAttribute("cart");
+    if (cartMap == null || cartMap.isEmpty()) {
+        redirectAttributes.addFlashAttribute("error", "Carrito vacío. No se puede procesar.");
+        return "redirect:/";
+    }
+    
+    redirectAttributes.addFlashAttribute("message", "Pago iniciado con " + paymentType + ".");
+    return "redirect:/payment";  // Redirige al GET /payment para mostrar la simulación
+}
 }
