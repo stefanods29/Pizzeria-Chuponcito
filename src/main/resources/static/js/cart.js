@@ -30,10 +30,10 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
                         </div>
                         <div class="col-md-4 col-2">
                             <div class="d-flex align-items-center justify-content-${isModal ? 'evenly' : 'between'}">
-                                <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity('${item.type}', ${item.productId}, '${item.size || ''}', ${item.quantity - 1}, '${containerId}', ${isModal})">-</button>
+                                <button class="btn btn-sm btn-outline-secondary cart-btn-dark" style="background: rgba(201, 148, 62, 0.2); color: #251e73; border: 1px solid rgba(201, 148, 62, 0.4); border-radius: 0.375rem; opacity: 0.9; width: 2.5rem; height: 2.5rem; font-size: 1rem; font-weight: bold;" onclick="updateQuantity('${item.type}', ${item.productId}, '${item.size || ''}', ${item.quantity - 1}, '${containerId}', ${isModal})">-</button>
                                 <span class="mx-2 fw-bold">${item.quantity}</span>
-                                <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity('${item.type}', ${item.productId}, '${item.size || ''}', ${item.quantity + 1}, '${containerId}', ${isModal})">+</button>
-                                <button class="btn btn-sm btn-danger ms-2" onclick="removeItem('${item.type}', ${item.productId}, '${item.size || ''}', '${containerId}', ${isModal})">×</button>
+                                <button class="btn btn-sm btn-outline-secondary cart-btn-dark" style="background: rgba(201, 148, 62, 0.2); color: #251e73; border: 1px solid rgba(201, 148, 62, 0.4); border-radius: 0.375rem; opacity: 0.9; width: 2.5rem; height: 2.5rem; font-size: 1rem; font-weight: bold;" onclick="updateQuantity('${item.type}', ${item.productId}, '${item.size || ''}', ${item.quantity + 1}, '${containerId}', ${isModal})">+</button>
+                                <button class="btn btn-sm btn-danger ms-2" style="background: rgba(220, 53, 69, 0.2); color: #251e73; border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 0.375rem; opacity: 0.9; width: 2rem; height: 2rem; font-size: 1rem;" onclick="removeItem('${item.type}', ${item.productId}, '${item.size || ''}', '${containerId}', ${isModal})">×</button>
                             </div>
                         </div>
                     </div>
