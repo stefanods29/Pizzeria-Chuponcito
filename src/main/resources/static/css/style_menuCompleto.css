@@ -597,3 +597,109 @@ section {
     font-size: 0.9rem !important;
   }
 }
+
+/* Carrusel Infinito para Promociones Especiales - Completo y Corregido */
+#promociones-especiales {
+  background: var(--background);  /* Hereda gris del tema (gris oscuro en dark) */
+  overflow: hidden;
+}
+
+.promo-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.promo-marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.promo-track {
+  display: flex;
+  animation: promoScroll 12s linear infinite;  /* Velocidad rápida: 12s ciclo */
+  gap: 1.5rem;  /* Espacio entre cards */
+}
+
+.promo-card-wrapper {
+  flex: 0 0 auto;
+  width: calc(33.333% - 1rem);  /* 3 cards por "vista" desktop */
+  max-width: 350px;
+}
+
+.promo-card {
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
+  border: none;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+.promo-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 32px var(--shadow);
+  animation-play-state: paused;  /* Pausa scroll en hover */
+}
+
+.promo-card .card-img-top {
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
+
+.promo-btn {
+  border-radius: var(--radius);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.promo-btn:hover {
+  background: var(--brand);
+  color: var(--button-text);
+  transform: scale(1.05);
+}
+
+/* Keyframe: Desliza izquierda continua */
+@keyframes promoScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50%));  /* /2 por duplicado, seamless loop */
+  }
+}
+
+/* Pausa en hover */
+.promo-marquee-container:hover .promo-track {
+  animation-play-state: paused;
+}
+
+/* Fondo Gris Sólido en Dark (como página, sin gradiente ni brillo) */
+[data-theme="dark"] #promociones-especiales {
+  background: rgb(var(--bg-rgb));  /* Gris oscuro sólido (47,47,47), exacto como page */
+}
+
+/* Cards y textos en dark: Contraste en gris */
+[data-theme="dark"] .promo-card {
+  background: rgba(var(--text-rgb), 0.1);  /* Translúcido gris sobre gris */
+  border: 1px solid rgba(var(--brand-rgb), 0.15);
+}
+
+[data-theme="dark"] .promo-card .text-muted {
+  color: rgba(var(--text-rgb), 0.9) !important;  /* Textos blancos nítidos */
+}
+
+/* Light Mode: Shadow sutil en cards (sin borde, para profundidad) */
+[data-theme="light"] .promo-card {
+border: 2px solid rgba(0, 0, 0, 0.1);  /* Contorno negro fino, opaco sutil */
+}
+
+/* Responsive: Móvil - 1 card, 18s lento */
+@media (max-width: 768px) {
+  .promo-card-wrapper {
+    width: calc(100% - 1rem);
+  }
+  .promo-track {
+    animation-duration: 18s;  /* Lento en touch */
+    gap: 1rem;
+  }
+}

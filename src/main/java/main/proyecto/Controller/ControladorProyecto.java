@@ -72,6 +72,9 @@ public class ControladorProyecto {
         List<Bebida> bebidas = bebidaRepository.findAll();
         model.addAttribute("bebidas", bebidas);
 
+        List<Promotion> promociones = promotionRepository.findByIsActiveTrue();
+        model.addAttribute("promociones", promociones);
+
         model.addAttribute("title", "Menú Completo — Chuponcito");
         model.addAttribute("cssFile", "style_menuCompleto.css");
         model.addAttribute("activePage", "menu");

@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const descEl = modalEl.querySelector('#promoDesc');
   const listEl = modalEl.querySelector('#promoIngredients');
 
+  if (!listEl) {
+    console.error('[promo-modal] Agrega <ul id="promoIngredients"></ul> en el modal HTML');
+    return;
+  }
+
   function setLoadingState() {
     titleEl.textContent = 'Cargando...';
     descEl.textContent = 'Cargando descripción...';
@@ -55,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setLoadingState();
       const res = await fetch(`/api/promociones/${promoId}/detalles`, { method: 'GET' });
       if (!res.ok) {
-        console.error('[promo-modal] fetch fallo, status=', res.status);
+        console.error('[promo-modal] Fetch fallo, status:', res.status);  // Log mínimo para debug
         setErrorState();
         return;
       }
@@ -65,12 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const detalles = Array.isArray(data.detalles) ? data.detalles : [];
       renderDetalles(detalles);
     } catch (err) {
-      console.error('[promo-modal] error en fetch:', err);
+      console.error('[promo-modal] Error en fetch:', err);  // Log catch
       setErrorState();
     }
   }
 
- 
+  // Listener para botones .promo-btn (click directo)
   document.querySelectorAll('.promo-btn').forEach(btn => {
     btn.addEventListener('click', function (evt) {
       evt.preventDefault();
@@ -78,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const promoId = btn.getAttribute('data-id') || btn.dataset.id;
       if (!promoId) {
-        console.warn('[promo-modal] botón sin data-id:', btn);
+        console.warn('[promo-modal] Botón sin data-id:', btn);
         return;
       }
 
@@ -87,14 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
           const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
           bsModal.show();
         } catch (err) {
-          console.error('[promo-modal] no se pudo abrir modal (bootstrap no disponible?):', err);
+          console.error('[promo-modal] Error abriendo modal:', err);
         }
       });
     }, { capture: true });
   });
 
+  // Listener para show.bs.modal (trigger desde data-bs-toggle)
   modalEl.addEventListener('show.bs.modal', function (event) {
-
     const trigger = event.relatedTarget;
     if (!trigger) return;
     const promoId = trigger.getAttribute('data-id') || trigger.dataset.id;
