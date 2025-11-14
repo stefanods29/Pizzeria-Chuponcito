@@ -353,3 +353,83 @@ section {
   justify-content: center;
  }
 }
+
+/* Fixes Dark Mode para Cart - Visibilidad Icons, Text Muted y Buttons */
+[data-theme="dark"] #cartItemsContainer .bi-cart-x {
+  color: rgba(var(--text-rgb), 0.8) !important;  /* Icono carrito visible, con opacidad media */
+  filter: brightness(1.2);  /* Boost para no lavarse */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);  /* Sombra sutil para pop */
+}
+
+[data-theme="dark"] #cartItemsContainer .text-muted {
+  color: rgba(var(--text-rgb), 0.7) !important;  /* "Agrega productos..." visible, opacidad 70% */
+  font-size: 0.95rem;  /* Ligeramente más grande si hace falta */
+}
+
+[data-theme="dark"] #cartItemsContainer small.text-muted {
+  color: rgba(var(--text-rgb), 0.65) !important;  /* Small texts específicos, menos opacos */
+}
+
+/* Btn-close en modales/cart (si usas modales aquí) */
+[data-theme="dark"] .btn-close {
+  filter: invert(0.8) sepia(0.3) saturate(2) hue-rotate(20deg) !important;  /* Blanco-anaranjado para dark, visible */
+  opacity: 0.9 !important;
+  transition: opacity 0.2s ease;
+}
+
+[data-theme="dark"] .btn-close:hover {
+  opacity: 1 !important;
+  transform: rotate(90deg) scale(1.1);  /* Animación + zoom para feedback */
+  background-color: rgba(var(--brand-rgb), 0.2);  /* Fondo brand sutil al hover */
+  border-radius: 50%;
+}
+
+/* Botón "Limpiar Carrito" y "Proceder al Pago" - Asegura contraste */
+[data-theme="dark"] .btn-secondary {
+  background: rgba(var(--gray-4-rgb), 0.3) !important;  /* Fondo gris suave */
+  color: var(--text-color) !important;
+  border: 1px solid rgba(var(--text-rgb), 0.3);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(var(--gray-4-rgb), 0.5) !important;
+  color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .btn-accion {
+  background: linear-gradient(135deg, var(--brand), var(--accent)) !important;  /* Gradient brand visible */
+  color: var(--button-text) !important;  /* Texto oscuro para contraste */
+  border: none;
+}
+
+[data-theme="dark"] .btn-accion:hover {
+  background: linear-gradient(135deg, var(--accent), var(--brand)) !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
+}
+
+/* Total en carrito: Más bold en dark */
+[data-theme="dark"] #cartTotal {
+  color: var(--brand) !important;  /* Brand anaranjado para resaltar */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* General: Asegura que empty state sea legible */
+[data-theme="dark"] .text-center.py-5 {
+  color: var(--text-color);
+}
+
+[data-theme="dark"] .text-center.py-5 p {
+  color: var(--text-color);
+  font-size: 1.1rem;  /* Ligeramente más grande para "Tu carrito está vacío" */
+}
+
+/* Responsive: En móvil, icons y texts más grandes */
+@media (max-width: 768px) {
+  [data-theme="dark"] .bi-cart-x {
+    font-size: 3rem !important;  /* Icono más grande en móvil */
+  }
+  [data-theme="dark"] #cartItemsContainer small.text-muted {
+    font-size: 0.9rem !important;
+  }
+}
