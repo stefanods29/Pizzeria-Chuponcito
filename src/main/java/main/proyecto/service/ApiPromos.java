@@ -41,6 +41,7 @@ public class ApiPromos {
             response.put("name", promo.getName());
             response.put("description", promo.getDescription());
             response.put("promoPrice", promo.getPromoPrice());
+            response.put("imageUrl", promo.getImageUrl());
 
             // parsear JSON items
             List<Map<String, Object>> detalles = new ArrayList<>();

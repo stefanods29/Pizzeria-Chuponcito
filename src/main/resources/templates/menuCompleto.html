@@ -59,7 +59,7 @@
                                         <!-- FIX: Ingredients como string simple, sizes como toString() -->
                                         <button class="btn btn-sm btn-outline-secondary pizza-btn"
                                             data-bs-toggle="modal" data-bs-target="#pizzaModal"
-                                            th:attr="data-name=${pizza.name}, data-desc=${pizza.description}, data-ingredients=${pizza.ingredients.toString().replace('[', '').replace(']', '')}, data-sizes=${pizza.sizes.toString()}"
+                                            th:attr="data-id=${pizza.id}, data-name=${pizza.name}, data-desc=${pizza.description}, data-ingredients=${pizza.ingredients.toString().replace('[', '').replace(']', '')}, data-sizes=${pizza.sizes.toString()}"
                                             th:if="${pizza.stockQuantity > 0}">Detalles</button>
                                         <span th:if="${pizza.stockQuantity <= 0}"
                                             class="text-danger small">Agotado</span>
@@ -91,7 +91,7 @@
                                 <!-- FIX: Ingredients como string simple -->
                                 <button class="btn btn-sm btn-accion mt-2 extra-btn" data-bs-toggle="modal"
                                     data-bs-target="#extraModal"
-                                    th:attr="data-name=${extra.name}, data-desc=${extra.description}, data-ingredients=${extra.ingredients.toString().replace('[', '').replace(']', '')}, data-price=${extra.price}"
+                                    th:attr="data-id=${extra.id}, data-name=${extra.name}, data-desc=${extra.description}, data-ingredients=${extra.ingredients.toString().replace('[', '').replace(']', '')}, data-price=${extra.price}"
                                     th:if="${extra.stockQuantity > 0}">Detalles</button>
                                 <span th:if="${extra.stockQuantity <= 0}" class="text-danger small">Agotado</span>
                             </div>
@@ -122,7 +122,7 @@
                                 <strong th:text="'S/' + ${bebida.price}">Precio</strong>
                                 <!-- FIX: Usa 'bebida' en lugar de 'pizza', y ingredients como string simple -->
                                 <button class="btn btn-sm btn-accion mt-2 bebida-btn" data-bs-toggle="modal"
-                                    data-bs-target="#bebidaModal" th:attr="data-name=${bebida.name}, data-desc=${bebida.description}, 
+                                    data-bs-target="#bebidaModal" th:attr="data-id=${bebida.id}, data-name=${bebida.name}, data-desc=${bebida.description}, 
                                     data-ingredients=${bebida.ingredients != null ? bebida.ingredients.toString().replace('[', '').replace(']', '') : ''}, 
                                     data-price=${bebida.price}, data-size=${bebida.size}"
                                     th:if="${bebida.stockQuantity > 0}">Detalles</button>

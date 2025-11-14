@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const pizzaModal = document.getElementById('pizzaModal');
     const extraModal = document.getElementById('extraModal');
     const bebidaModal = document.getElementById('bebidaModal');
-    const promoModal = document.getElementById('promoModal'); // Asumiendo modal para promos
+    // promoModal es manejado por promo-modal.js, no se usa aquí
     const pizzaTitle = document.getElementById('pizzaTitle');
     const pizzaDesc = document.getElementById('pizzaDesc');
     const pizzaIngredients = document.getElementById('pizzaIngredients');
@@ -87,19 +87,16 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(err => alert('Error al agregar al carrito: ' + err));
     }
 
-    // Variable para almacenar relatedTarget en modales
-    let currentRelatedTarget = null;
-
     // Para modal de pizzas
     pizzaModal.addEventListener('show.bs.modal', function (event) {
-        currentRelatedTarget = event.relatedTarget;
-        if (!currentRelatedTarget) return;
+        const trigger = event.relatedTarget;
+        if (!trigger) return;
 
-        const name = currentRelatedTarget.getAttribute('data-name') || 'Nombre desconocido';
-        const desc = currentRelatedTarget.getAttribute('data-desc') || 'Descripción no disponible';
-        const ingredientsStr = currentRelatedTarget.getAttribute('data-ingredients') || '';
-        const sizesStr = currentRelatedTarget.getAttribute('data-sizes') || '{}';
-        const id = currentRelatedTarget.getAttribute('data-id') || 0;
+        const name = trigger.getAttribute('data-name') || 'Nombre desconocido';
+        const desc = trigger.getAttribute('data-desc') || 'Descripción no disponible';
+        const ingredientsStr = trigger.getAttribute('data-ingredients') || '';
+        const sizesStr = trigger.getAttribute('data-sizes') || '{}';
+        const id = trigger.getAttribute('data-id') || 0;
 
         pizzaTitle.textContent = name;
         pizzaDesc.textContent = desc;
@@ -118,19 +115,33 @@ document.addEventListener('DOMContentLoaded', function () {
             option.textContent = `${sizeName} - S/ ${price.toFixed(2)}`;
             pizzaSizeSelect.appendChild(option);
         });
+        
+        // Guardar datos directamente en el modal para evitar problemas con currentRelatedTarget
+        pizzaModal.setAttribute('data-current-pizza-id', id);
+        pizzaModal.setAttribute('data-current-pizza-name', name);
+        pizzaModal.setAttribute('data-current-pizza-sizes', sizesStr);
     });
 
-    // Evento para agregar pizza al carrito (usa currentRelatedTarget)
+    // Evento para agregar pizza al carrito
     document.getElementById('addPizza').addEventListener('click', function() {
         const size = pizzaSizeSelect.value;
         if (!size) {
             alert('¡Selecciona un tamaño para la pizza!');
             return;
         }
+        
+        // Obtener datos directamente del modal, no de currentRelatedTarget
+        const id = pizzaModal.getAttribute('data-current-pizza-id') || 0;
+        const name = pizzaModal.getAttribute('data-current-pizza-name') || '';
+        const sizesStr = pizzaModal.getAttribute('data-current-pizza-sizes') || '{}';
+        
+        if (!id || !name) {
+            alert('Error: No se pudo obtener la información del producto.');
+            return;
+        }
+        
         const selectedOption = pizzaSizeSelect.selectedOptions[0];
         const price = parseFloat(selectedOption.getAttribute('data-price'));
-        const name = currentRelatedTarget.getAttribute('data-name');
-        const id = currentRelatedTarget.getAttribute('data-id') || 0;
 
         const item = {
             productId: parseInt(id),
@@ -146,13 +157,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Para modal de extras
     extraModal.addEventListener('show.bs.modal', function (event) {
-        currentRelatedTarget = event.relatedTarget;
-        if (!currentRelatedTarget) return;
+        const trigger = event.relatedTarget;
+        if (!trigger) return;
 
-        const name = currentRelatedTarget.getAttribute('data-name') || 'Nombre desconocido';
-        const desc = currentRelatedTarget.getAttribute('data-desc') || 'Descripción no disponible';
-        const ingredientsStr = currentRelatedTarget.getAttribute('data-ingredients') || '';
-        const price = parseFloat(currentRelatedTarget.getAttribute('data-price') || '0');
+        const name = trigger.getAttribute('data-name') || 'Nombre desconocido';
+        const desc = trigger.getAttribute('data-desc') || 'Descripción no disponible';
+        const ingredientsStr = trigger.getAttribute('data-ingredients') || '';
+        const price = parseFloat(trigger.getAttribute('data-price') || '0');
+        const id = trigger.getAttribute('data-id') || 0;
 
         extraTitle.textContent = name;
         extraDesc.textContent = desc;
@@ -164,13 +176,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const extraPriceEl = document.getElementById('extraPrice');
         if (extraPriceEl) extraPriceEl.textContent = `S/ ${price.toFixed(2)}`;
+        
+        // Guardar datos directamente en el modal para evitar problemas con currentRelatedTarget
+        extraModal.setAttribute('data-current-extra-id', id);
+        extraModal.setAttribute('data-current-extra-name', name);
+        extraModal.setAttribute('data-current-extra-price', price);
     });
 
     // Evento para agregar extra al carrito
     document.getElementById('addExtra').addEventListener('click', function() {
-        const name = currentRelatedTarget.getAttribute('data-name');
-        const id = currentRelatedTarget.getAttribute('data-id') || 0;
-        const price = parseFloat(currentRelatedTarget.getAttribute('data-price'));
+        // Obtener datos directamente del modal, no de currentRelatedTarget
+        const id = extraModal.getAttribute('data-current-extra-id') || 0;
+        const name = extraModal.getAttribute('data-current-extra-name') || '';
+        const price = parseFloat(extraModal.getAttribute('data-current-extra-price') || 0);
+
+        if (!id || !name) {
+            alert('Error: No se pudo obtener la información del producto.');
+            return;
+        }
 
         const item = {
             productId: parseInt(id),
@@ -185,14 +208,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Para modal de bebidas
     bebidaModal.addEventListener('show.bs.modal', function (event) {
-        currentRelatedTarget = event.relatedTarget;
-        if (!currentRelatedTarget) return;
+        const trigger = event.relatedTarget;
+        if (!trigger) return;
 
-        const name = currentRelatedTarget.getAttribute('data-name') || 'Nombre desconocido';
-        const desc = currentRelatedTarget.getAttribute('data-desc') || 'Descripción no disponible';
-        const ingredientsStr = currentRelatedTarget.getAttribute('data-ingredients') || '';
-        const price = parseFloat(currentRelatedTarget.getAttribute('data-price') || '0');
-        const size = currentRelatedTarget.getAttribute('data-size') || 'N/A';
+        const name = trigger.getAttribute('data-name') || 'Nombre desconocido';
+        const desc = trigger.getAttribute('data-desc') || 'Descripción no disponible';
+        const ingredientsStr = trigger.getAttribute('data-ingredients') || '';
+        const price = parseFloat(trigger.getAttribute('data-price') || '0');
+        const size = trigger.getAttribute('data-size') || 'N/A';
+        const id = trigger.getAttribute('data-id') || 0;
 
         bebidaTitle.textContent = name;
         bebidaDesc.textContent = desc;
@@ -204,13 +228,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
         bebidaPrice.textContent = `S/ ${price.toFixed(2)}`;
         bebidaSize.textContent = `(${size})`;
+        
+        // Guardar datos directamente en el modal para evitar problemas con currentRelatedTarget
+        bebidaModal.setAttribute('data-current-bebida-id', id);
+        bebidaModal.setAttribute('data-current-bebida-name', name);
+        bebidaModal.setAttribute('data-current-bebida-price', price);
     });
 
     // Evento para agregar bebida al carrito
     document.getElementById('addBebida').addEventListener('click', function() {
-        const name = currentRelatedTarget.getAttribute('data-name');
-        const id = currentRelatedTarget.getAttribute('data-id') || 0;
-        const price = parseFloat(currentRelatedTarget.getAttribute('data-price'));
+        // Obtener datos directamente del modal, no de currentRelatedTarget
+        const id = bebidaModal.getAttribute('data-current-bebida-id') || 0;
+        const name = bebidaModal.getAttribute('data-current-bebida-name') || '';
+        const price = parseFloat(bebidaModal.getAttribute('data-current-bebida-price') || 0);
+
+        if (!id || !name) {
+            alert('Error: No se pudo obtener la información del producto.');
+            return;
+        }
 
         const item = {
             productId: parseInt(id),
@@ -223,41 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCart(item);
     });
 
-    // Para modal de promos (asumiendo show.bs.modal y data-attributes en botón que abre modal)
-    if (promoModal) {
-        promoModal.addEventListener('show.bs.modal', function (event) {
-            currentRelatedTarget = event.relatedTarget;
-            if (!currentRelatedTarget) return;
-
-            // Llena modal con data del botón (ajusta según tu HTML)
-            const name = currentRelatedTarget.getAttribute('data-name') || 'Promo desconocida';
-            const desc = currentRelatedTarget.getAttribute('data-desc') || '';
-            const price = parseFloat(currentRelatedTarget.getAttribute('data-price') || '0');
-            const id = currentRelatedTarget.getAttribute('data-id') || 0;
-
-            document.getElementById('promoTitle').textContent = name;
-            document.getElementById('promoDesc').textContent = desc;
-            // Actualiza botón addPromo con data
-            const addPromoBtn = document.getElementById('addPromo');
-            addPromoBtn.setAttribute('data-promo-id', id);
-            addPromoBtn.setAttribute('data-price', price);
-        });
-
-        // Evento para agregar promo
-        document.getElementById('addPromo').addEventListener('click', function() {
-            const id = parseInt(this.getAttribute('data-promo-id') || 0);
-            const name = currentRelatedTarget.getAttribute('data-name');
-            const price = parseFloat(this.getAttribute('data-price') || 0);
-
-            const item = {
-                productId: id,
-                name: name,
-                type: 'promo',
-                price: price,
-                quantity: 1
-            };
-
-            addToCart(item);
-        });
-    }
+    // NOTA: El modal de promociones ahora es manejado por promo-modal.js
+    // Se removió el código duplicado para evitar doble agregado al carrito
+    // El listener de promociones está en promo-modal.js que se carga desde layout.html
 });

@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     listEl.innerHTML = html;
   }
 
+  // Variable para almacenar datos de la promoción actual
+  let currentPromoData = null;
+
   // Función que obtiene detalles desde el backend
   async function fetchAndShowPromo(promoId) {
     try {
@@ -69,6 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
       descEl.textContent = data.description || 'Sin descripción';
       const detalles = Array.isArray(data.detalles) ? data.detalles : [];
       renderDetalles(detalles);
+      
+      // Guardar datos de la promoción para agregar al carrito
+      currentPromoData = {
+        id: promoId,
+        name: data.name || 'Promoción',
+        price: data.promoPrice || 0,
+        imageUrl: data.imageUrl || '/images/default-promo.png'
+      };
     } catch (err) {
       console.error('[promo-modal] Error en fetch:', err);  // Log catch
       setErrorState();
@@ -106,4 +117,70 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!promoId) return;
     fetchAndShowPromo(promoId);
   });
+
+  // Función para agregar al carrito
+  function addPromoToCart() {
+    if (!currentPromoData) {
+      alert('Error: No hay promoción seleccionada.');
+      return;
+    }
+
+    const item = {
+      productId: parseInt(currentPromoData.id),
+      name: currentPromoData.name,
+      type: 'promo',
+      price: parseFloat(currentPromoData.price),
+      quantity: 1,
+      imageUrl: currentPromoData.imageUrl
+    };
+
+    fetch('/api/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Error en servidor');
+        return response.text();
+      })
+      .then(message => {
+        alert(message);
+        // Cierra el modal
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+        // Actualiza el badge del carrito si existe
+        fetch('/api/cart')
+          .then(r => r.json())
+          .then(data => {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+              if (data.itemCount > 0) {
+                badge.textContent = data.itemCount;
+                badge.style.display = 'inline';
+              } else {
+                badge.style.display = 'none';
+              }
+            }
+          })
+          .catch(err => console.error('Error actualizando badge:', err));
+        // Si existe la función para recargar carrito en modal, llamarla
+        if (typeof loadCartInModal === 'function') {
+          loadCartInModal();
+        }
+      })
+      .catch(err => {
+        alert('Error al agregar al carrito: ' + err.message);
+        console.error('Error:', err);
+      });
+  }
+
+  // Listener para el botón "Agregar al Carrito"
+  const addPromoBtn = document.getElementById('addPromo');
+  if (addPromoBtn) {
+    addPromoBtn.addEventListener('click', function() {
+      addPromoToCart();
+    });
+  } else {
+    console.error('[promo-modal] No se encontró el botón #addPromo');
+  }
 });
