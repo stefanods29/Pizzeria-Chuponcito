@@ -18,7 +18,7 @@
           <p class="lead" th:if="${session.paymentType}">Simulando transacción con <strong th:text="${session.paymentType}"></strong>. ¡Tu pizza está en camino!</p>
           <p class="lead" th:unless="${session.paymentType}">Simulando transacción segura. No te muevas, ¡tu pizza está en camino!</p>
           <div id="paymentStatus" class="mt-4">
-            <p class="text-muted">Verificando <strong th:text="${session.paymentType}"></strong>....</p>
+            <p class="payment-status-text">Verificando <strong th:text="${session.paymentType}"></strong>....</p>
           </div>
           <div id="successMessage" class="d-none alert alert-success mt-4">
             <h4>¡Pago Exitoso!</h4>
@@ -55,7 +55,7 @@
     let i = 0;
     
     // Mostrar primer mensaje inmediatamente
-    status.innerHTML = `<p class="text-muted">${messages[0]}</p>`;
+    status.innerHTML = `<p class="payment-status-text">${messages[0]}</p>`;
     i++;
 
     const interval = setInterval(() => {
@@ -97,7 +97,7 @@
           status.innerHTML = `<p class="text-danger">Error de conexión: ${err}</p>`;
         });
       } else {
-        status.innerHTML = `<p class="text-muted">${messages[i]}</p>`;
+        status.innerHTML = `<p class="payment-status-text">${messages[i]}</p>`;
         i++;
       }
     }, 1500);

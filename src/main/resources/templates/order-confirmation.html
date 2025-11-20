@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
           title='Confirmación de Orden - Chuponcito',
-          cssFile='/css/style_payment.css',
+          cssFile='/css/style_order_confirmation.css',
           activePage='pago',
           searchPlaceholder='Buscar...',
           content=~{::content})}">
@@ -17,7 +17,7 @@
             </svg>
           </div>
           <h2 class="fw-bold mb-3">¡Pago Completado!</h2>
-          <p class="lead text-muted">Gracias por tu compra. Tu orden ha sido recibida y se está preparando.</p>
+          <p class="lead">Gracias por tu compra. Tu orden ha sido recibida y se está preparando.</p>
           
           <div class="card mt-4 shadow-sm text-start confirmation-card">
             <div class="card-header bg-white">

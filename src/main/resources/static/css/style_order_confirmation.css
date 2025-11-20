@@ -181,15 +181,17 @@ body {
 
 /* Dark mode button improvements */
 [data-theme="dark"] .btn-outline-secondary {
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  background: rgba(var(--accent-rgb), 0.1);
+  border: 2px solid rgb(255, 255, 255) !important;
+  color: rgb(255, 255, 255) !important;
+  background: transparent !important;
+  font-weight: 600 !important;
 }
 
 [data-theme="dark"] .btn-outline-secondary:hover {
-  background: var(--accent);
-  color: rgb(var(--bg-rgb));
-  border-color: var(--accent);
+  background: rgb(255, 255, 255) !important;
+  color: rgb(47, 47, 47) !important;
+  border-color: rgb(255, 255, 255) !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.4) !important;
 }
 
 /* Typography */
@@ -203,16 +205,20 @@ h6 {
 
 .lead {
   color: rgba(var(--text-rgb), 0.8);
-  font-size: 1.1rem;
+  font-size: 1.1rem;  
 }
 
 /* Dark mode text improvements */
 [data-theme="dark"] .lead {
-  color: rgba(var(--text-rgb), 0.9);
+  color: rgb(255, 255, 255) !important;
 }
 
 .text-muted {
-  color: rgba(var(--text-rgb), 0.65) !important;
+  color: rgb(243, 243, 243);
+}
+
+[data-theme="dark"] .text-muted {
+  color: rgb(255, 255, 255) !important;
 }
 
 strong {
