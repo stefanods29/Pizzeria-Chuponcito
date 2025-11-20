@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title='Confirmación de Orden - Chuponcito',
+          cssFile='/css/style_payment.css',
+          activePage='pago',
+          searchPlaceholder='Buscar...',
+          content=~{::content})}">
+
+<body>
+  <div th:fragment="content">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8 text-center success-message">
+          <div class="mb-4 success-icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>
+          </div>
+          <h2 class="fw-bold mb-3">¡Pago Completado!</h2>
+          <p class="lead text-muted">Gracias por tu compra. Tu orden ha sido recibida y se está preparando.</p>
+          
+          <div class="card mt-4 shadow-sm text-start confirmation-card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Detalles de la Orden #<span th:text="${order.id}"></span></h5>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <strong>Fecha:</strong> <span th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                  <strong>Estado:</strong> <span class="badge bg-info text-dark" th:text="${order.status}"></span>
+                </div>
+              </div>
+              
+              <hr>
+              
+              <h6 class="mb-3">Productos:</h6>
+              <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="item : ${orderItems}">
+                  <div>
+                    <span th:text="${item.name}">Pizza</span>
+                    <small class="text-muted" th:if="${item.size}" th:text="'(' + ${item.size} + ')'"></small>
+                    <span class="badge bg-secondary rounded-pill ms-2" th:text="'x' + ${item.quantity}">1</span>
+                  </div>
+                  <span th:text="'S/ ' + ${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">S/ 0.00</span>
+                </li>
+              </ul>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Dirección de entrega:</strong></p>
+                  <p class="text-muted" th:text="${order.deliveryAddress}">Dirección</p>
+                  <p class="mb-1"><strong>Método de pago:</strong></p>
+                  <p class="text-muted" th:text="${order.paymentType}">Efectivo</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                  <h4 class="fw-bold">Total: S/ <span th:text="${#numbers.formatDecimal(order.total, 1, 2)}">0.00</span></h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <a href="/" class="btn btn-warning btn-lg">Volver al Inicio</a>
+            <a href="/menuCompleto" class="btn btn-outline-secondary btn-lg ms-2">Ver Menú</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

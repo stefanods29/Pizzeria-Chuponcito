@@ -86,30 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Listener para botones .promo-btn (click directo)
-  document.querySelectorAll('.promo-btn').forEach(btn => {
-    btn.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      evt.stopPropagation();
-
-      const promoId = btn.getAttribute('data-id') || btn.dataset.id;
-      if (!promoId) {
-        console.warn('[promo-modal] Botón sin data-id:', btn);
-        return;
-      }
-
-      fetchAndShowPromo(promoId).then(() => {
-        try {
-          const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
-          bsModal.show();
-        } catch (err) {
-          console.error('[promo-modal] Error abriendo modal:', err);
-        }
-      });
-    }, { capture: true });
-  });
-
   // Listener para show.bs.modal (trigger desde data-bs-toggle)
+  // NOTA: Se removió el listener directo a .promo-btn para evitar doble agregado al carrito
   modalEl.addEventListener('show.bs.modal', function (event) {
     const trigger = event.relatedTarget;
     if (!trigger) return;

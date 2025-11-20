@@ -6,7 +6,7 @@
           searchPlaceholder='Buscar pago...',
           content=~{::content})}">
 
-<body onload="simulatePayment()">
+<body>
   <div th:fragment="content">
     <div class="container py-5">
       <div class="row justify-content-center">
@@ -30,9 +30,22 @@
     </div>
 
     <script th:inline="javascript">
+  console.log("Script de payment.html cargado");
+  
   function simulatePayment() {
+    console.log("simulatePayment() iniciada");
     const status = document.getElementById('paymentStatus');
     const success = document.getElementById('successMessage');
+    
+    if (!status) {
+      console.error("No se encontró elemento #paymentStatus");
+      return;
+    }
+    if (!success) {
+      console.error("No se encontró elemento #successMessage");
+      return;
+    }
+    
     const messages = [
       'Verificando tarjeta...',
       'Autorizando pago...',
@@ -40,32 +53,64 @@
       '¡Listo!'
     ];
     let i = 0;
+    
+    // Mostrar primer mensaje inmediatamente
+    status.innerHTML = `<p class="text-muted">${messages[0]}</p>`;
+    i++;
+
     const interval = setInterval(() => {
-      status.innerHTML = `<p class="text-muted">${messages[i]}</p>`;
-      i++;
       if (i >= messages.length) {
         clearInterval(interval);
-        // Llama API para finalizar orden (usa datos de sesión o defaults)
-        fetch('/api/cart/finalizeOrder', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        console.log("Simulación terminada. Iniciando finalización de orden...");
+        
+        // Llama API para finalizar orden
+        const payload = {
             address: /*[[${checkoutAddress ?: 'Dirección default'}]]*/ 'Dirección default',
             phone: /*[[${checkoutPhone ?: 'Teléfono default'}]]*/ 'Teléfono default',
             notes: /*[[${checkoutNotes ?: ''}]]*/ '',
             paymentType: /*[[${paymentType ?: 'Efectivo'}]]*/ 'Efectivo'
-          })
-        }).then(r => r.text()).then(msg => {
-          status.innerHTML = `<p class="text-success">${msg}</p>`;
-          success.classList.remove('d-none');
+        };
+        console.log("Payload:", payload);
+
+        fetch('/api/cart/finalizeOrder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(r => {
+            console.log("Respuesta status:", r.status);
+            return r.json();
+        }).then(data => {
+          console.log("Data:", data);
+          if (data.error) {
+             status.innerHTML = `<p class="text-danger">Error: ${data.error}</p>`;
+          } else {
+             status.innerHTML = `<p class="text-success">${data.message}</p>`;
+             success.classList.remove('d-none');
+             // Redirigir después de 3 segundos
+             setTimeout(() => {
+               console.log("Redirigiendo a confirmación...");
+               window.location.href = `/order-confirmation?orderId=${data.orderId}`;
+             }, 3000);
+          }
         }).catch(err => {
-          status.innerHTML = `<p class="text-danger">Error: ${err}</p>`;
+          console.error("Fetch error:", err);
+          status.innerHTML = `<p class="text-danger">Error de conexión: ${err}</p>`;
         });
+      } else {
+        status.innerHTML = `<p class="text-muted">${messages[i]}</p>`;
+        i++;
       }
     }, 1500);
+  }
+  
+  // Ejecutar automáticamente cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', simulatePayment);
+  } else {
+    // DOM ya está listo, ejecutar inmediatamente
+    simulatePayment();
   }
 </script>
   </div>
 </body>
-</html>
 </html>

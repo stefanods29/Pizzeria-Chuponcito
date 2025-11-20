@@ -62,16 +62,7 @@ function loadCartInModal() {
         // Agrega un div de login si vacío, pero por ahora asume carrito compartido
         console.log('Carrito cargado, pero considera login para persistencia');
     }
-    // ¡FIX: Fetch para mostrar botón si hay items
-    fetch('/api/cart')
-        .then(r => r.json())
-        .then(data => {
-            if (data.itemCount > 0) {
-                document.getElementById('goToCheckoutBtn').style.display = 'block';
-                document.getElementById('clearCartBtn').style.display = 'inline-block';
-            }
-        })
-        .catch(err => console.error('Error chequeando count:', err));
+
 }
 
 // Actualizar badge en navbar

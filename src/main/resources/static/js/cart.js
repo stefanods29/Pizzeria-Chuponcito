@@ -1,4 +1,3 @@
-// Función global para cargar y renderizar carrito (para modal y página)
 function loadCart(containerId = 'cartItemsContainer', isModal = false) {
     fetch('/api/cart')
         .then(response => response.json())
@@ -8,6 +7,13 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
             if (data.items.length === 0) {
                 container.innerHTML = '<div class="text-center py-5"><i class="bi bi-cart-x fs-1 text-muted"></i><p class="mt-2">Tu carrito está vacío</p><small class="text-muted">Agrega productos del menú para verlos aquí</small></div>';
                 if (totalEl) totalEl.textContent = isModal ? '0 items' : 'Total: S/ 0.00';
+                
+                if (isModal) {
+                    const checkoutBtn = document.getElementById('goToCheckoutBtn');
+                    const clearBtn = document.getElementById('clearCartBtn');
+                    if (checkoutBtn) checkoutBtn.style.display = 'none';
+                    if (clearBtn) clearBtn.style.display = 'none';
+                }
                 return;
             }
 
@@ -16,7 +22,11 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
                 const sizeText = item.size ? `<small class="text-muted d-block">Tamaño: ${item.size}</small>` : '';
                 const imgSrc = item.imageUrl || '/images/default.png';
                 html += `
-                    <div class="cart-item row align-items-center mb-3 p-3 border rounded ${isModal ? 'g-2' : ''}">
+                    <div class="cart-item row align-items-center mb-3 p-3 border rounded ${isModal ? 'g-2' : ''}" 
+                         data-type="${item.type}" 
+                         data-id="${item.productId}" 
+                         data-size="${item.size || ''}"
+                         data-quantity="${item.quantity}">
                         <div class="col-md-2 col-3">
                             <img src="${imgSrc}" alt="${item.name}" class="img-fluid rounded" style="max-height: ${isModal ? '60px' : '80px'};">
                         </div>
@@ -30,10 +40,10 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
                         </div>
                         <div class="col-md-4 col-2">
                             <div class="d-flex align-items-center justify-content-${isModal ? 'evenly' : 'between'}">
-                                <button class="btn btn-sm btn-outline-secondary cart-btn-dark" style="background: rgba(201, 148, 62, 0.2); color: #251e73; border: 1px solid rgba(201, 148, 62, 0.4); border-radius: 0.375rem; opacity: 0.9; width: 2.5rem; height: 2.5rem; font-size: 1rem; font-weight: bold;" onclick="updateQuantity('${item.type}', ${item.productId}, '${item.size || ''}', ${item.quantity - 1}, '${containerId}', ${isModal})">-</button>
+                                <button class="btn btn-sm btn-outline-secondary cart-btn-dark btn-decrease" style="background: rgba(201, 148, 62, 0.2); color: #251e73; border: 1px solid rgba(201, 148, 62, 0.4); border-radius: 0.375rem; opacity: 0.9; width: 2.5rem; height: 2.5rem; font-size: 1rem; font-weight: bold;">-</button>
                                 <span class="mx-2 fw-bold">${item.quantity}</span>
-                                <button class="btn btn-sm btn-outline-secondary cart-btn-dark" style="background: rgba(201, 148, 62, 0.2); color: #251e73; border: 1px solid rgba(201, 148, 62, 0.4); border-radius: 0.375rem; opacity: 0.9; width: 2.5rem; height: 2.5rem; font-size: 1rem; font-weight: bold;" onclick="updateQuantity('${item.type}', ${item.productId}, '${item.size || ''}', ${item.quantity + 1}, '${containerId}', ${isModal})">+</button>
-                                <button class="btn btn-sm btn-danger ms-2" style="background: rgba(220, 53, 69, 0.2); color: #251e73; border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 0.375rem; opacity: 0.9; width: 2rem; height: 2rem; font-size: 1rem;" onclick="removeItem('${item.type}', ${item.productId}, '${item.size || ''}', '${containerId}', ${isModal})">×</button>
+                                <button class="btn btn-sm btn-outline-secondary cart-btn-dark btn-increase" style="background: rgba(201, 148, 62, 0.2); color: #251e73; border: 1px solid rgba(201, 148, 62, 0.4); border-radius: 0.375rem; opacity: 0.9; width: 2.5rem; height: 2.5rem; font-size: 1rem; font-weight: bold;">+</button>
+                                <button class="btn btn-sm btn-danger ms-2 btn-remove" style="background: rgba(220, 53, 69, 0.2); color: #251e73; border: 1px solid rgba(220, 53, 69, 0.3); border-radius: 0.375rem; opacity: 0.9; width: 2rem; height: 2rem; font-size: 1rem;">×</button>
                             </div>
                         </div>
                     </div>
@@ -42,8 +52,56 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
             container.innerHTML = html;
             if (totalEl) totalEl.textContent = isModal ? `${data.itemCount} items` : `Total: S/ ${data.total.toFixed(2)}`;
             if (!isModal) updateCartBadge(data.itemCount); // Actualiza badge en navbar
+            
+            // Update modal buttons visibility
+            if (isModal) {
+                const checkoutBtn = document.getElementById('goToCheckoutBtn');
+                const clearBtn = document.getElementById('clearCartBtn');
+                const hasItems = data.items.length > 0;
+                
+                if (checkoutBtn) checkoutBtn.style.display = hasItems ? 'block' : 'none';
+                if (clearBtn) clearBtn.style.display = hasItems ? 'inline-block' : 'none';
+            }
+            
+            // Setup event listeners con event delegation
+            setupCartEventListeners(containerId, isModal);
         })
         .catch(err => console.error('Error cargando carrito:', err));
+}
+
+// Event delegation para botones del carrito
+function setupCartEventListeners(containerId, isModal) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    // Remover listeners anteriores si existen (limpieza)
+    const oldListener = container._cartListener;
+    if (oldListener) {
+        container.removeEventListener('click', oldListener);
+    }
+    
+    // Crear nuevo listener
+    const listener = function(e) {
+        const target = e.target;
+        const cartItem = target.closest('.cart-item');
+        if (!cartItem) return;
+        
+        const type = cartItem.dataset.type;
+        const id = parseInt(cartItem.dataset.id);
+        const size = cartItem.dataset.size || '';
+        const quantity = parseInt(cartItem.dataset.quantity);
+        
+        if (target.classList.contains('btn-decrease')) {
+            updateQuantity(type, id, size, quantity - 1, containerId, isModal);
+        } else if (target.classList.contains('btn-increase')) {
+            updateQuantity(type, id, size, quantity + 1, containerId, isModal);
+        } else if (target.classList.contains('btn-remove')) {
+            removeItem(type, id, size, containerId, isModal);
+        }
+    };
+    
+    container.addEventListener('click', listener);
+    container._cartListener = listener; // Guardar referencia para limpieza futura
 }
 
 // Funciones helper

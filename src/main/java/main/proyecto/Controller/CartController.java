@@ -30,7 +30,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/cart")
-@Controller  // Para views en GET /checkout
+@Controller // Para views en GET /checkout
 public class CartController {
 
     @Autowired
@@ -129,22 +129,23 @@ public class CartController {
     public String checkoutPage(Model model, HttpSession session) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
         if (cartMap == null || cartMap.isEmpty()) {
-            return "redirect:/"; 
+            return "redirect:/";
         }
         List<CartItem> items = new ArrayList<>(cartMap.values());
         double total = items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
         model.addAttribute("cartItems", items);
         model.addAttribute("total", total);
         model.addAttribute("paymentTypes", List.of("Efectivo", "Tarjeta", "Transferencia")); // Opciones pago
-        return "checkout"; 
+        return "checkout";
     }
 
     // POST /finalizeOrder - Guarda orden después "pago" simulado
     @PostMapping("/finalizeOrder")
-    public ResponseEntity<String> finalizeOrder(@RequestBody Map<String, Object> requestData, HttpSession session, Authentication auth) {
+    public ResponseEntity<Map<String, Object>> finalizeOrder(@RequestBody Map<String, Object> requestData,
+            HttpSession session, Authentication auth) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
         if (cartMap == null || cartMap.isEmpty()) {
-            return ResponseEntity.badRequest().body("Carrito vacío.");
+            return ResponseEntity.badRequest().body(Map.of("error", "Carrito vacío."));
         }
 
         List<CartItem> items = new ArrayList<>(cartMap.values());
@@ -154,7 +155,7 @@ public class CartController {
         try {
             itemsJson = objectMapper.writeValueAsString(items);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error procesando items: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", "Error procesando items: " + e.getMessage()));
         }
 
         Order order = new Order();
@@ -174,13 +175,53 @@ public class CartController {
         order.setDeliveryAddress((String) requestData.get("address"));
         order.setPhone((String) requestData.get("phone"));
         order.setNotes((String) requestData.get("notes"));
+
+        String paymentType = (String) requestData.get("paymentType");
+        if (paymentType == null)
+            paymentType = "Efectivo";
+        order.setPaymentType(paymentType);
+
         order.setEstimatedTime(30);
 
-        orderRepository.save(order);
+        try {
+            orderRepository.save(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(Map.of("error", "Error guardando orden: " + e.getMessage()));
+        }
 
         session.removeAttribute("cart");
 
-        return ResponseEntity.ok("¡Pago simulado exitoso! Orden #" + order.getId() + " guardada. Te contactamos pronto.");
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "¡Pago simulado exitoso! Orden #" + order.getId() + " guardada.");
+        response.put("orderId", order.getId());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/order-confirmation")
+    public String orderConfirmationPage(@RequestParam("orderId") Long orderId, Model model) {
+        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+            model.addAttribute("order", order);
+
+            // Parse items JSON to list for display if needed, or let frontend handle it if
+            // complex
+            // For simplicity, we pass the order. The items string is JSON.
+            // If we want to display items nicely, we should parse it back to List<CartItem>
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                List<CartItem> items = Arrays.asList(mapper.readValue(order.getItems(), CartItem[].class));
+                model.addAttribute("orderItems", items);
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("orderItems", new ArrayList<>());
+            }
+
+            return "order-confirmation";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @SuppressWarnings("unchecked")

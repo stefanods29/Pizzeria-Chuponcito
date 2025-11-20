@@ -14,6 +14,8 @@ import main.proyecto.repository.PromotionRepository;
 import main.proyecto.repository.BebidaRepository;
 import main.proyecto.repository.ExtraRepository;
 import main.proyecto.repository.UserRepository;
+import main.proyecto.repository.OrderRepository;
+import main.proyecto.model.Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +36,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 public class ControladorProyecto {
@@ -48,6 +51,8 @@ public class ControladorProyecto {
     private PromotionRepository promotionRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -231,7 +236,7 @@ public class ControladorProyecto {
     @GetMapping("/carrito")
     public String carrito(Model model, HttpSession session) {
         model.addAttribute("title", "Carrito de Compras — Chuponcito");
-        model.addAttribute("cssFile", "style_cart.css"); 
+        model.addAttribute("cssFile", "style_cart.css");
         model.addAttribute("activePage", "carrito");
         model.addAttribute("searchPlaceholder", "Buscar en carrito...");
         return "cart";
@@ -255,33 +260,69 @@ public class ControladorProyecto {
 
     // GET /payment - Página de pago simulada
     @GetMapping("/payment")
-    public String paymentPage(Model model) {
+    public String paymentPage(Model model, HttpSession session) {
         model.addAttribute("title", "Pago — Chuponcito");
         model.addAttribute("cssFile", "style_payment.css");
         model.addAttribute("activePage", "pago");
         model.addAttribute("searchPlaceholder", "Buscar pago...");
+
+        // Pass session data to template for JavaScript access
+        String paymentType = (String) session.getAttribute("paymentType");
+        if (paymentType != null) {
+            model.addAttribute("paymentType", paymentType);
+        }
+
         return "payment";
     }
 
     @PostMapping("/payment")
-    public String processPayment(@RequestParam("paymentType") String paymentType, HttpSession session, RedirectAttributes redirectAttributes) {
-    if (paymentType == null || paymentType.trim().isEmpty()) {
-        redirectAttributes.addFlashAttribute("error", "Selecciona un tipo de pago válido.");
-        return "redirect:/checkout";
+    public String processPayment(@RequestParam("paymentType") String paymentType, HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        if (paymentType == null || paymentType.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Selecciona un tipo de pago válido.");
+            return "redirect:/checkout";
+        }
+
+        // Guarda paymentType en sesión para usarlo en la página de payment
+        session.setAttribute("paymentType", paymentType);
+
+        // Opcional: Valida carrito no vacío (ya lo haces en GET /checkout)
+        @SuppressWarnings("unchecked")
+        Map<String, CartItem> cartMap = (Map<String, CartItem>) session.getAttribute("cart");
+        if (cartMap == null || cartMap.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Carrito vacío. No se puede procesar.");
+            return "redirect:/";
+        }
+
+        redirectAttributes.addFlashAttribute("message", "Pago iniciado con " + paymentType + ".");
+        return "redirect:/payment"; // Redirige al GET /payment para mostrar la simulación
     }
-    
-    // Guarda paymentType en sesión para usarlo en la página de payment
-    session.setAttribute("paymentType", paymentType);
-    
-    // Opcional: Valida carrito no vacío (ya lo haces en GET /checkout)
-    @SuppressWarnings("unchecked")
-    Map<String, CartItem> cartMap = (Map<String, CartItem>) session.getAttribute("cart");
-    if (cartMap == null || cartMap.isEmpty()) {
-        redirectAttributes.addFlashAttribute("error", "Carrito vacío. No se puede procesar.");
-        return "redirect:/";
+
+    @GetMapping("/order-confirmation")
+    public String orderConfirmationPage(@RequestParam("orderId") Long orderId, Model model) {
+        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+            model.addAttribute("order", order);
+
+            // Parse items JSON to list for display
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            try {
+                List<CartItem> items = java.util.Arrays.asList(mapper.readValue(order.getItems(), CartItem[].class));
+                model.addAttribute("orderItems", items);
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("orderItems", new ArrayList<>());
+            }
+
+            model.addAttribute("title", "Confirmación de Orden — Chuponcito");
+            model.addAttribute("cssFile", "style_order_confirmation.css");
+            model.addAttribute("activePage", "pago");
+            model.addAttribute("searchPlaceholder", "Buscar...");
+
+            return "order-confirmation";
+        } else {
+            return "redirect:/";
+        }
     }
-    
-    redirectAttributes.addFlashAttribute("message", "Pago iniciado con " + paymentType + ".");
-    return "redirect:/payment";  // Redirige al GET /payment para mostrar la simulación
-}
 }

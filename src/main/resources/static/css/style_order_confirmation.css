@@ -1,0 +1,438 @@
+/* Order Confirmation Page Styles */
+
+/* CSS Variables are inherited from layout */
+/* Dark/Light mode colors defined in main CSS files */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: var(--background);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Success Icon Animation */
+.success-icon-container {
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.bi-check-circle-fill {
+  filter: drop-shadow(0 4px 12px rgba(52, 145, 42, 0.4));
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Card Styling */
+.confirmation-card {
+  background: var(--card-bg);
+  border-radius: var(--radius, 0.75rem);
+  box-shadow: 0 8px 32px var(--shadow, rgba(0, 0, 0, 0.08));
+  border: 1px solid rgba(var(--brand-rgb), 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirmation-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  z-index: 1;
+}
+
+.card-header {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--brand-rgb), 0.1),
+    rgba(var(--accent-rgb), 0.05)
+  );
+  border-bottom: 1px solid rgba(var(--brand-rgb), 0.15);
+  padding: 1.5rem;
+}
+
+[data-theme="dark"] .card-header {
+  background: rgba(var(--text-rgb), 0.04);
+  border-bottom: 1px solid rgba(var(--brand-rgb), 0.1);
+}
+
+.card-body {
+  padding: 2rem;
+  color: var(--text-color);
+}
+
+/* List Group Items */
+.list-group-item {
+  background: rgba(var(--brand-rgb), 0.03);
+  border: 1px solid rgba(var(--brand-rgb), 0.08);
+  color: var(--text-color);
+  transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+  background: rgba(var(--brand-rgb), 0.06);
+  transform: translateX(4px);
+}
+
+[data-theme="dark"] .list-group-item {
+  background: rgba(var(--text-rgb), 0.03);
+  border: 1px solid rgba(var(--text-rgb), 0.06);
+}
+
+[data-theme="dark"] .list-group-item:hover {
+  background: rgba(var(--text-rgb), 0.06);
+}
+
+/* Badges */
+.badge {
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.badge.bg-secondary {
+  background: linear-gradient(135deg, var(--brand), var(--accent)) !important;
+  color: var(--button-text);
+  box-shadow: 0 2px 8px rgba(var(--brand-rgb), 0.3);
+}
+
+.badge.bg-info {
+  background: linear-gradient(
+    135deg,
+    rgb(52, 145, 42),
+    rgb(76, 175, 80)
+  ) !important;
+  color: white;
+  box-shadow: 0 2px 8px rgba(52, 145, 42, 0.3);
+}
+
+/* Buttons */
+.btn-warning {
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  border: none;
+  color: var(--button-text);
+  font-weight: 700;
+  border-radius: var(--radius, 0.75rem);
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
+  transition: all 0.3s ease;
+  padding: 0.75rem 2rem;
+}
+
+.btn-warning:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--brand-rgb), 0.4);
+  color: var(--button-text);
+}
+
+.btn-outline-secondary {
+  border: 2px solid var(--brand);
+  color: var(--brand);
+  background: transparent;
+  border-radius: var(--radius, 0.75rem);
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--brand);
+  color: var(--button-text);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(var(--brand-rgb), 0.3);
+}
+
+/* Dark mode button improvements */
+[data-theme="dark"] .btn-outline-secondary {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  background: var(--accent);
+  color: rgb(var(--bg-rgb));
+  border-color: var(--accent);
+}
+
+/* Typography */
+h2,
+h4,
+h5,
+h6 {
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.lead {
+  color: rgba(var(--text-rgb), 0.8);
+  font-size: 1.1rem;
+}
+
+/* Dark mode text improvements */
+[data-theme="dark"] .lead {
+  color: rgba(var(--text-rgb), 0.9);
+}
+
+.text-muted {
+  color: rgba(var(--text-rgb), 0.65) !important;
+}
+
+strong {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+hr {
+  border-color: rgba(var(--brand-rgb), 0.15);
+  opacity: 1;
+}
+
+[data-theme="dark"] hr {
+  border-color: rgba(var(--text-rgb), 0.1);
+}
+
+/* Container Responsive */
+.container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Success Message Animation */
+.success-message {
+  animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Breakpoints */
+
+/* Tablets */
+@media (max-width: 991.98px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .btn-warning,
+  .btn-outline-secondary {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .bi-check-circle-fill {
+    width: 64px !important;
+    height: 64px !important;
+  }
+}
+
+/* Mobile Landscape */
+@media (max-width: 767.98px) {
+  .card-header,
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .bi-check-circle-fill {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .row .col-md-6 {
+    margin-bottom: 1rem;
+  }
+  
+  .btn-warning,
+  .btn-outline-secondary {
+    width: 100%;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .btn-outline-secondary {
+    margin-left: 0 !important;
+    margin-top: 0;
+  }
+
+  /* Ensure proper spacing in button container */
+  .mt-4 {
+    margin-top: 2rem !important;
+  }
+
+  .mt-4 .btn-warning {
+    margin-bottom: 1rem;
+  }
+
+  .mt-4 .btn-outline-secondary {
+    margin-bottom: 0;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 576px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .card-header,
+  .card-body {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+  }
+
+  h4 {
+    font-size: 1.15rem;
+  }
+
+  h5,
+  h6 {
+    font-size: 1rem;
+  }
+
+  .lead {
+    font-size: 0.95rem;
+  }
+
+  .bi-check-circle-fill {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .list-group-item {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .badge {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .btn-warning,
+  .btn-outline-secondary {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 420px) {
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+
+  .bi-check-circle-fill {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .card-header h5 {
+    font-size: 0.95rem;
+  }
+
+  .list-group-item {
+    font-size: 0.85rem;
+  }
+
+  /* Extra spacing for tiny screens */
+  .btn-warning,
+  .btn-outline-secondary {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .btn-outline-secondary {
+    margin-bottom: 0 !important;
+  }
+
+  .mt-4 {
+    margin-top: 2.5rem !important;
+  }
+
+  .lead {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .btn-warning,
+  .btn-outline-secondary {
+    display: none;
+  }
+
+  .confirmation-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
