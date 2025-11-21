@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="modals">
+        <!-- Modal para pizzas -->
+        <div class="modal fade" id="pizzaModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pizzaTitle">Detalles de Pizza</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Descripción:</h6>
+                        <p id="pizzaDesc"></p>
+                        <h6>Ingredientes:</h6>
+                        <ul id="pizzaIngredients"></ul>
+                        <div class="mb-3">
+                            <label class="form-label">Tamaño</label>
+                            <select class="form-select" id="pizzaSize">
+                                <option value="">Selecciona un tamaño...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addPizza">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para extras -->
+        <div class="modal fade" id="extraModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="extraTitle">Detalles de Extra</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Descripción:</h6>
+                        <p id="extraDesc"></p>
+                        <h6>Ingredientes:</h6>
+                        <ul id="extraIngredients"></ul>
+                        <!-- Agrega esto si tu JS lo usa -->
+                        <div class="mb-3">
+                            <strong id="extraPrice">S/ 0.00</strong>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addExtra">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para bebidas -->
+        <div class="modal fade" id="bebidaModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bebidaTitle">Detalles de Bebida</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Descripción:</h6>
+                        <p id="bebidaDesc"></p>
+                        <h6>Ingredientes:</h6>
+                        <ul id="bebidaIngredients"></ul>
+                        <div class="mb-3">
+                            <strong id="bebidaPrice"></strong>
+                            <small id="bebidaSize"></small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addBebida">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para promociones -->
+        <div class="modal fade" id="promoModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="promoTitle">Detalles de Promoción</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 id="promoTitle" class="mb-3"></h5>
+                        <p id="promoDesc"></p>
+                        <ul id="promoIngredients" class="list-unstyled mt-3 mb-0"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-accion" id="addPromo">Agregar al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script para manejo de modales -->
+        <script src="/js/infoModals.js"></script>
+    </div>
+</body>
+
+</html>

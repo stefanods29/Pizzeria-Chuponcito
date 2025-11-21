@@ -137,163 +137,72 @@
             </section>
 
 
-            
+
             <!-- seccion para promos estaticas -->
             <!-- Sección Promociones Especiales con Carrusel Infinitoooo -->
-<section id="promociones-especiales" class="py-5">
-    <div class="container">
-        <h2 class="fw-bold text-center mb-5">Promociones Especiales</h2>
-        <div class="promo-marquee-container">
-            <div class="promo-marquee-wrapper">
-                <div class="promo-track">
-                    <!-- Primera copia: Todas las promos dinámicas (activas) -->
-                    <div th:each="promo : ${promociones}" class="promo-card-wrapper">
-                        <div class="card h-100 shadow-sm promo-card">
-                            <img th:src="${promo.imageUrl}" class="card-img-top" th:alt="${promo.name}"
-                                 onerror="this.src='/images/default-promo.png';" style="height: 250px; object-fit: cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold" th:text="${promo.name}">Promo Nombre</h5>
-                                <p class="card-text flex-grow-1 text-muted small mb-3" th:text="${promo.description}">Descripción...</p>
-                                <div class="d-flex justify-content-between align-items-center mt-auto">
-                                    <strong class="text-brand fs-4">S/ <span th:text="${#numbers.formatDecimal(promo.promoPrice, 1, 2)}">0.00</span></strong>
-                                    <button class="btn btn-outline-secondary btn-sm promo-btn" type="button"
-                                            th:attr="data-id=${promo.id}, data-name=${promo.name}, data-description=${promo.description}, data-price=${promo.promoPrice}"
-                                            data-bs-toggle="modal" data-bs-target="#promoModal">
-                                        <i class="bi bi-fire me-1"></i>Detalles
-                                    </button>
+            <section id="promociones-especiales" class="py-5">
+                <div class="container">
+                    <h2 class="fw-bold text-center mb-5">Promociones Especiales</h2>
+                    <div class="promo-marquee-container">
+                        <div class="promo-marquee-wrapper">
+                            <div class="promo-track">
+                                <!-- Primera copia: Todas las promos dinámicas (activas) -->
+                                <div th:each="promo : ${promociones}" class="promo-card-wrapper">
+                                    <div class="card h-100 shadow-sm promo-card">
+                                        <img th:src="${promo.imageUrl}" class="card-img-top" th:alt="${promo.name}"
+                                            onerror="this.src='/images/default-promo.png';"
+                                            style="height: 250px; object-fit: cover;">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title fw-bold" th:text="${promo.name}">Promo Nombre</h5>
+                                            <p class="card-text flex-grow-1 text-muted small mb-3"
+                                                th:text="${promo.description}">Descripción...</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                <strong class="text-brand fs-4">S/ <span
+                                                        th:text="${#numbers.formatDecimal(promo.promoPrice, 1, 2)}">0.00</span></strong>
+                                                <button class="btn btn-outline-secondary btn-sm promo-btn" type="button"
+                                                    th:attr="data-id=${promo.id}, data-name=${promo.name}, data-description=${promo.description}, data-price=${promo.promoPrice}"
+                                                    data-bs-toggle="modal" data-bs-target="#promoModal">
+                                                    <i class="bi bi-fire me-1"></i>Detalles
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Segunda copia: Duplicado para loop seamless -->
+                                <div th:each="promo : ${promociones}" class="promo-card-wrapper">
+                                    <div class="card h-100 shadow-sm promo-card">
+                                        <img th:src="${promo.imageUrl}" class="card-img-top" th:alt="${promo.name}"
+                                            onerror="this.src='/images/default-promo.png';"
+                                            style="height: 250px; object-fit: cover;">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title fw-bold" th:text="${promo.name}">Promo Nombre</h5>
+                                            <p class="card-text flex-grow-1 text-muted small mb-3"
+                                                th:text="${promo.description}">Descripción...</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                <strong class="text-brand fs-4">S/ <span
+                                                        th:text="${#numbers.formatDecimal(promo.promoPrice, 1, 2)}">0.00</span></strong>
+                                                <button class="btn btn-outline-secondary btn-sm promo-btn" type="button"
+                                                    th:attr="data-id=${promo.id}, data-name=${promo.name}, data-description=${promo.description}, data-price=${promo.promoPrice}"
+                                                    data-bs-toggle="modal" data-bs-target="#promoModal">
+                                                    <i class="bi bi-fire me-1"></i>Detalles
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Segunda copia: Duplicado para loop seamless -->
-                    <div th:each="promo : ${promociones}" class="promo-card-wrapper">
-                        <div class="card h-100 shadow-sm promo-card">
-                            <img th:src="${promo.imageUrl}" class="card-img-top" th:alt="${promo.name}"
-                                 onerror="this.src='/images/default-promo.png';" style="height: 250px; object-fit: cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold" th:text="${promo.name}">Promo Nombre</h5>
-                                <p class="card-text flex-grow-1 text-muted small mb-3" th:text="${promo.description}">Descripción...</p>
-                                <div class="d-flex justify-content-between align-items-center mt-auto">
-                                    <strong class="text-brand fs-4">S/ <span th:text="${#numbers.formatDecimal(promo.promoPrice, 1, 2)}">0.00</span></strong>
-                                    <button class="btn btn-outline-secondary btn-sm promo-btn" type="button"
-                                            th:attr="data-id=${promo.id}, data-name=${promo.name}, data-description=${promo.description}, data-price=${promo.promoPrice}"
-                                            data-bs-toggle="modal" data-bs-target="#promoModal">
-                                        <i class="bi bi-fire me-1"></i>Detalles
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Fallback si no hay promos -->
+                    <div th:if="${promociones == null or #lists.size(promociones) == 0}" class="text-center py-5">
+                        <p class="text-muted">No hay promociones especiales disponibles por ahora.</p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Fallback si no hay promos -->
-        <div th:if="${promociones == null or #lists.size(promociones) == 0}" class="text-center py-5">
-            <p class="text-muted">No hay promociones especiales disponibles por ahora.</p>
-        </div>
-    </div>
-</section>
+            </section>
         </main>
 
-        <!-- Modal para pizzas -->
-        <div class="modal fade" id="pizzaModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="pizzaTitle">Detalles de Pizza</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6>Descripción:</h6>
-                        <p id="pizzaDesc"></p>
-                        <h6>Ingredientes:</h6>
-                        <ul id="pizzaIngredients"></ul>
-                        <div class="mb-3">
-                            <label class="form-label">Tamaño</label>
-                            <select class="form-select" id="pizzaSize">
-                                <option value="">Selecciona un tamaño...</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-accion" id="addPizza">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal para extras -->
-        <div class="modal fade" id="extraModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="extraTitle">Detalles de Extra</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6>Descripción:</h6>
-                        <p id="extraDesc"></p>
-                        <h6>Ingredientes:</h6>
-                        <ul id="extraIngredients"></ul>
-                        <!-- Agrega esto si tu JS lo usa -->
-                        <div class="mb-3">
-                            <strong id="extraPrice">S/ 0.00</strong>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-accion" id="addExtra">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal para bebidas - FIX: Agrega ul id -->
-        <div class="modal fade" id="bebidaModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="bebidaTitle">Detalles de Bebida</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h6>Descripción:</h6>
-                        <p id="bebidaDesc"></p>
-                        <h6>Ingredientes:</h6>
-                        <ul id="bebidaIngredients"></ul>
-                        <div class="mb-3">
-                            <strong id="bebidaPrice"></strong>
-                            <small id="bebidaSize"></small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-accion" id="addBebida">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal para promociones -->
-        <div class="modal fade" id="promoModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="promoTitle">Detalles de Promoción</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h5 id="promoTitle" class="mb-3"></h5>
-                        <p id="promoDesc"></p>
-                        <ul id="promoIngredients" class="list-unstyled mt-3 mb-0"></ul>  <!-- ¡Agrega esto! Para la lista de items -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-accion" id="addPromo">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script src="/js/infoModals.js"></script>
+        <!-- Include modals fragment -->
+        <div th:replace="~{fragments/modals :: modals}"></div>
 
     </div>
 </body>

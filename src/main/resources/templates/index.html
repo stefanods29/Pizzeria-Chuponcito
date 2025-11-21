@@ -37,46 +37,34 @@
             <h3 class="fw-bold mb-0">Menú Destacado</h3>
             <a href="menuCompleto" class="btn btn-outline">Ver todo</a>
           </div>
-          <div class="row row-cols-1 row-cols-md-3 g-4 rejilla-menu">
-            <div class="col">
+          <div class="row row-cols-1 row-cols-md-3 g-4 rejilla-menu"
+            th:if="${topPizzas != null and not #lists.isEmpty(topPizzas)}">
+            <div th:each="pizza : ${topPizzas}" class="col">
               <div class="card h-100">
-                <img src="images/pizzaPepperoni.png" class="card-img-top" alt="Pizza pepperoni">
+                <img th:src="@{${pizza.imageUrl}}" th:if="${pizza.imageUrl != null}" class="card-img-top"
+                  th:alt="${pizza.name}" onerror="this.onerror=null; this.src='/images/default-pizza.png';">
+                <img th:src="@{/images/default-pizza.png}" th:if="${pizza.imageUrl == null}" class="card-img-top"
+                  th:alt="Imagen no disponible">
                 <div class="card-body">
-                  <h5>Pepperoni Clásica</h5>
-                  <p>Pepperoni en su punto, queso fundido y borde crujiente.</p>
-                  <div class="d-flex justify-content-between">
-                    <strong>S/29.90</strong>
-                    <a href="#orden" class="btn btn-sm btn-accion">Ordenar</a>
+                  <h5 class="card-title" th:text="${pizza.name}">Pizza</h5>
+                  <p class="card-text" th:text="${pizza.description}">Descripción</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <!-- Precio default de Mediana (con check null) -->
+                    <strong
+                      th:text="${pizza.sizes != null and pizza.sizes['Mediana'] != null} ? 'S/' + ${#numbers.formatDecimal(pizza.sizes['Mediana'], 1, 2)} : 'S/ --'">Precio</strong>
+                    <!-- FIX: Ingredients como string simple, sizes como toString() -->
+                    <button class="btn btn-sm btn-outline-secondary pizza-btn" data-bs-toggle="modal"
+                      data-bs-target="#pizzaModal"
+                      th:attr="data-id=${pizza.id}, data-name=${pizza.name}, data-desc=${pizza.description}, data-ingredients=${pizza.ingredients.toString().replace('[', '').replace(']', '')}, data-sizes=${pizza.sizes.toString()}"
+                      th:if="${pizza.stockQuantity > 0}">Detalles</button>
+                    <span th:if="${pizza.stockQuantity <= 0}" class="text-danger small">Agotado</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col">
-              <div class="card h-100">
-                <img src="images/pizzaHawaiana.png" class="card-img-top" alt="Pizza hawaiana">
-                <div class="card-body">
-                  <h5>Hawaiana</h5>
-                  <p>Jamón, piña y nuestro toque secreto.</p>
-                  <div class="d-flex justify-content-between">
-                    <strong>S/35.00</strong>
-                    <a href="#orden" class="btn btn-sm btn-accion">Ordenar</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card h-100">
-                <img src="images/pizzaVegetariana.png" class="card-img-top" alt="Pizza vegetariana">
-                <div class="card-body">
-                  <h5>Vegetariana</h5>
-                  <p>Ingredientes frescos de la huerta.</p>
-                  <div class="d-flex justify-content-between">
-                    <strong>S/32.50</strong>
-                    <a href="#orden" class="btn btn-sm btn-accion">Ordenar</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+          </div>
+          <div th:if="${topPizzas == null or #lists.isEmpty(topPizzas)}" class="text-center">
+            <p class="lead">No hay pizzas destacadas en este momento.</p>
           </div>
         </div>
       </section>
@@ -122,7 +110,8 @@
                       <img src="images/persona1.png" alt="Athenea D.P." class="rounded-circle">
                     </div>
                     <div class="testimonial-text">
-                      <p class="testimonial-quote">"La mejor pizza de Trujillo. Siempre caliente y deliciosa. ¡Recomendado!"</p>
+                      <p class="testimonial-quote">"La mejor pizza de Trujillo. Siempre caliente y deliciosa.
+                        ¡Recomendado!"</p>
                       <div class="testimonial-author">
                         <p class="author-name">Athenea del Castillo</p>
                         <div class="stars">
@@ -137,7 +126,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Testimonial 2 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
@@ -146,7 +135,8 @@
                       <img src="images/persona2.png" alt="Carlos R." class="rounded-circle">
                     </div>
                     <div class="testimonial-text">
-                      <p class="testimonial-quote">"Pedí para la familia y todos encantados. El delivery fue rápido."</p>
+                      <p class="testimonial-quote">"Pedí para la familia y todos encantados. El delivery fue rápido."
+                      </p>
                       <div class="testimonial-author">
                         <p class="author-name">Sam Kerr</p>
                         <div class="stars">
@@ -161,7 +151,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Testimonial 3 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
@@ -170,7 +160,8 @@
                       <img src="images/persona3.png" alt="Rodrigo P." class="rounded-circle">
                     </div>
                     <div class="testimonial-text">
-                      <p class="testimonial-quote">"Ingredientes frescos y de calidad. Se nota la diferencia. ¡Volveré seguro!"</p>
+                      <p class="testimonial-quote">"Ingredientes frescos y de calidad. Se nota la diferencia. ¡Volveré
+                        seguro!"</p>
                       <div class="testimonial-author">
                         <p class="author-name">Rodrigo P.</p>
                         <div class="stars">
@@ -185,7 +176,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Testimonial 4 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
@@ -194,7 +185,8 @@
                       <img src="images/persona4.png" alt="Diana M." class="rounded-circle">
                     </div>
                     <div class="testimonial-text">
-                      <p class="testimonial-quote">"Excelente atención y la pizza llegó en perfecto estado. Muy recomendable."</p>
+                      <p class="testimonial-quote">"Excelente atención y la pizza llegó en perfecto estado. Muy
+                        recomendable."</p>
                       <div class="testimonial-author">
                         <p class="author-name">Alexia Putellas</p>
                         <div class="stars">
@@ -209,7 +201,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- Testimonial 5 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
@@ -218,7 +210,8 @@
                       <img src="images/persona5.png" alt="Luis D.L." class="rounded-circle">
                     </div>
                     <div class="testimonial-text">
-                      <p class="testimonial-quote">"La masa artesanal hace toda la diferencia. ¡La mejor de Trujillo sin duda!"</p>
+                      <p class="testimonial-quote">"La masa artesanal hace toda la diferencia. ¡La mejor de Trujillo sin
+                        duda!"</p>
                       <div class="testimonial-author">
                         <p class="author-name">Luis de la Fuente</p>
                         <div class="stars">
@@ -234,7 +227,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselTestimonials"
               data-bs-slide="prev">
@@ -246,7 +239,7 @@
               <span class="carousel-control-next-icon"></span>
               <span class="visually-hidden">Siguiente</span>
             </button>
-            
+
             <!-- Carousel Indicators -->
             <div class="carousel-indicators">
               <button type="button" data-bs-target="#carouselTestimonials" data-bs-slide-to="0" class="active"></button>
@@ -322,7 +315,10 @@
             <div class="col-lg-6">
               <h3 class="fw-bold">Nuestra Ubicación</h3>
               <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d830.3695383455052!2d-79.02930283348559!3d-8.109073357881208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ad3d93797fcc75%3A0x8e58aa3ad16e934f!2sLa%20Casona%20Hornito%20de%20Rumi%C3%B1ahui!5e0!3m2!1ses-419!2spe!4v1756434685999!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d830.3695383455052!2d-79.02930283348559!3d-8.109073357881208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ad3d93797fcc75%3A0x8e58aa3ad16e934f!2sLa%20Casona%20Hornito%20de%20Rumi%C3%B1ahui!5e0!3m2!1ses-419!2spe!4v1756434685999!5m2!1ses-419!2spe"
+                  width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
             </div>
           </div>
@@ -343,6 +339,9 @@
         </div>
       </section>
     </main>
+
+    <!-- Include modals fragment -->
+    <div th:replace="~{fragments/modals :: modals}"></div>
   </div>
 
 </body>

@@ -35,6 +35,8 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -58,6 +60,58 @@ public class ControladorProyecto {
 
     @GetMapping("/")
     public String index(Model model) {
+        // Lógica para obtener las 3 pizzas más vendidas
+        List<Order> allOrders = orderRepository.findAll();
+        Map<Long, Integer> pizzaCounts = new HashMap<>();
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+        for (Order order : allOrders) {
+            if (order.getItems() != null) {
+                try {
+                    CartItem[] items = mapper.readValue(order.getItems(), CartItem[].class);
+                    for (CartItem item : items) {
+                        if ("pizza".equals(item.getType())) {
+                            pizzaCounts.put(item.getProductId(),
+                                    pizzaCounts.getOrDefault(item.getProductId(), 0) + item.getQuantity());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace(); // Log error parsing items
+                }
+            }
+        }
+
+        // Ordenar por cantidad descendente
+        List<Long> topPizzaIds = pizzaCounts.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        List<Pizza> topPizzas = new ArrayList<>();
+        if (!topPizzaIds.isEmpty()) {
+            List<Pizza> foundPizzas = pizzaRepository.findAllById(topPizzaIds);
+            // Mantener el orden del ranking
+            for (Long id : topPizzaIds) {
+                foundPizzas.stream().filter(p -> p.getId().equals(id)).findFirst().ifPresent(topPizzas::add);
+            }
+        }
+
+        // Si no hay suficientes ventas, rellenar con pizzas por defecto (las primeras
+        // 3)
+        if (topPizzas.size() < 3) {
+            List<Pizza> allPizzas = pizzaRepository.findAll();
+            for (Pizza p : allPizzas) {
+                if (topPizzas.size() >= 3)
+                    break;
+                if (!topPizzas.contains(p)) {
+                    topPizzas.add(p);
+                }
+            }
+        }
+
+        model.addAttribute("topPizzas", topPizzas);
+
         model.addAttribute("contactRequest", new ContactRequest());
         model.addAttribute("title", "Chuponcito — La Mejor Pizza Recién Hecha");
         model.addAttribute("cssFile", "style_index.css");
