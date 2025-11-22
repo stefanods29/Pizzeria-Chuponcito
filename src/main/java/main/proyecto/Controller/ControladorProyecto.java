@@ -131,9 +131,6 @@ public class ControladorProyecto {
         List<Bebida> bebidas = bebidaRepository.findAll();
         model.addAttribute("bebidas", bebidas);
 
-        List<Promotion> promociones = promotionRepository.findByIsActiveTrue();
-        model.addAttribute("promociones", promociones);
-
         model.addAttribute("title", "Menú Completo — Chuponcito");
         model.addAttribute("cssFile", "style_menuCompleto.css");
         model.addAttribute("activePage", "menu");
@@ -143,8 +140,60 @@ public class ControladorProyecto {
 
     @GetMapping("/promociones")
     public String promociones(Model model) {
-        List<Promotion> promociones = promotionRepository.findByIsActiveTrue();
-        model.addAttribute("promociones", promociones);
+        // 1. Obtener todas las promociones activas para la sección de ofertas
+        List<Promotion> allPromotions = promotionRepository.findByIsActiveTrue();
+        model.addAttribute("promociones", allPromotions);
+
+        // 2. Lógica para obtener los 2 combos (promociones) más vendidos
+        List<Order> allOrders = orderRepository.findAll();
+        Map<Long, Integer> promoCounts = new HashMap<>();
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+        for (Order order : allOrders) {
+            if (order.getItems() != null) {
+                try {
+                    CartItem[] items = mapper.readValue(order.getItems(), CartItem[].class);
+                    for (CartItem item : items) {
+                        // Verificar si el tipo es "promo"
+                        if ("promo".equals(item.getType())) {
+                            promoCounts.put(item.getProductId(),
+                                    promoCounts.getOrDefault(item.getProductId(), 0) + item.getQuantity());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // Ordenar por cantidad descendente y tomar los top 2
+        List<Long> topPromoIds = promoCounts.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .limit(2)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        List<Promotion> topPromotions = new ArrayList<>();
+        if (!topPromoIds.isEmpty()) {
+            List<Promotion> foundPromos = promotionRepository.findAllById(topPromoIds);
+            // Mantener el orden del ranking
+            for (Long id : topPromoIds) {
+                foundPromos.stream().filter(p -> p.getId().equals(id)).findFirst().ifPresent(topPromotions::add);
+            }
+        }
+
+        // Rellenar si no hay suficientes ventas
+        if (topPromotions.size() < 2) {
+            for (Promotion p : allPromotions) {
+                if (topPromotions.size() >= 2)
+                    break;
+                if (!topPromotions.contains(p)) {
+                    topPromotions.add(p);
+                }
+            }
+        }
+
+        model.addAttribute("topPromotions", topPromotions);
 
         model.addAttribute("title", "Promociones — Chuponcito");
         model.addAttribute("cssFile", "style_promociones.css");

@@ -138,67 +138,7 @@
 
 
 
-            <!-- seccion para promos estaticas -->
-            <!-- Sección Promociones Especiales con Carrusel Infinitoooo -->
-            <section id="promociones-especiales" class="py-5">
-                <div class="container">
-                    <h2 class="fw-bold text-center mb-5">Promociones Especiales</h2>
-                    <div class="promo-marquee-container">
-                        <div class="promo-marquee-wrapper">
-                            <div class="promo-track">
-                                <!-- Primera copia: Todas las promos dinámicas (activas) -->
-                                <div th:each="promo : ${promociones}" class="promo-card-wrapper">
-                                    <div class="card h-100 shadow-sm promo-card">
-                                        <img th:src="${promo.imageUrl}" class="card-img-top" th:alt="${promo.name}"
-                                            onerror="this.src='/images/default-promo.png';"
-                                            style="height: 250px; object-fit: cover;">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title fw-bold" th:text="${promo.name}">Promo Nombre</h5>
-                                            <p class="card-text flex-grow-1 text-muted small mb-3"
-                                                th:text="${promo.description}">Descripción...</p>
-                                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                                <strong class="text-brand fs-4">S/ <span
-                                                        th:text="${#numbers.formatDecimal(promo.promoPrice, 1, 2)}">0.00</span></strong>
-                                                <button class="btn btn-outline-secondary btn-sm promo-btn" type="button"
-                                                    th:attr="data-id=${promo.id}, data-name=${promo.name}, data-description=${promo.description}, data-price=${promo.promoPrice}"
-                                                    data-bs-toggle="modal" data-bs-target="#promoModal">
-                                                    <i class="bi bi-fire me-1"></i>Detalles
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Segunda copia: Duplicado para loop seamless -->
-                                <div th:each="promo : ${promociones}" class="promo-card-wrapper">
-                                    <div class="card h-100 shadow-sm promo-card">
-                                        <img th:src="${promo.imageUrl}" class="card-img-top" th:alt="${promo.name}"
-                                            onerror="this.src='/images/default-promo.png';"
-                                            style="height: 250px; object-fit: cover;">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title fw-bold" th:text="${promo.name}">Promo Nombre</h5>
-                                            <p class="card-text flex-grow-1 text-muted small mb-3"
-                                                th:text="${promo.description}">Descripción...</p>
-                                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                                <strong class="text-brand fs-4">S/ <span
-                                                        th:text="${#numbers.formatDecimal(promo.promoPrice, 1, 2)}">0.00</span></strong>
-                                                <button class="btn btn-outline-secondary btn-sm promo-btn" type="button"
-                                                    th:attr="data-id=${promo.id}, data-name=${promo.name}, data-description=${promo.description}, data-price=${promo.promoPrice}"
-                                                    data-bs-toggle="modal" data-bs-target="#promoModal">
-                                                    <i class="bi bi-fire me-1"></i>Detalles
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Fallback si no hay promos -->
-                    <div th:if="${promociones == null or #lists.size(promociones) == 0}" class="text-center py-5">
-                        <p class="text-muted">No hay promociones especiales disponibles por ahora.</p>
-                    </div>
-                </div>
-            </section>
+           
         </main>
 
         <!-- Include modals fragment -->

@@ -32,6 +32,48 @@
         </header>
 
         <main>
+            <!-- Combos -->
+            <section id="combo" class="py-5">
+                <div class="container">
+                    <h2 class="fw-bold text-center mb-5">Combos Calientes</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6" th:each="promo : ${topPromotions}">
+                            <div class="card combo-card h-100">
+                                <div class="row g-0 h-100">
+                                    <div class="col-md-4">
+                                        <img th:src="${promo.imageUrl}" class="img-fluid rounded-start h-100"
+                                            style="object-fit: cover;" th:alt="${promo.name}"
+                                            onerror="this.onerror=null;this.src='/images/default-promo.png';">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body d-flex flex-column h-100">
+                                            <h5 class="card-title" th:text="${promo.name}">Nombre</h5>
+                                            <p class="card-text flex-grow-1" th:text="${promo.description}">Descripción
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-end">
+                                                <strong th:text="'S/' + ${promo.promoPrice}">S/0.00</strong>
+                                                <button class="btn btn-sm btn-accion promo-btn" type="button"
+                                                    th:data-id="${promo.id}" th:data-name="${promo.name}"
+                                                    th:data-description="${promo.description}"
+                                                    th:data-price="${promo.promoPrice}" data-bs-toggle="modal"
+                                                    data-bs-target="#promoModal">
+                                                    Ordenar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mensaje si no hay promociones -->
+                        <div class="col-12 text-center"
+                            th:if="${topPromotions == null or #lists.isEmpty(topPromotions)}">
+                            <p class="lead">No hay combos destacados en este momento.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Ofertas -->
             <section id="ofertas" class="py-5">
                 <div class="container">
@@ -62,53 +104,7 @@
                     </div>
                 </div>
             </section>
-            <!-- Combos -->
-            <section id="combo" class="py-5">
-                <div class="container">
-                    <h2 class="fw-bold text-center mb-5">Combos Calientes</h2>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="card combo-card">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="images/combo1.png" class="img-fluid rounded-start" alt="Combo 1">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Combo Familiar</h5>
-                                            <p class="card-text">2 pizzas medianas + ensalada + 2 bebidas.</p>
-                                            <div class="d-flex justify-content-between">
-                                                <strong>S/65.00</strong>
-                                                <button class="btn btn-sm btn-accion">Ordenar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="card combo-card">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="images/combo2.png" class="img-fluid rounded-start" alt="Combo 2">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Combo Pareja</h5>
-                                            <p class="card-text">Pizza grande + postre + bebida para dos.</p>
-                                            <div class="d-flex justify-content-between">
-                                                <strong>S/42.00</strong>
-                                                <button class="btn btn-sm btn-accion">Ordenar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </main>
 
         <!-- Modal Promociones -->
