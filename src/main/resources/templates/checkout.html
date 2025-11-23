@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
-          title='Checkout - Chuponcito',
-          cssFile='/css/style_checkout.css',
-          activePage='carrito',
-          searchPlaceholder='Buscar en carrito...',
+          title=${title},
+          cssFile=${cssFile},
+          activePage=${activePage},
+          searchPlaceholder=${searchPlaceholder},
           content=~{::content})}">
 
 <body>
@@ -24,7 +24,7 @@
         <!-- Lista Items -->
         <div class="col-md-7">
           <div class="card">
-            <div class="card-header bg-light">
+            <div class="card-header">
               <h5>Items en Carrito</h5>
             </div>
             <div class="card-body">
@@ -49,7 +49,7 @@
         <!-- Resumen Pago -->
         <div class="col-md-5">
           <div class="card sticky-top" style="top: 20px;">
-            <div class="card-header bg-light">
+            <div class="card-header">
               <h5>Resumen</h5>
             </div>
             <div class="card-body">

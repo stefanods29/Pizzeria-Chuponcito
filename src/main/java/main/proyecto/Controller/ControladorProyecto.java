@@ -379,6 +379,7 @@ public class ControladorProyecto {
         }
         List<CartItem> items = new ArrayList<>(cartMap.values());
         double total = items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
+        model.addAttribute("cssFile", "style_checkout.css");
         model.addAttribute("cartItems", items);
         model.addAttribute("total", total);
         model.addAttribute("paymentTypes", List.of("Efectivo", "Tarjeta", "Transferencia")); // Opciones pago
