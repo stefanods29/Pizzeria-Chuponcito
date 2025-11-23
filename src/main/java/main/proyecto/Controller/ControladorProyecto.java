@@ -288,16 +288,33 @@ public class ControladorProyecto {
         return "redirect:/";
     }
 
-    // Endpoints para roles
+        // Endpoints para roles
     @GetMapping("/user/pedidos")
     @PreAuthorize("hasRole('USER')")
     public String userPedidos(Model model, Authentication auth) {
         String email = auth.getName();
         User user = userRepository.findByEmail(email).orElse(null);
-
+        
         List<Order> orders = new ArrayList<>();
+        Map<Long, List<CartItem>> orderItemsMap = new HashMap<>();
+
         if (user != null) {
             orders = orderRepository.findByUserId(user.getId());
+            
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            for (Order order : orders) {
+                if (order.getItems() != null) {
+                    try {
+                        List<CartItem> items = java.util.Arrays.asList(mapper.readValue(order.getItems(), CartItem[].class));
+                        orderItemsMap.put(order.getId(), items);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        orderItemsMap.put(order.getId(), new ArrayList<>());
+                    }
+                } else {
+                    orderItemsMap.put(order.getId(), new ArrayList<>());
+                }
+            }
         }
 
         model.addAttribute("title", "Mis Pedidos — Chuponcito");
@@ -305,10 +322,10 @@ public class ControladorProyecto {
         model.addAttribute("activePage", "user");
         model.addAttribute("searchPlaceholder", "Buscar mis pedidos...");
         model.addAttribute("orders", orders);
+        model.addAttribute("orderItemsMap", orderItemsMap);
         model.addAttribute("userEmail", email);
         return "orders";
     }
-
     @GetMapping("/user/perfil")
     @PreAuthorize("hasRole('USER')")
     public String userPerfil(Model model, Authentication auth) {
