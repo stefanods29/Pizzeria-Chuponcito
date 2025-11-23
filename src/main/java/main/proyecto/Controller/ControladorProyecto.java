@@ -293,11 +293,18 @@ public class ControladorProyecto {
     @PreAuthorize("hasRole('USER')")
     public String userPedidos(Model model, Authentication auth) {
         String email = auth.getName();
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        List<Order> orders = new ArrayList<>();
+        if (user != null) {
+            orders = orderRepository.findByUserId(user.getId());
+        }
+
         model.addAttribute("title", "Mis Pedidos — Chuponcito");
         model.addAttribute("cssFile", "style_user.css");
         model.addAttribute("activePage", "user");
         model.addAttribute("searchPlaceholder", "Buscar mis pedidos...");
-        model.addAttribute("pedidos", List.of("Tus pedidos aquí"));
+        model.addAttribute("orders", orders);
         model.addAttribute("userEmail", email);
         return "orders";
     }
