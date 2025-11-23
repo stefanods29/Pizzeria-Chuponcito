@@ -25,6 +25,16 @@ html, body {
   height: 100%;
   margin: 0;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > div:nth-child(2) {
+  flex: 1 0 auto;
+}
 footer {
   background: var(--footer-bg);
   border-top: 1px solid rgba(var(--gray-4-rgb), 0.2);
