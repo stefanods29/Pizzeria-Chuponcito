@@ -21,7 +21,8 @@
       <div class="collapse navbar-collapse" id="navMenu">
         <!-- Form de búsqueda simple (sin acción por ahora) -->
         <form class="d-flex ms-auto me-3">
-          <input class="form-control form-control-sm me-2" type="search" th:placeholder="${searchPlaceholder}" aria-label="Buscar">
+          <input class="form-control form-control-sm me-2" type="search" th:placeholder="${searchPlaceholder}"
+            aria-label="Buscar">
         </form>
 
         <ul class="navbar-nav align-items-lg-center gap-2">
@@ -40,10 +41,10 @@
               href="/contacto">Contacto</a>
           </li>
           <li class="nav-item ms-lg-3">
-            <button class="btn btn-accion btn-sm px-3" data-bs-toggle="modal"
-              data-bs-target="#cartModal" id="cartBtn" aria-label="Ver carrito">
+            <button class="btn btn-accion btn-sm px-3" data-bs-toggle="modal" data-bs-target="#cartModal" id="cartBtn"
+              aria-label="Ver carrito">
               <i class="bi bi-cart"></i> CARRITO
-              <span class="badge bg-light text-dark ms-1" id="cartBadge" style="display: none;">0</span>
+              <span class="badge bg-light text-dark" id="cartBadge" style="display: none;">0</span>
             </button>
           </li>
           <li class="nav-item">
@@ -60,7 +61,8 @@
               <span class="d-none d-sm-inline">Cuenta</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="/login"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión</a></li>
+              <li><a class="dropdown-item" href="/login"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión</a>
+              </li>
               <li><a class="dropdown-item" href="/register"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
             </ul>
           </li>
@@ -69,18 +71,22 @@
             <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center" type="button"
               data-bs-toggle="dropdown" aria-expanded="false" title="Perfil" aria-label="Perfil de usuario">
               <i class="bi bi-person-circle me-1"></i>
-              <span class="d-none d-sm-inline">Bienvenido, <span th:text="${#authentication.principal.displayName}">Usuario</span></span>
+              <span class="d-none d-sm-inline">Bienvenido, <span
+                  th:text="${#authentication.principal.displayName}">Usuario</span></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li sec:authorize="hasRole('USER')">
-                <a class="dropdown-item" href="/user/pedidos"><i class="bi bi-list-ul me-2"></i>Ver Pedidos (Propios)</a>
+                <a class="dropdown-item" href="/user/pedidos"><i class="bi bi-list-ul me-2"></i>Ver Pedidos
+                  (Propios)</a>
               </li>
               <li sec:authorize="hasRole('USER')">
                 <a class="dropdown-item" href="/user/perfil"><i class="bi bi-list-ul me-2"></i>Ver Perfil</a>
               </li>
               <li sec:authorize="hasRole('ADMIN')">
-                <a class="dropdown-item" href="/admin/todos-pedidos"><i class="bi bi-inbox me-2"></i>Todos los Pedidos</a>
-                <a class="dropdown-item" href="/admin/pedidos-cliente"><i class="bi bi-people me-2"></i>Pedidos por Cliente</a>
+                <a class="dropdown-item" href="/admin/todos-pedidos"><i class="bi bi-inbox me-2"></i>Todos los
+                  Pedidos</a>
+                <a class="dropdown-item" href="/admin/pedidos-cliente"><i class="bi bi-people me-2"></i>Pedidos por
+                  Cliente</a>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -128,12 +134,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-secondary" id="clearCartBtn" style="display: none;" onclick="clearCartFromModal()">Limpiar Carrito</button>
-          
+          <button type="button" class="btn btn-secondary" id="clearCartBtn" style="display: none;"
+            onclick="clearCartFromModal()">Limpiar Carrito</button>
+
           <!-- ¡FIX: Botón directo a /checkout si hay items -->
-          <a th:href="@{/checkout}" class="btn btn-accion ms-auto" id="goToCheckoutBtn" style="display: none;">Proceder al Checkout</a>
+          <a th:href="@{/checkout}" class="btn btn-accion ms-auto" id="goToCheckoutBtn" style="display: none;">Proceder
+            al Checkout</a>
         </div>
-      </div>  
+      </div>
     </div>
   </div>
 

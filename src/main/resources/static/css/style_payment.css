@@ -14,38 +14,48 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid rgba(var(--brand-rgb), 0.1);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-body {
+  color: var(--text-color);
+  padding: 1.5rem;
+}
+
+.card-title {
+  color: var(--brand);
+  font-weight: 600;
+}
+
 /* Typography */
-h2, h4 {
+h2, h4, h5, h6 {
   color: var(--text-color);
   font-weight: 700;
 }
 
 .lead {
-  color: rgba(var(--text-rgb), 0.9);
+  color: var(--text-color);
   font-size: 1.1rem;
 }
 
-/* Dark mode text improvements */
-[data-theme="dark"] .lead {
-  color: rgb(255, 255, 255) !important;
-}
-
-/* Custom class for payment status - always white for visibility */
+/* Custom class for payment status */
 .payment-status-text {
-  color: rgb(255, 255, 255) !important;
+  color: var(--text-color);
   font-size: 1rem;
 }
 
 .text-muted {
-  color: rgb(44, 48, 51);
+  color: rgba(var(--text-rgb), 0.6) !important;
 }
 
-/* Fix for dark mode - make text-muted white with higher specificity */
-[data-theme="dark"] .text-muted,
-[data-theme="dark"] p.text-muted,
-[data-theme="dark"] #paymentStatus .text-muted,
-[data-theme="dark"] #paymentStatus p.text-muted {
-  color: rgb(255, 255, 255) !important;
+small.text-muted {
+  color: rgba(var(--text-rgb), 0.6) !important;
 }
 
 strong {
@@ -70,6 +80,7 @@ strong {
   border-radius: var(--radius, 0.75rem);
   padding: 1.25rem;
   animation: slideDown 0.4s ease-out;
+  border: none;
 }
 
 @keyframes slideDown {
@@ -84,19 +95,25 @@ strong {
 }
 
 .alert-success {
-  background: linear-gradient(135deg, rgba(52, 145, 42, 0.1), rgba(76, 175, 80, 0.05));
-  border: 1px solid rgba(52, 145, 42, 0.3);
+  background: rgba(var(--secondary-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--secondary-accent-rgb), 0.2);
   color: var(--text-color);
 }
 
-[data-theme="dark"] .alert-success {
-  background: rgba(76, 175, 80, 0.15);
-  border-color: rgba(76, 175, 80, 0.4);
+.alert-info {
+  background: rgba(var(--brand-rgb), 0.1);
+  border: 1px solid rgba(var(--brand-rgb), 0.2);
+  color: var(--text-color);
 }
 
-/* Button Styles */
-.btn-accion {
-  background: linear-gradient(135deg, var(--brand), var(--accent));
+.alert-heading {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+/* Button Styles - Scoped to container to avoid affecting navbar */
+.container .btn-accion {
+  background: var(--button-bg);
   border: none;
   color: var(--button-text);
   font-weight: 700;
@@ -108,11 +125,53 @@ strong {
   display: inline-block;
 }
 
-.btn-accion:hover {
+.container .btn-accion:hover {
   filter: brightness(1.1);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(var(--brand-rgb), 0.4);
   color: var(--button-text);
+}
+
+/* Timeline badges */
+.bg-success {
+  background-color: var(--secondary-accent) !important;
+}
+
+.bg-primary {
+  background-color: var(--brand) !important;
+}
+
+.bg-warning {
+  background-color: var(--accent) !important;
+}
+
+.bg-info {
+  background-color: rgba(var(--brand-rgb), 0.8) !important;
+}
+
+/* Icon colors */
+.text-success {
+  color: var(--secondary-accent) !important;
+}
+
+.text-primary {
+  color: var(--brand) !important;
+}
+
+.text-warning {
+  color: var(--accent) !important;
+}
+
+.text-info {
+  color: rgba(var(--brand-rgb), 0.8) !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+[data-theme="dark"] .text-danger {
+  color: rgb(239, 83, 80) !important;
 }
 
 /* Container Responsive */
@@ -129,11 +188,7 @@ strong {
 
 #paymentStatus p {
   animation: fadeIn 0.4s ease-out;
-}
-
-/* Force white text in dark mode for payment status */
-[data-theme="dark"] #paymentStatus p {
-  color: rgb(255, 255, 255) !important;
+  color: var(--text-color);
 }
 
 @keyframes fadeIn {
@@ -143,27 +198,6 @@ strong {
   to {
     opacity: 1;
   }
-}
-
-/* Text Color Classes */
-.text-success {
-  color: #28a745;
-}
-
-[data-theme="dark"] .text-success {
-  color: rgb(76, 175, 80) !important;
-}
-
-.text-danger {
-  color: #dc3545;
-}
-
-[data-theme="dark"] .text-danger {
-  color: rgb(239, 83, 80) !important;
-}
-
-.text-warning {
-  color: var(--brand);
 }
 
 /* Responsive Breakpoints */
@@ -220,4 +254,3 @@ strong {
     font-size: 0.9rem;
   }
 }
-

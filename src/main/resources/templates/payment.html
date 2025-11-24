@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
-          title='Pago - Chuponcito',
-          cssFile='/css/style_payment.css',
-          activePage='pago',
-          searchPlaceholder='Buscar pago...',
+          title=${title},
+          cssFile=${cssFile},
+          activePage=${activePage},
+          searchPlaceholder=${searchPlaceholder},
           content=~{::content})}">
 
 <body>

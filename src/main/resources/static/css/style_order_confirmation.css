@@ -47,9 +47,10 @@ body {
 
 /* Card Styling */
 .confirmation-card {
-  background: var(--card-bg);
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
   border-radius: var(--radius, 0.75rem);
-  box-shadow: 0 8px 32px var(--shadow, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 8px 32px var(--shadow);
   border: 1px solid rgba(var(--brand-rgb), 0.1);
   position: relative;
   overflow: hidden;
@@ -79,18 +80,10 @@ body {
 }
 
 .card-header {
-  background: linear-gradient(
-    135deg,
-    rgba(var(--brand-rgb), 0.1),
-    rgba(var(--accent-rgb), 0.05)
-  );
+  background: rgba(var(--brand-rgb), 0.05);
   border-bottom: 1px solid rgba(var(--brand-rgb), 0.15);
   padding: 1.5rem;
-}
-
-[data-theme="dark"] .card-header {
-  background: rgba(var(--text-rgb), 0.04);
-  border-bottom: 1px solid rgba(var(--brand-rgb), 0.1);
+  color: var(--brand);
 }
 
 .card-body {
@@ -109,15 +102,6 @@ body {
 .list-group-item:hover {
   background: rgba(var(--brand-rgb), 0.06);
   transform: translateX(4px);
-}
-
-[data-theme="dark"] .list-group-item {
-  background: rgba(var(--text-rgb), 0.03);
-  border: 1px solid rgba(var(--text-rgb), 0.06);
-}
-
-[data-theme="dark"] .list-group-item:hover {
-  background: rgba(var(--text-rgb), 0.06);
 }
 
 /* Badges */
@@ -179,21 +163,6 @@ body {
   box-shadow: 0 4px 16px rgba(var(--brand-rgb), 0.3);
 }
 
-/* Dark mode button improvements */
-[data-theme="dark"] .btn-outline-secondary {
-  border: 2px solid rgb(255, 255, 255) !important;
-  color: rgb(255, 255, 255) !important;
-  background: transparent !important;
-  font-weight: 600 !important;
-}
-
-[data-theme="dark"] .btn-outline-secondary:hover {
-  background: rgb(255, 255, 255) !important;
-  color: rgb(47, 47, 47) !important;
-  border-color: rgb(255, 255, 255) !important;
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.4) !important;
-}
-
 /* Typography */
 h2,
 h4,
@@ -204,21 +173,16 @@ h6 {
 }
 
 .lead {
-  color: rgba(var(--text-rgb), 0.8);
+  color: var(--text-color);
   font-size: 1.1rem;  
 }
 
-/* Dark mode text improvements */
-[data-theme="dark"] .lead {
-  color: rgb(255, 255, 255) !important;
-}
-
 .text-muted {
-  color: rgb(243, 243, 243);
+  color: rgba(var(--text-rgb), 0.6) !important;
 }
 
 [data-theme="dark"] .text-muted {
-  color: rgb(255, 255, 255) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 strong {
@@ -229,10 +193,6 @@ strong {
 hr {
   border-color: rgba(var(--brand-rgb), 0.15);
   opacity: 1;
-}
-
-[data-theme="dark"] hr {
-  border-color: rgba(var(--text-rgb), 0.1);
 }
 
 /* Container Responsive */

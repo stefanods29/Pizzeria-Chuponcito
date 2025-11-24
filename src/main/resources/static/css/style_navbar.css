@@ -6,6 +6,7 @@
   --white-rgb: 255, 255, 255;
   --orange-rgb: 255, 170, 0;
   --highlight-rgb: 255, 175, 15;
+  --gray-2-rgb: 60, 60, 60;
   --gray-4-rgb: 173, 181, 189;
   --background: rgb(var(--bg-rgb));
   --text-color: rgb(var(--text-rgb));
@@ -14,7 +15,7 @@
   --button-bg: rgb(var(--accent-rgb));
   --button-text: rgb(var(--bg-rgb));
   --link-color: rgb(var(--text-rgb));
-  --modal-bg: linear-gradient(180deg, rgba(var(--text-rgb), 0.15), rgba(var(--bg-rgb), 0.95));
+  --modal-bg: linear-gradient(180deg, rgba(60, 60, 60, 0.95), rgba(var(--bg-rgb), 0.98));
   --modal-text: rgb(var(--text-rgb));
   --modal-header-bg: rgba(var(--text-rgb), 0.25);
   --modal-border: rgba(var(--brand-rgb), 0.25);
@@ -494,6 +495,21 @@ body {
   color: rgba(var(--text-rgb), 0.6) !important;
 }
 
+/* Fix for Bootstrap text-muted in dark mode */
+[data-theme="dark"] .text-muted {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Cart Item Styles in Modal */
+.cart-item {
+  border-color: rgba(var(--brand-rgb), 0.2) !important;
+  background: rgba(var(--text-rgb), 0.02);
+}
+
+[data-theme="dark"] .cart-item {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
 .content-section {
   padding: 4rem 0;
   text-align: center;
@@ -605,4 +621,25 @@ body {
     border: none;
     background: transparent;
   }
+}
+
+/* Fix cart button badge positioning to prevent layout shift */
+#cartBtn {
+  position: relative;
+}
+
+#cartBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0.25em 0.4em;
+  font-size: 0.75rem;
+  line-height: 1;
+  border-radius: 10px;
+}
+
+[data-theme="light"] #cartBadge {
+  border: 1px solid var(--brand);
 }
