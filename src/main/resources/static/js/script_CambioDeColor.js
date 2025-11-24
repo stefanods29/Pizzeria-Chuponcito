@@ -1,31 +1,36 @@
- document.addEventListener('DOMContentLoaded', () => {
-      const themeToggle = document.querySelector('.theme-toggle');
-      const body = document.body;
-      const icon = themeToggle.querySelector('i');
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggle = document.querySelector('.theme-toggle');
+  const html = document.documentElement;
+  const icon = themeToggle.querySelector('i');
 
-      // Función para alternar tema
-      const toggleTheme = () => {
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+  // Sync icon with current theme
+  const syncIcon = () => {
+    const currentTheme = html.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
+      icon.classList.remove('bi-sun-fill');
+      icon.classList.add('bi-moon-stars-fill');
+    } else {
+      icon.classList.remove('bi-moon-stars-fill');
+      icon.classList.add('bi-sun-fill');
+    }
+  };
 
-        // Actualizar icono del botón
-        icon.classList.toggle('bi-moon-stars-fill', newTheme === 'dark');
-        icon.classList.toggle('bi-sun-fill', newTheme === 'light');
-      };
+  // Initialize icon state
+  syncIcon();
 
-      // Cargar tema guardado de localStorage
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        body.setAttribute('data-theme', savedTheme);
-        // Ajustar icono inicial
-        icon.classList.add(savedTheme === 'dark' ? 'bi-moon-stars-fill' : 'bi-sun-fill');
-      } else {
-        // Por defecto dark, icono moon
-        icon.classList.add('bi-moon-stars-fill');
-      }
+  // Function to toggle theme
+  const toggleTheme = () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    syncIcon();
+  };
 
-      // Evento click en el botón
-      themeToggle.addEventListener('click', toggleTheme);
-    });
+  // Event listener
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
+});
