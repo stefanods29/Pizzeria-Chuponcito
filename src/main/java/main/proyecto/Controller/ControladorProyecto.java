@@ -258,11 +258,21 @@ public class ControladorProyecto {
             model.addAttribute("searchPlaceholder", "Buscar...");
             return "register";
         }
+        // Validar teléfono duplicado
+        if (userRepository.existsByTelefono(registerRequest.getTelefono())) {
+            bindingResult.rejectValue("telefono", "error.telefono", "El teléfono ya está registrado.");
+            model.addAttribute("title", "Registrarse — Chuponcito");
+            model.addAttribute("cssFile", "style_register.css");
+            model.addAttribute("activePage", "inicio");
+            model.addAttribute("searchPlaceholder", "Buscar...");
+            return "register";
+        }
 
         // Crea y guarda User
         User newUser = new User();
         newUser.setUsername(registerRequest.getUsername());
         newUser.setEmail(registerRequest.getEmail());
+        newUser.setTelefono(registerRequest.getTelefono()); // Guardar teléfono
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setRole(Role.USER);
         newUser.setEnabled(true);
@@ -288,24 +298,25 @@ public class ControladorProyecto {
         return "redirect:/";
     }
 
-        // Endpoints para roles
+    // Endpoints para roles
     @GetMapping("/user/pedidos")
     @PreAuthorize("hasRole('USER')")
     public String userPedidos(Model model, Authentication auth) {
         String email = auth.getName();
         User user = userRepository.findByEmail(email).orElse(null);
-        
+
         List<Order> orders = new ArrayList<>();
         Map<Long, List<CartItem>> orderItemsMap = new HashMap<>();
 
         if (user != null) {
             orders = orderRepository.findByUserId(user.getId());
-            
+
             com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             for (Order order : orders) {
                 if (order.getItems() != null) {
                     try {
-                        List<CartItem> items = java.util.Arrays.asList(mapper.readValue(order.getItems(), CartItem[].class));
+                        List<CartItem> items = java.util.Arrays
+                                .asList(mapper.readValue(order.getItems(), CartItem[].class));
                         orderItemsMap.put(order.getId(), items);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -326,6 +337,7 @@ public class ControladorProyecto {
         model.addAttribute("userEmail", email);
         return "orders";
     }
+
     @GetMapping("/user/perfil")
     @PreAuthorize("hasRole('USER')")
     public String userPerfil(Model model, Authentication auth) {
@@ -387,12 +399,22 @@ public class ControladorProyecto {
     }
 
     // GET /payment - Página de pago simulada
+     // GET /payment - Página de pago simulada
     @GetMapping("/payment")
-    public String paymentPage(Model model, HttpSession session) {
+    public String paymentPage(Model model, HttpSession session, Authentication auth) {
         model.addAttribute("title", "Pago — Chuponcito");
         model.addAttribute("cssFile", "style_payment.css");
         model.addAttribute("activePage", "pago");
         model.addAttribute("searchPlaceholder", "Buscar pago...");
+
+        if (auth != null && auth.isAuthenticated()) {
+            main.proyecto.model.CustomUserDetails userDetails = (main.proyecto.model.CustomUserDetails) auth.getPrincipal();
+            String email = userDetails.getEmail();
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            if (userOpt.isPresent()) {
+                model.addAttribute("checkoutPhone", userOpt.get().getTelefono());
+            }
+        }
 
         // Pass session data to template for JavaScript access
         String paymentType = (String) session.getAttribute("paymentType");
@@ -402,8 +424,7 @@ public class ControladorProyecto {
 
         return "payment";
     }
-
-    @PostMapping("/payment")
+   @PostMapping("/payment")
     public String processPayment(@RequestParam("paymentType") String paymentType, HttpSession session,
             RedirectAttributes redirectAttributes) {
         if (paymentType == null || paymentType.trim().isEmpty()) {
@@ -414,7 +435,7 @@ public class ControladorProyecto {
         // Guarda paymentType en sesión para usarlo en la página de payment
         session.setAttribute("paymentType", paymentType);
 
-        // Opcional: Valida carrito no vacío (ya lo haces en GET /checkout)
+        // Opcional: Valida carrito no vacío (ya lo haces in GET /checkout)
         @SuppressWarnings("unchecked")
         Map<String, CartItem> cartMap = (Map<String, CartItem>) session.getAttribute("cart");
         if (cartMap == null || cartMap.isEmpty()) {

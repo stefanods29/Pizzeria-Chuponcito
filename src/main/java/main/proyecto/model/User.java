@@ -18,8 +18,11 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    @Column(nullable = false, unique = true, length = 9)
+    private String telefono;
+
     @Column(nullable = false, length = 500)
-    private String password;  
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

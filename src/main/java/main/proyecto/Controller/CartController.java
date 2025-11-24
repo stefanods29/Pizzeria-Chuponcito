@@ -160,12 +160,14 @@ public class CartController {
 
         Order order = new Order();
         Long userId = null;
+        String userPhone = null;
         if (auth != null && auth.isAuthenticated()) {
             CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
             String email = userDetails.getEmail();
             Optional<User> userOpt = userRepository.findByEmail(email);
             if (userOpt.isPresent()) {
                 userId = userOpt.get().getId();
+                userPhone = userOpt.get().getTelefono();
             }
         }
         order.setUserId(userId);
@@ -173,7 +175,10 @@ public class CartController {
         order.setStatus("pending");
         order.setItems(itemsJson);
         order.setDeliveryAddress((String) requestData.get("address"));
-        order.setPhone((String) requestData.get("phone"));
+
+        // Use user's phone if available, otherwise use the one from request
+        String phoneFromRequest = (String) requestData.get("phone");
+        order.setPhone(userPhone != null ? userPhone : phoneFromRequest);
         order.setNotes((String) requestData.get("notes"));
 
         String paymentType = (String) requestData.get("paymentType");
