@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-  th:fragment="layout(title, cssFile, activePage, searchPlaceholder, content)" data-theme="dark">
+  th:fragment="layout(title, cssFile, activePage, content)" data-theme="dark">
 
 <head>
   <script>
@@ -28,7 +28,7 @@
 <body>
 
   <!-- Navbar -->
-  <div th:replace="~{fragments/navbar :: navbar(activePage=${activePage}, searchPlaceholder=${searchPlaceholder})}">
+  <div th:replace="~{fragments/navbar :: navbar(activePage=${activePage})}">
   </div>
 
   <!-- Contenido -->

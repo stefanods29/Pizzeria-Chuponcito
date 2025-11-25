@@ -116,7 +116,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Chuponcito — La Mejor Pizza Recién Hecha");
         model.addAttribute("cssFile", "style_index.css");
         model.addAttribute("activePage", "inicio");
-        model.addAttribute("searchPlaceholder", "Buscar pizza, ingrediente...");
+
         return "index";
     }
 
@@ -134,7 +134,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Menú Completo — Chuponcito");
         model.addAttribute("cssFile", "style_menuCompleto.css");
         model.addAttribute("activePage", "menu");
-        model.addAttribute("searchPlaceholder", "Buscar pizza...");
+
         return "menuCompleto";
     }
 
@@ -198,7 +198,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Promociones — Chuponcito");
         model.addAttribute("cssFile", "style_promociones.css");
         model.addAttribute("activePage", "promociones");
-        model.addAttribute("searchPlaceholder", "Buscar promoción...");
+
         return "promociones";
     }
 
@@ -208,7 +208,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Contacto — Chuponcito");
         model.addAttribute("cssFile", "style_contacto.css");
         model.addAttribute("activePage", "contacto");
-        model.addAttribute("searchPlaceholder", "Buscar...");
+
         return "contacto";
     }
 
@@ -217,7 +217,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Iniciar Sesion — Chuponcito");
         model.addAttribute("cssFile", "style_login.css");
         model.addAttribute("activePage", "inicio");
-        model.addAttribute("searchPlaceholder", "Buscar...");
+
         return "login";
     }
 
@@ -227,7 +227,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Registrarse — Chuponcito");
         model.addAttribute("cssFile", "style_register.css");
         model.addAttribute("activePage", "inicio");
-        model.addAttribute("searchPlaceholder", "Buscar...");
+
         return "register";
     }
 
@@ -238,7 +238,7 @@ public class ControladorProyecto {
             model.addAttribute("title", "Registrarse — Chuponcito");
             model.addAttribute("cssFile", "style_register.css");
             model.addAttribute("activePage", "inicio");
-            model.addAttribute("searchPlaceholder", "Buscar...");
+
             return "register";
         }
 
@@ -247,7 +247,7 @@ public class ControladorProyecto {
             model.addAttribute("title", "Registrarse — Chuponcito");
             model.addAttribute("cssFile", "style_register.css");
             model.addAttribute("activePage", "inicio");
-            model.addAttribute("searchPlaceholder", "Buscar...");
+
             return "register";
         }
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
@@ -255,7 +255,7 @@ public class ControladorProyecto {
             model.addAttribute("title", "Registrarse — Chuponcito");
             model.addAttribute("cssFile", "style_register.css");
             model.addAttribute("activePage", "inicio");
-            model.addAttribute("searchPlaceholder", "Buscar...");
+
             return "register";
         }
         // Validar teléfono duplicado
@@ -264,7 +264,7 @@ public class ControladorProyecto {
             model.addAttribute("title", "Registrarse — Chuponcito");
             model.addAttribute("cssFile", "style_register.css");
             model.addAttribute("activePage", "inicio");
-            model.addAttribute("searchPlaceholder", "Buscar...");
+
             return "register";
         }
 
@@ -290,7 +290,7 @@ public class ControladorProyecto {
             model.addAttribute("title", "Chuponcito — La Mejor Pizza Recién Hecha");
             model.addAttribute("cssFile", "style_index.css");
             model.addAttribute("activePage", "inicio");
-            model.addAttribute("searchPlaceholder", "Buscar pizza, ingrediente...");
+
             return "index";
         }
 
@@ -331,7 +331,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Mis Pedidos — Chuponcito");
         model.addAttribute("cssFile", "style_user.css");
         model.addAttribute("activePage", "user");
-        model.addAttribute("searchPlaceholder", "Buscar mis pedidos...");
+
         model.addAttribute("orders", orders);
         model.addAttribute("orderItemsMap", orderItemsMap);
         model.addAttribute("userEmail", email);
@@ -345,7 +345,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Mi Perfil — Chuponcito");
         model.addAttribute("cssFile", "style_user.css");
         model.addAttribute("activePage", "user");
-        model.addAttribute("searchPlaceholder", "Buscar mis pedidos...");
+
         model.addAttribute("Pizza", List.of("Pizzas aca"));
         model.addAttribute("userEmail", email);
         return "profile";
@@ -357,7 +357,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Todos los Pedidos — Admin");
         model.addAttribute("cssFile", "style_admin.css");
         model.addAttribute("activePage", "admin");
-        model.addAttribute("searchPlaceholder", "Buscar pedidos...");
+
         model.addAttribute("pedidos", List.of("Placeholder: Todos los pedidos"));
         return "adminTodosPedidos";
     }
@@ -368,7 +368,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Pedidos por Cliente — Admin");
         model.addAttribute("cssFile", "style_admin.css");
         model.addAttribute("activePage", "admin");
-        model.addAttribute("searchPlaceholder", "Buscar por cliente...");
+
         return "adminPedidosCliente";
     }
 
@@ -377,7 +377,7 @@ public class ControladorProyecto {
         model.addAttribute("title", "Carrito de Compras — Chuponcito");
         model.addAttribute("cssFile", "style_cart.css");
         model.addAttribute("activePage", "carrito");
-        model.addAttribute("searchPlaceholder", "Buscar en carrito...");
+
         return "cart";
     }
 
@@ -405,7 +405,6 @@ public class ControladorProyecto {
         model.addAttribute("title", "Pago — Chuponcito");
         model.addAttribute("cssFile", "style_payment.css");
         model.addAttribute("activePage", "pago");
-        model.addAttribute("searchPlaceholder", "Buscar pago...");
 
         if (auth != null && auth.isAuthenticated()) {
             main.proyecto.model.CustomUserDetails userDetails = (main.proyecto.model.CustomUserDetails) auth
@@ -478,7 +477,6 @@ public class ControladorProyecto {
             model.addAttribute("title", "Confirmación de Orden — Chuponcito");
             model.addAttribute("cssFile", "style_order_confirmation.css");
             model.addAttribute("activePage", "pago");
-            model.addAttribute("searchPlaceholder", "Buscar...");
 
             return "order-confirmation";
         } else {

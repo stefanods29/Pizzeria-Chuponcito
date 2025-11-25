@@ -1,4 +1,4 @@
-<div th:fragment="navbar(activePage, searchPlaceholder)">
+<div th:fragment="navbar(activePage)">
   <div class="barra-promo text-center py-1 small">
     ¡Delivery gratis en pedidos mayores a S/50 • Código: GRATIS50
   </div>
@@ -19,13 +19,7 @@
       </div>
 
       <div class="collapse navbar-collapse" id="navMenu">
-        <!-- Form de búsqueda simple (sin acción por ahora) -->
-        <form class="d-flex ms-auto me-3">
-          <input class="form-control form-control-sm me-2" type="search" th:placeholder="${searchPlaceholder}"
-            aria-label="Buscar">
-        </form>
-
-        <ul class="navbar-nav align-items-lg-center gap-2">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
           <li class="nav-item">
             <a class="nav-link" th:classappend="${activePage == 'inicio' ? 'active' : ''}" href="/">Inicio</a>
           </li>
