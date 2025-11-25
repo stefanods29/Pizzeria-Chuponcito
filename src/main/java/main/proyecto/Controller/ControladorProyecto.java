@@ -399,7 +399,7 @@ public class ControladorProyecto {
     }
 
     // GET /payment - Página de pago simulada
-     // GET /payment - Página de pago simulada
+    // GET /payment - Página de pago simulada
     @GetMapping("/payment")
     public String paymentPage(Model model, HttpSession session, Authentication auth) {
         model.addAttribute("title", "Pago — Chuponcito");
@@ -408,7 +408,8 @@ public class ControladorProyecto {
         model.addAttribute("searchPlaceholder", "Buscar pago...");
 
         if (auth != null && auth.isAuthenticated()) {
-            main.proyecto.model.CustomUserDetails userDetails = (main.proyecto.model.CustomUserDetails) auth.getPrincipal();
+            main.proyecto.model.CustomUserDetails userDetails = (main.proyecto.model.CustomUserDetails) auth
+                    .getPrincipal();
             String email = userDetails.getEmail();
             Optional<User> userOpt = userRepository.findByEmail(email);
             if (userOpt.isPresent()) {
@@ -422,18 +423,28 @@ public class ControladorProyecto {
             model.addAttribute("paymentType", paymentType);
         }
 
+        // Recuperar dirección de la sesión
+        String checkoutAddress = (String) session.getAttribute("checkoutAddress");
+        if (checkoutAddress != null) {
+            model.addAttribute("checkoutAddress", checkoutAddress);
+        }
+
         return "payment";
     }
-   @PostMapping("/payment")
-    public String processPayment(@RequestParam("paymentType") String paymentType, HttpSession session,
+
+    @PostMapping("/payment")
+    public String processPayment(@RequestParam("paymentType") String paymentType,
+            @RequestParam("address") String address, // Recibir dirección del form
+            HttpSession session,
             RedirectAttributes redirectAttributes) {
         if (paymentType == null || paymentType.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Selecciona un tipo de pago válido.");
             return "redirect:/checkout";
         }
 
-        // Guarda paymentType en sesión para usarlo en la página de payment
+        // Guarda paymentType y address en sesión
         session.setAttribute("paymentType", paymentType);
+        session.setAttribute("checkoutAddress", address);
 
         // Opcional: Valida carrito no vacío (ya lo haces in GET /checkout)
         @SuppressWarnings("unchecked")
