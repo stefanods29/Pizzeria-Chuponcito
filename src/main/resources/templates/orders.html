@@ -13,14 +13,14 @@
       </div>
 
       <div class="accordion" id="ordersAccordion" th:unless="${orders.empty}">
-        <div class="accordion-item" th:each="order : ${orders}">
+        <div class="accordion-item" th:each="order, iterStat : ${orders}">
           <h2 class="accordion-header" th:id="'heading' + ${order.id}">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
               th:data-bs-target="'#collapse' + ${order.id}" aria-expanded="false"
               th:aria-controls="'collapse' + ${order.id}">
               <div class="d-flex w-100 justify-content-between align-items-center me-3">
                 <span>
-                  <strong>Orden #<span th:text="${order.id}"></span></strong>
+                  <strong>Orden #<span th:text="${orders.size() - iterStat.index}"></span></strong>
                   <span class="text-muted ms-2"
                     th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></span>
                 </span>

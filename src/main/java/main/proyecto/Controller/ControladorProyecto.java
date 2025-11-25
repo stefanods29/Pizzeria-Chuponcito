@@ -309,7 +309,7 @@ public class ControladorProyecto {
         Map<Long, List<CartItem>> orderItemsMap = new HashMap<>();
 
         if (user != null) {
-            orders = orderRepository.findByUserId(user.getId());
+            orders = orderRepository.findByUserIdOrderByIdDesc(user.getId());
 
             com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             for (Order order : orders) {
