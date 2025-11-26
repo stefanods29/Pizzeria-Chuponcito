@@ -349,7 +349,7 @@ public class ControladorProyecto {
         User user = userRepository.findByEmail(email).orElse(null);
 
         model.addAttribute("title", "Mi Perfil — Chuponcito");
-        model.addAttribute("cssFile", "style_user.css");
+        model.addAttribute("cssFile", "style_profile.css");
         model.addAttribute("activePage", "user");
 
         model.addAttribute("user", user);

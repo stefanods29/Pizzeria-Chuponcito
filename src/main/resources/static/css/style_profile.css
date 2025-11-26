@@ -1,0 +1,153 @@
+[data-theme="dark"] {
+  --bg-rgb: 47, 47, 47;
+  --text-rgb: 251, 231, 205;
+  --brand-rgb: 201, 148, 62;
+  --accent-rgb: 226, 179, 86;
+  --secondary-accent-rgb: 52, 145, 42;
+  --white-rgb: 255, 255, 255;
+  --orange-rgb: 255, 170, 0;
+  --highlight-rgb: 255, 175, 15;
+  --background: rgb(var(--bg-rgb));
+  --text-color: rgb(var(--text-rgb));
+  --card-bg: rgb(var(--bg-rgb));
+  --hero-bg: linear-gradient(135deg, rgba(var(--accent-rgb), 0.03), rgba(var(--brand-rgb), 0.06));
+  --button-bg: rgb(var(--accent-rgb));
+  --button-text: rgb(var(--bg-rgb));
+  --link-color: rgb(var(--text-rgb));
+  --form-bg: var(--card-bg);
+  --form-border: rgba(var(--white-rgb), 0.06);
+  --form-focus-bg: rgba(var(--orange-rgb), 0.055);
+  --form-focus-border: rgb(var(--brand-rgb));
+  --form-placeholder: rgba(var(--text-rgb), 0.7);
+  --radius: 0.75rem;
+  --shadow: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] {
+  --bg-rgb: 249, 251, 247;
+  --text-rgb: 33, 37, 41;
+  --brand-rgb: 201, 148, 62;
+  --accent-rgb: 226, 179, 86;
+  --secondary-accent-rgb: 52, 145, 42;
+  --gray-1-rgb: 255, 255, 255;
+  --gray-2-rgb: 248, 249, 250;
+  --gray-3-rgb: 248, 249, 250;
+  --gray-4-rgb: 173, 181, 189;
+  --orange-rgb: 255, 170, 0;
+  --highlight-rgb: 255, 175, 15;
+  --background: linear-gradient(135deg, rgb(var(--bg-rgb)), rgba(var(--brand-rgb), 0.02));
+  --text-color: rgb(var(--text-rgb));
+  --card-bg: rgb(var(--gray-1-rgb));
+  --hero-bg: linear-gradient(135deg, rgba(var(--brand-rgb), 0.05), rgba(var(--secondary-accent-rgb), 0.03), rgb(var(--gray-2-rgb)));
+  --button-bg: linear-gradient(135deg, rgb(var(--brand-rgb)), rgb(var(--accent-rgb)));
+  --button-text: rgb(var(--gray-1-rgb));
+  --link-color: rgb(var(--text-rgb));
+  --form-bg: rgb(var(--gray-1-rgb));
+  --form-border: rgba(var(--gray-4-rgb), 0.5);
+  --form-focus-bg: rgba(var(--brand-rgb), 0.08);
+  --form-focus-border: rgb(var(--brand-rgb));
+  --form-placeholder: rgba(var(--text-rgb), 0.6);
+  --radius: 0.75rem;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: var(--background);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+#profileSection {
+  padding: 4rem 0;
+  background: var(--hero-bg);
+  position: relative;
+}
+
+#profileSection::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.1), transparent);
+  pointer-events: none;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px var(--shadow);
+  overflow: hidden;
+  border: 1px solid rgba(var(--gray-4-rgb), 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px var(--shadow);
+}
+
+.card-body {
+  color: var(--text-color);
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.form-label {
+  color: var(--text-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  background: var(--form-bg);
+  border: 1px solid var(--form-border);
+  color: var(--text-color);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+.form-control:focus {
+  background: var(--form-focus-bg);
+  border-color: var(--form-focus-border) !important;
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-rgb), 0.15), 0 0 12px rgba(154, 226, 86, 0.2) !important;
+  color: var(--text-color) !important;
+}
+
+.form-control::placeholder {
+  color: var(--form-placeholder);
+}
+
+.btn-accion {
+  background: var(--button-bg);
+  border: none;
+  color: var(--button-text);
+  font-weight: 700;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
+  transition: all 0.25s ease;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-accion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(var(--brand-rgb), 0.4);
+  filter: brightness(1.05);
+}
+
+.invalid-feedback {
+  color: var(--accent);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 767.98px) {
+  #profileSection { padding: 3rem 0; }
+  .card-body { padding: 1.5rem; }
+  .btn-accion { padding: 0.5rem 1rem; font-size: 0.95rem; }
+}
