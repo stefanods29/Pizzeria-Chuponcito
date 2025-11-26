@@ -17,6 +17,7 @@ import main.proyecto.repository.UserRepository;
 import main.proyecto.repository.OrderRepository;
 import main.proyecto.model.Order;
 import main.proyecto.model.CustomUserDetails;
+import main.proyecto.dto.ProfileUpdateRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -352,15 +353,25 @@ public class ControladorProyecto {
         model.addAttribute("activePage", "user");
 
         model.addAttribute("user", user);
+
+        // Preparar DTO para el formulario
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest();
+        if (user != null) {
+            profileUpdateRequest.setUsername(user.getUsername());
+            profileUpdateRequest.setEmail(user.getEmail());
+            profileUpdateRequest.setTelefono(user.getTelefono());
+        }
+        model.addAttribute("profileUpdateRequest", profileUpdateRequest);
+
         model.addAttribute("userEmail", email);
         return "profile";
     }
 
-        @PostMapping("/user/update")
+    @PostMapping("/user/update")
     @PreAuthorize("hasRole('USER')")
-    public String updateProfile(@ModelAttribute("user") User updatedUser,
-            @RequestParam(value = "newPassword", required = false) String newPassword,
+    public String updateProfile(@Valid @ModelAttribute("profileUpdateRequest") ProfileUpdateRequest request,
             BindingResult bindingResult,
+            Model model,
             Authentication auth,
             RedirectAttributes redirectAttributes) {
 
@@ -371,11 +382,20 @@ public class ControladorProyecto {
             return "redirect:/login";
         }
 
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", currentUser);
+            model.addAttribute("title", "Mi Perfil — Chuponcito");
+            model.addAttribute("cssFile", "style_user.css");
+            model.addAttribute("activePage", "user");
+            model.addAttribute("userEmail", currentEmail);
+            return "profile";
+        }
+
         // Verificar si hay cambios
-        boolean sameUsername = currentUser.getUsername().equals(updatedUser.getUsername());
-        boolean sameEmail = currentUser.getEmail().equals(updatedUser.getEmail());
-        boolean samePhone = currentUser.getTelefono().equals(updatedUser.getTelefono());
-        boolean passwordEmpty = (newPassword == null || newPassword.isBlank());
+        boolean sameUsername = currentUser.getUsername().equals(request.getUsername());
+        boolean sameEmail = currentUser.getEmail().equals(request.getEmail());
+        boolean samePhone = currentUser.getTelefono().equals(request.getTelefono());
+        boolean passwordEmpty = (request.getNewPassword() == null || request.getNewPassword().isBlank());
 
         if (sameUsername && sameEmail && samePhone && passwordEmpty) {
             redirectAttributes.addFlashAttribute("error", "No se detectaron cambios para actualizar.");
@@ -383,38 +403,35 @@ public class ControladorProyecto {
         }
 
         // Validar unicidad de email si cambió
-        if (!currentUser.getEmail().equals(updatedUser.getEmail())
-                && userRepository.existsByEmail(updatedUser.getEmail())) {
+        if (!currentUser.getEmail().equals(request.getEmail())
+                && userRepository.existsByEmail(request.getEmail())) {
             redirectAttributes.addFlashAttribute("error", "El email ya está en uso.");
             return "redirect:/user/perfil";
         }
 
         // Validar unicidad de username si cambió
-        if (!currentUser.getUsername().equals(updatedUser.getUsername())
-                && userRepository.existsByUsername(updatedUser.getUsername())) {
+        if (!currentUser.getUsername().equals(request.getUsername())
+                && userRepository.existsByUsername(request.getUsername())) {
             redirectAttributes.addFlashAttribute("error", "El nombre de usuario ya está en uso.");
             return "redirect:/user/perfil";
         }
 
         // Validar unicidad de teléfono si cambió
-        if (!currentUser.getTelefono().equals(updatedUser.getTelefono())
-                && userRepository.existsByTelefono(updatedUser.getTelefono())) {
+        if (!currentUser.getTelefono().equals(request.getTelefono())
+                && userRepository.existsByTelefono(request.getTelefono())) {
             redirectAttributes.addFlashAttribute("error", "El teléfono ya está en uso.");
             return "redirect:/user/perfil";
         }
 
         // Actualizar datos
-        currentUser.setUsername(updatedUser.getUsername());
-        currentUser.setEmail(updatedUser.getEmail());
-        currentUser.setTelefono(updatedUser.getTelefono());
+        currentUser.setUsername(request.getUsername());
+        currentUser.setEmail(request.getEmail());
+        currentUser.setTelefono(request.getTelefono());
 
         // Actualizar contraseña si se proporcionó
-        if (newPassword != null && !newPassword.isBlank()) {
-            if (newPassword.length() < 6) {
-                redirectAttributes.addFlashAttribute("error", "La contraseña debe tener al menos 6 caracteres.");
-                return "redirect:/user/perfil";
-            }
-            currentUser.setPassword(passwordEncoder.encode(newPassword));
+        if (request.getNewPassword() != null && !request.getNewPassword().isBlank()) {
+            // La validación de longitud ya la hace el DTO con @Pattern
+            currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
         }
 
         userRepository.save(currentUser);
@@ -436,7 +453,7 @@ public class ControladorProyecto {
 
         SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-        if (!currentEmail.equals(updatedUser.getEmail())) {
+        if (!currentEmail.equals(request.getEmail())) {
             redirectAttributes.addFlashAttribute("message",
                     "Perfil actualizado. Por favor inicia sesión con tu nuevo email.");
             return "redirect:/logout";
