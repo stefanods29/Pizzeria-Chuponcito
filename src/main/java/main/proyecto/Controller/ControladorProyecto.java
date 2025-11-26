@@ -16,10 +16,13 @@ import main.proyecto.repository.ExtraRepository;
 import main.proyecto.repository.UserRepository;
 import main.proyecto.repository.OrderRepository;
 import main.proyecto.model.Order;
+import main.proyecto.model.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -342,13 +345,105 @@ public class ControladorProyecto {
     @PreAuthorize("hasRole('USER')")
     public String userPerfil(Model model, Authentication auth) {
         String email = auth.getName();
+        User user = userRepository.findByEmail(email).orElse(null);
+
         model.addAttribute("title", "Mi Perfil — Chuponcito");
         model.addAttribute("cssFile", "style_user.css");
         model.addAttribute("activePage", "user");
 
-        model.addAttribute("Pizza", List.of("Pizzas aca"));
+        model.addAttribute("user", user);
         model.addAttribute("userEmail", email);
         return "profile";
+    }
+
+        @PostMapping("/user/update")
+    @PreAuthorize("hasRole('USER')")
+    public String updateProfile(@ModelAttribute("user") User updatedUser,
+            @RequestParam(value = "newPassword", required = false) String newPassword,
+            BindingResult bindingResult,
+            Authentication auth,
+            RedirectAttributes redirectAttributes) {
+
+        String currentEmail = auth.getName();
+        User currentUser = userRepository.findByEmail(currentEmail).orElse(null);
+
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        // Verificar si hay cambios
+        boolean sameUsername = currentUser.getUsername().equals(updatedUser.getUsername());
+        boolean sameEmail = currentUser.getEmail().equals(updatedUser.getEmail());
+        boolean samePhone = currentUser.getTelefono().equals(updatedUser.getTelefono());
+        boolean passwordEmpty = (newPassword == null || newPassword.isBlank());
+
+        if (sameUsername && sameEmail && samePhone && passwordEmpty) {
+            redirectAttributes.addFlashAttribute("error", "No se detectaron cambios para actualizar.");
+            return "redirect:/user/perfil";
+        }
+
+        // Validar unicidad de email si cambió
+        if (!currentUser.getEmail().equals(updatedUser.getEmail())
+                && userRepository.existsByEmail(updatedUser.getEmail())) {
+            redirectAttributes.addFlashAttribute("error", "El email ya está en uso.");
+            return "redirect:/user/perfil";
+        }
+
+        // Validar unicidad de username si cambió
+        if (!currentUser.getUsername().equals(updatedUser.getUsername())
+                && userRepository.existsByUsername(updatedUser.getUsername())) {
+            redirectAttributes.addFlashAttribute("error", "El nombre de usuario ya está en uso.");
+            return "redirect:/user/perfil";
+        }
+
+        // Validar unicidad de teléfono si cambió
+        if (!currentUser.getTelefono().equals(updatedUser.getTelefono())
+                && userRepository.existsByTelefono(updatedUser.getTelefono())) {
+            redirectAttributes.addFlashAttribute("error", "El teléfono ya está en uso.");
+            return "redirect:/user/perfil";
+        }
+
+        // Actualizar datos
+        currentUser.setUsername(updatedUser.getUsername());
+        currentUser.setEmail(updatedUser.getEmail());
+        currentUser.setTelefono(updatedUser.getTelefono());
+
+        // Actualizar contraseña si se proporcionó
+        if (newPassword != null && !newPassword.isBlank()) {
+            if (newPassword.length() < 6) {
+                redirectAttributes.addFlashAttribute("error", "La contraseña debe tener al menos 6 caracteres.");
+                return "redirect:/user/perfil";
+            }
+            currentUser.setPassword(passwordEncoder.encode(newPassword));
+        }
+
+        userRepository.save(currentUser);
+
+        // Actualizar SecurityContext con los nuevos datos
+        CustomUserDetails newUserDetails = new CustomUserDetails(
+                currentUser.getId(),
+                currentUser.getEmail(),
+                currentUser.getUsername(),
+                currentUser.getUsername(), // Usamos username como displayName
+                currentUser.getPassword(),
+                currentUser.isEnabled(),
+                currentUser.getRole());
+
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                newUserDetails,
+                auth.getCredentials(),
+                auth.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        if (!currentEmail.equals(updatedUser.getEmail())) {
+            redirectAttributes.addFlashAttribute("message",
+                    "Perfil actualizado. Por favor inicia sesión con tu nuevo email.");
+            return "redirect:/logout";
+        }
+
+        redirectAttributes.addFlashAttribute("message", "Perfil actualizado correctamente.");
+        return "redirect:/user/perfil";
     }
 
     @GetMapping("/admin/todos-pedidos")
