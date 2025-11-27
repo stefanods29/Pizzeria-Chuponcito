@@ -463,14 +463,45 @@ public class ControladorProyecto {
         return "redirect:/user/perfil";
     }
 
-    @GetMapping("/admin/todos-pedidos")
+        @GetMapping("/admin/todos-pedidos")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminTodosPedidos(Model model) {
         model.addAttribute("title", "Todos los Pedidos — Admin");
         model.addAttribute("cssFile", "style_admin.css");
         model.addAttribute("activePage", "admin");
 
-        model.addAttribute("pedidos", List.of("Placeholder: Todos los pedidos"));
+        List<Order> orders = orderRepository.findAll();
+        // Ordenar por ID descendente (más reciente primero)
+        orders.sort((o1, o2) -> o2.getId().compareTo(o1.getId()));
+
+        Map<Long, List<CartItem>> orderItemsMap = new HashMap<>();
+        Map<Long, User> orderUserMap = new HashMap<>(); // Mapa para guardar el usuario de cada orden
+        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+        for (Order order : orders) {
+            // Procesar items
+            if (order.getItems() != null) {
+                try {
+                    List<CartItem> items = java.util.Arrays
+                            .asList(mapper.readValue(order.getItems(), CartItem[].class));
+                    orderItemsMap.put(order.getId(), items);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    orderItemsMap.put(order.getId(), new ArrayList<>());
+                }
+            } else {
+                orderItemsMap.put(order.getId(), new ArrayList<>());
+            }
+
+            // Procesar usuario
+            if (order.getUserId() != null) {
+                userRepository.findById(order.getUserId()).ifPresent(user -> orderUserMap.put(order.getId(), user));
+            }
+        }
+
+        model.addAttribute("orders", orders);
+        model.addAttribute("orderItemsMap", orderItemsMap);
+        model.addAttribute("orderUserMap", orderUserMap);
         return "adminTodosPedidos";
     }
 

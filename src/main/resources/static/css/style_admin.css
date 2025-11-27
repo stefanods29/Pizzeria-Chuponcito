@@ -1,0 +1,78 @@
+/* Admin Orders Page Styles */
+
+/* Accordion Styles */
+.accordion-item {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(var(--gray-4-rgb), 0.2);
+    color: var(--text-color);
+}
+
+.accordion-button {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(var(--brand-rgb), 0.1);
+    color: var(--brand);
+    box-shadow: none;
+}
+
+.accordion-button::after {
+    filter: grayscale(1);
+}
+
+[data-theme="dark"] .accordion-button::after {
+    filter: invert(1);
+}
+
+[data-theme="dark"] .accordion-button:not(.collapsed)::after {
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(35deg);
+}
+
+/* Table Styles */
+.table {
+    color: var(--text-color);
+    border-color: rgba(var(--gray-4-rgb), 0.2);
+}
+
+.table > :not(caption) > * > * {
+    background-color: transparent;
+    color: var(--text-color);
+    border-bottom-color: rgba(var(--gray-4-rgb), 0.2);
+}
+
+.table-bordered {
+    border-color: rgba(var(--gray-4-rgb), 0.2);
+}
+
+/* Text Colors */
+h2, h5 {
+    color: var(--brand);
+}
+
+.text-muted {
+    color: rgba(var(--text-rgb), 0.6) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Badge Styles */
+.badge.bg-primary {
+    background-color: var(--brand) !important;
+    color: var(--button-text);
+}
+
+/* Alert Styles */
+.alert-info {
+    background-color: rgba(var(--brand-rgb), 0.1);
+    border-color: rgba(var(--brand-rgb), 0.2);
+    color: var(--text-color);
+}
+
+.alert-link {
+    color: var(--brand);
+}

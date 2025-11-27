@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title='Todos los Pedidos', cssFile='style_admin.css', activePage='admin',
+          content=~{::content})}">
+
+<body>
+    <div th:fragment="content">
+        <div class="container py-5" style="max-width: 1000px;">
+            <h2 class="text-center mb-4 fw-bold">Todos los Pedidos (Admin)</h2>
+
+            <div th:if="${orders.empty}" class="alert alert-info text-center">
+                No hay pedidos registrados en el sistema.
+            </div>
+
+            <div class="accordion" id="ordersAccordion" th:unless="${orders.empty}">
+                <div class="accordion-item" th:each="order : ${orders}">
+                    <h2 class="accordion-header" th:id="'heading' + ${order.id}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            th:data-bs-target="'#collapse' + ${order.id}" aria-expanded="false"
+                            th:aria-controls="'collapse' + ${order.id}">
+                            <div class="d-flex w-100 justify-content-between align-items-center me-3">
+                                <span>
+                                    <strong>Orden #<span th:text="${order.id}"></span></strong>
+                                    <span class="text-muted ms-2"
+                                        th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></span>
+                                    <span class="ms-2 badge bg-secondary" th:if="${orderUserMap.containsKey(order.id)}"
+                                        th:text="${orderUserMap.get(order.id).email}"></span>
+                                    <span class="ms-2 badge bg-secondary"
+                                        th:unless="${orderUserMap.containsKey(order.id)}">Usuario
+                                        Eliminado/Desconocido</span>
+                                </span>
+                                <span>
+                                    <span class="badge bg-primary me-2" th:text="${order.status}"></span>
+                                    <span class="fw-bold" th:text="'S/ ' + ${order.total}"></span>
+                                </span>
+                            </div>
+                        </button>
+                    </h2>
+                    <div th:id="'collapse' + ${order.id}" class="accordion-collapse collapse"
+                        th:aria-labelledby="'heading' + ${order.id}" data-bs-parent="#ordersAccordion">
+                        <div class="accordion-body">
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <h5>Detalles de Entrega</h5>
+                                    <p class="mb-1"><strong>Cliente:</strong> <span
+                                            th:if="${orderUserMap.containsKey(order.id)}"
+                                            th:text="${orderUserMap.get(order.id).username}"></span></p>
+                                    <p class="mb-1"><strong>Dirección:</strong> <span
+                                            th:text="${order.deliveryAddress}"></span></p>
+                                    <p class="mb-1"><strong>Teléfono:</strong> <span th:text="${order.phone}"></span>
+                                    </p>
+                                    <p class="mb-1"><strong>Pago:</strong> <span th:text="${order.paymentType}"></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <h5>Items del Pedido</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unit.</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item : ${orderItemsMap.get(order.id)}">
+                                            <td>
+                                                <span th:text="${item.name}"></span>
+                                                <small th:if="${item.size}" class="text-muted"
+                                                    th:text="'(' + ${item.size} + ')'"></small>
+                                            </td>
+                                            <td th:text="${item.quantity}"></td>
+                                            <td th:text="'S/ ' + ${item.price}"></td>
+                                            <td th:text="'S/ ' + ${item.price * item.quantity}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
