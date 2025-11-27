@@ -511,7 +511,6 @@ public class ControladorProyecto {
     }
 
     // GET /payment - Página de pago simulada
-    // GET /payment - Página de pago simulada
     @GetMapping("/payment")
     public String paymentPage(Model model, HttpSession session, Authentication auth) {
         model.addAttribute("title", "Pago — Chuponcito");
