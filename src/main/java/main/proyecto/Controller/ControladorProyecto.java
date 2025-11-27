@@ -463,7 +463,7 @@ public class ControladorProyecto {
         return "redirect:/user/perfil";
     }
 
-        @GetMapping("/admin/todos-pedidos")
+    @GetMapping("/admin/todos-pedidos")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminTodosPedidos(Model model) {
         model.addAttribute("title", "Todos los Pedidos — Admin");
@@ -507,10 +507,47 @@ public class ControladorProyecto {
 
     @GetMapping("/admin/pedidos-cliente")
     @PreAuthorize("hasRole('ADMIN')")
-    public String adminPedidosCliente(Model model) {
+    public String adminPedidosCliente(@RequestParam(required = false) Long userId, Model model) {
         model.addAttribute("title", "Pedidos por Cliente — Admin");
-        model.addAttribute("cssFile", "style_admin.css");
+        model.addAttribute("cssFile", "style_admin_pedidos_cliente.css");
         model.addAttribute("activePage", "admin");
+
+        if (userId == null) {
+            // Mostrar lista de usuarios
+            List<User> users = userRepository.findAll();
+            model.addAttribute("users", users);
+            model.addAttribute("selectedUser", null);
+        } else {
+            // Mostrar pedidos del usuario seleccionado
+            Optional<User> userOpt = userRepository.findById(userId);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                model.addAttribute("selectedUser", user);
+
+                List<Order> orders = orderRepository.findByUserIdOrderByIdDesc(user.getId());
+                Map<Long, List<CartItem>> orderItemsMap = new HashMap<>();
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+                for (Order order : orders) {
+                    if (order.getItems() != null) {
+                        try {
+                            List<CartItem> items = java.util.Arrays
+                                    .asList(mapper.readValue(order.getItems(), CartItem[].class));
+                            orderItemsMap.put(order.getId(), items);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            orderItemsMap.put(order.getId(), new ArrayList<>());
+                        }
+                    } else {
+                        orderItemsMap.put(order.getId(), new ArrayList<>());
+                    }
+                }
+                model.addAttribute("orders", orders);
+                model.addAttribute("orderItemsMap", orderItemsMap);
+            } else {
+                return "redirect:/admin/pedidos-cliente";
+            }
+        }
 
         return "adminPedidosCliente";
     }
