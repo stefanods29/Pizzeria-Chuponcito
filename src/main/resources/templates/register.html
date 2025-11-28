@@ -27,21 +27,24 @@
                       <label class="form-label"><i class="bi bi-person-fill me-1 text-brand"></i>Nombre de
                         Usuario</label>
                       <input type="text" class="form-control" th:field="*{username}" placeholder="Tu nombre de usuario"
-                        required minlength="3" maxlength="50">
+                        required minlength="3" maxlength="50"
+                        th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''">
                       <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">El
                         nombre de usuario debe tener entre 3 y 50 caracteres.</div>
                     </div>
                     <div class="mb-3">
                       <label class="form-label"><i class="bi bi-envelope-fill me-1 text-brand"></i>Correo
                         Electrónico</label>
-                      <input type="email" class="form-control" th:field="*{email}" placeholder="tu@correo.com" required>
+                      <input type="email" class="form-control" th:field="*{email}" placeholder="tu@correo.com" required
+                        th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''">
                       <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Por favor
                         ingresa un correo electrónico válido.</div>
                     </div>
                     <div class="mb-3">
                       <label class="form-label"><i class="bi bi-telephone-fill me-1 text-brand"></i>Teléfono</label>
                       <input type="tel" class="form-control" th:field="*{telefono}" placeholder="987654321" required
-                        minlength="9" maxlength="9" pattern="\d{9}">
+                        minlength="9" maxlength="9" pattern="\d{9}"
+                        th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid' : ''">
                       <div class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">El
                         teléfono debe tener exactamente 9 dígitos.</div>
                     </div>
@@ -49,7 +52,8 @@
                       <label class="form-label"><i class="bi bi-lock-fill me-1 text-brand"></i>Contraseña</label>
                       <div class="input-group">
                         <input type="password" class="form-control" th:field="*{password}"
-                          placeholder="Mínimo 6 caracteres" required minlength="6">
+                          placeholder="Mínimo 6 caracteres" required minlength="6"
+                          th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''">
                         <button class="btn btn-link p-0 ms-2 text-muted" type="button" id="togglePassword"
                           title="Mostrar/Ocultar contraseña">
                         </button>
@@ -62,7 +66,8 @@
                         Contraseña</label>
                       <div class="input-group">
                         <input type="password" class="form-control" th:field="*{confirmPassword}"
-                          placeholder="Repite tu contraseña" required>
+                          placeholder="Repite tu contraseña" required
+                          th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''">
                         <button class="btn btn-link p-0 ms-2 text-muted" type="button" id="toggleConfirmPassword"
                           title="Mostrar/Ocultar contraseña">
                         </button>
