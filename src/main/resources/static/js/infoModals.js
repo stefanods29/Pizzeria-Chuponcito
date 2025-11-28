@@ -46,19 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // FUNCIÓN: Actualizar badge en navbar
-    function updateCartBadge(count) {
-        const badge = document.getElementById('cartBadge');
-        if (badge) {
-            if (count > 0) {
-                badge.textContent = count;
-                badge.style.display = 'inline';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-    }
-
     // FUNCIÓN GENERAL: Agrega al carrito via AJAX (actualizado)
     function addToCart(item) {
         fetch('/api/cart/add', {
@@ -79,9 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const modal = bootstrap.Modal.getInstance(document.querySelector('.modal.show'));
             if (modal) modal.hide();
             // Recarga badge y modal si está abierto
-            fetch('/api/cart')
-                .then(r => r.json())
-                .then(data => updateCartBadge(data.itemCount));
+            if (window.fetchAndUpdateCartBadge) {
+                window.fetchAndUpdateCartBadge();
+            } else {
+                console.warn('fetchAndUpdateCartBadge no está definido');
+            }
             // Si el modal del carrito está abierto, recárgalo (asumiendo loadCartInModal existe)
             if (typeof loadCartInModal === 'function') {
                 loadCartInModal();

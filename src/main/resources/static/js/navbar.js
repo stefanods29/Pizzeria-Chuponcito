@@ -2,9 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Cargar badge inicial del carrito
-    fetch('/api/cart')
+    fetch('/api/cart?t=' + new Date().getTime())
         .then(response => response.json())
-        .then(data => updateCartBadge(data.itemCount))
+        .then(data => window.updateCartBadge(data.itemCount))
         .catch(err => console.error('Error cargando badge inicial:', err));
 
     // Event listener para modal de carrito (cargar al mostrar)
@@ -66,7 +66,7 @@ function loadCartInModal() {
 }
 
 // Actualizar badge en navbar
-function updateCartBadge(count) {
+window.updateCartBadge = function(count) {
     const badge = document.getElementById('cartBadge');
     if (badge) {
         if (count > 0) {
@@ -76,7 +76,17 @@ function updateCartBadge(count) {
             badge.style.display = 'none';
         }
     }
-}
+};
+
+// Helper global para actualizar el badge desde el servidor
+window.fetchAndUpdateCartBadge = function() {
+    fetch('/api/cart?t=' + new Date().getTime()) // Cache busting
+        .then(response => response.json())
+        .then(data => {
+            window.updateCartBadge(data.itemCount);
+        })
+        .catch(err => console.error('Error actualizando badge:', err));
+};
 
 // Limpiar carrito desde modal
 function clearCartFromModal() {
@@ -87,7 +97,7 @@ function clearCartFromModal() {
         .then(response => {
             if (response.ok) {
                 loadCartInModal();
-                updateCartBadge(0);
+                window.updateCartBadge(0);
             } else {
                 alert('Error al limpiar carrito');
             }

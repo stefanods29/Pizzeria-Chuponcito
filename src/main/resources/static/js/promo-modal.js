@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchAndShowPromo(promoId) {
     try {
       setLoadingState();
-      const res = await fetch(`/api/promociones/${promoId}/detalles`, { method: 'GET' });
+      const res = await fetch(`/api/promociones/${promoId}/detalles?t=` + new Date().getTime(), { method: 'GET' });
       if (!res.ok) {
         console.error('[promo-modal] Fetch fallo, status:', res.status);  // Log mínimo para debug
         setErrorState();
@@ -127,20 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = bootstrap.Modal.getInstance(modalEl);
         if (modal) modal.hide();
         // Actualiza el badge del carrito si existe
-        fetch('/api/cart')
-          .then(r => r.json())
-          .then(data => {
-            const badge = document.getElementById('cartBadge');
-            if (badge) {
-              if (data.itemCount > 0) {
-                badge.textContent = data.itemCount;
-                badge.style.display = 'inline';
-              } else {
-                badge.style.display = 'none';
-              }
-            }
-          })
-          .catch(err => console.error('Error actualizando badge:', err));
+        if (window.fetchAndUpdateCartBadge) {
+          window.fetchAndUpdateCartBadge();
+        } else {
+          console.warn('fetchAndUpdateCartBadge no está definido');
+        }
         // Si existe la función para recargar carrito en modal, llamarla
         if (typeof loadCartInModal === 'function') {
           loadCartInModal();

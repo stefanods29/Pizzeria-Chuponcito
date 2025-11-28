@@ -1,5 +1,5 @@
 function loadCart(containerId = 'cartItemsContainer', isModal = false) {
-    fetch('/api/cart')
+    fetch('/api/cart?t=' + new Date().getTime())
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById(containerId);
@@ -51,7 +51,11 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
             });
             container.innerHTML = html;
             if (totalEl) totalEl.textContent = isModal ? `${data.itemCount} items` : `Total: S/ ${data.total.toFixed(2)}`;
-            if (!isModal) updateCartBadge(data.itemCount); // Actualiza badge en navbar
+            if (!isModal) {
+                if (window.updateCartBadge) {
+                    window.updateCartBadge(data.itemCount);
+                }
+            } // Actualiza badge en navbar
             
             // Update modal buttons visibility
             if (isModal) {
@@ -117,6 +121,7 @@ function updateQuantity(type, id, size, qty, containerId, isModal) {
             const data = await response.json();
             throw new Error(data.error || 'Error en servidor');
         }
+        if (window.fetchAndUpdateCartBadge) window.fetchAndUpdateCartBadge();
         return loadCart(containerId, isModal);
     })
     .catch(err => alert(err.message));
