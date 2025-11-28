@@ -507,16 +507,46 @@ public class ControladorProyecto {
 
     @GetMapping("/admin/pedidos-cliente")
     @PreAuthorize("hasRole('ADMIN')")
-    public String adminPedidosCliente(@RequestParam(required = false) Long userId, Model model) {
+    public String adminPedidosCliente(@RequestParam(required = false) Long userId,
+            @RequestParam(required = false) String searchType,
+            @RequestParam(required = false) String searchTerm,
+            Model model) {
         model.addAttribute("title", "Pedidos por Cliente — Admin");
         model.addAttribute("cssFile", "style_admin_pedidos_cliente.css");
         model.addAttribute("activePage", "admin");
 
         if (userId == null) {
-            // Mostrar lista de usuarios
-            List<User> users = userRepository.findAll();
+            // Mostrar lista de usuarios con filtro opcional
+            List<User> users;
+            if (searchTerm != null && !searchTerm.isBlank() && searchType != null) {
+                switch (searchType) {
+                    case "id":
+                        try {
+                            Long id = Long.parseLong(searchTerm);
+                            users = userRepository.findById(id).map(List::of).orElse(new ArrayList<>());
+                        } catch (NumberFormatException e) {
+                            users = new ArrayList<>();
+                        }
+                        break;
+                    case "email":
+                        users = userRepository.findByEmailContaining(searchTerm);
+                        break;
+                    case "telefono":
+                        users = userRepository.findByTelefonoContaining(searchTerm);
+                        break;
+                    case "username":
+                        users = userRepository.findByUsernameContaining(searchTerm);
+                        break;
+                    default:
+                        users = userRepository.findAll();
+                }
+            } else {
+                users = userRepository.findAll();
+            }
             model.addAttribute("users", users);
             model.addAttribute("selectedUser", null);
+            model.addAttribute("searchType", searchType);
+            model.addAttribute("searchTerm", searchTerm);
         } else {
             // Mostrar pedidos del usuario seleccionado
             Optional<User> userOpt = userRepository.findById(userId);

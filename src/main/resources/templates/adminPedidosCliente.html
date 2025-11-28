@@ -19,6 +19,30 @@
                 Pedidos por Cliente
             </h2>
 
+            <!-- Search Form -->
+            <div class="card shadow-sm mb-4" th:if="${selectedUser == null}">
+                <div class="card-body">
+                    <form action="/admin/pedidos-cliente" method="get" class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <select class="form-select" name="searchType">
+                                <option value="id" th:selected="${searchType == 'id'}">ID</option>
+                                <option value="email" th:selected="${searchType == 'email'}">Email</option>
+                                <option value="telefono" th:selected="${searchType == 'telefono'}">Teléfono</option>
+                                <option value="username" th:selected="${searchType == 'username'}">Username</option>
+                            </select>
+                        </div>
+                        <div class="col-auto flex-grow-1">
+                            <input type="text" class="form-control" name="searchTerm" placeholder="Buscar..."
+                                th:value="${searchTerm}">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                            <a href="/admin/pedidos-cliente" class="btn btn-outline-secondary">Limpiar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- State 1: List of Users -->
             <div th:if="${selectedUser == null}">
                 <div class="card shadow-sm">

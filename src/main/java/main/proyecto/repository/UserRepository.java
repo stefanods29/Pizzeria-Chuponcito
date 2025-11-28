@@ -3,6 +3,8 @@ package main.proyecto.repository;
 import main.proyecto.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +18,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     boolean existsByTelefono(String telefono);
+
+    List<User> findByEmailContaining(String email);
+
+    List<User> findByTelefonoContaining(String telefono);
+
+    List<User> findByUsernameContaining(String username);
 }
