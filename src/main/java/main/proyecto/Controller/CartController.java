@@ -62,19 +62,32 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addItem(@RequestBody CartItem item, HttpSession session) {
+    public ResponseEntity<?> addItem(@RequestBody CartItem item, HttpSession session) {
         if (item.getQuantity() == null || item.getQuantity() < 1) {
             item.setQuantity(1);
         }
         // Resolver imageUrl y validar
         resolveItemDetails(item);
+
+        // Check stock
+        String errorMsg = checkStock(item, item.getQuantity());
+        if (errorMsg != null) {
+            return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
+        }
+
         Map<String, CartItem> cartMap = getCartMapSafely(session);
         if (cartMap == null) {
             cartMap = new LinkedHashMap<>();
         }
         String key = generateKey(item);
         CartItem existing = cartMap.get(key);
+
         if (existing != null) {
+            // Check stock for total quantity
+            errorMsg = checkStock(item, existing.getQuantity() + item.getQuantity());
+            if (errorMsg != null) {
+                return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
+            }
             existing.setQuantity(existing.getQuantity() + item.getQuantity());
         } else {
             cartMap.put(key, item);
@@ -84,7 +97,7 @@ public class CartController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateItem(@RequestBody CartItem item, HttpSession session) {
+    public ResponseEntity<?> updateItem(@RequestBody CartItem item, HttpSession session) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
         if (cartMap == null) {
             return ResponseEntity.notFound().build();
@@ -99,9 +112,62 @@ public class CartController {
             session.setAttribute("cart", cartMap);
             return ResponseEntity.ok("Item removido del carrito");
         }
+
+        // Check stock
+        String errorMsg = checkStock(item, item.getQuantity());
+        if (errorMsg != null) {
+            return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
+        }
+
         existing.setQuantity(item.getQuantity());
         session.setAttribute("cart", cartMap);
         return ResponseEntity.ok("Cantidad actualizada");
+    }
+
+    private String checkStock(CartItem item, int quantity) {
+        switch (item.getType()) {
+            case "pizza" -> {
+                Optional<Pizza> p = pizzaRepository.findById(item.getProductId());
+                if (p.isPresent()) {
+                    if (p.get().getStockQuantity() < quantity) {
+                        return "No hay suficiente stock para la pizza: " + p.get().getName();
+                    }
+                } else {
+                    return "Pizza no encontrada: " + item.getName();
+                }
+            }
+            case "bebida" -> {
+                Optional<Bebida> b = bebidaRepository.findById(item.getProductId());
+                if (b.isPresent()) {
+                    if (b.get().getStockQuantity() < quantity) {
+                        return "No hay suficiente stock para la bebida: " + b.get().getName();
+                    }
+                } else {
+                    return "Bebida no encontrada: " + item.getName();
+                }
+            }
+            case "extra" -> {
+                Optional<Extra> e = extraRepository.findById(item.getProductId());
+                if (e.isPresent()) {
+                    if (e.get().getStockQuantity() < quantity) {
+                        return "No hay suficiente stock para el extra: " + e.get().getName();
+                    }
+                } else {
+                    return "Extra no encontrado: " + item.getName();
+                }
+            }
+            case "promo" -> {
+                Optional<Promotion> pr = promotionRepository.findById(item.getProductId());
+                if (pr.isPresent()) {
+                    if (pr.get().getStockQuantity() < quantity) {
+                        return "No hay suficiente stock para la promoción: " + pr.get().getName();
+                    }
+                } else {
+                    return "Promoción no encontrada: " + item.getName();
+                }
+            }
+        }
+        return null;
     }
 
     @DeleteMapping("/remove")
@@ -149,6 +215,84 @@ public class CartController {
         }
 
         List<CartItem> items = new ArrayList<>(cartMap.values());
+
+        // 1. Validate Stock
+        for (CartItem item : items) {
+            String errorMsg = null;
+            switch (item.getType()) {
+                case "pizza" -> {
+                    Optional<Pizza> p = pizzaRepository.findById(item.getProductId());
+                    if (p.isPresent()) {
+                        if (p.get().getStockQuantity() < item.getQuantity()) {
+                            errorMsg = "No hay suficiente stock para la pizza: " + p.get().getName();
+                        }
+                    } else {
+                        errorMsg = "Pizza no encontrada: " + item.getName();
+                    }
+                }
+                case "bebida" -> {
+                    Optional<Bebida> b = bebidaRepository.findById(item.getProductId());
+                    if (b.isPresent()) {
+                        if (b.get().getStockQuantity() < item.getQuantity()) {
+                            errorMsg = "No hay suficiente stock para la bebida: " + b.get().getName();
+                        }
+                    } else {
+                        errorMsg = "Bebida no encontrada: " + item.getName();
+                    }
+                }
+                case "extra" -> {
+                    Optional<Extra> e = extraRepository.findById(item.getProductId());
+                    if (e.isPresent()) {
+                        if (e.get().getStockQuantity() < item.getQuantity()) {
+                            errorMsg = "No hay suficiente stock para el extra: " + e.get().getName();
+                        }
+                    } else {
+                        errorMsg = "Extra no encontrado: " + item.getName();
+                    }
+                }
+                case "promo" -> {
+                    Optional<Promotion> pr = promotionRepository.findById(item.getProductId());
+                    if (pr.isPresent()) {
+                        if (pr.get().getStockQuantity() < item.getQuantity()) {
+                            errorMsg = "No hay suficiente stock para la promoción: " + pr.get().getName();
+                        }
+                    } else {
+                        errorMsg = "Promoción no encontrada: " + item.getName();
+                    }
+                }
+            }
+
+            if (errorMsg != null) {
+                return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
+            }
+        }
+
+        // 2. Deduct Stock
+        for (CartItem item : items) {
+            switch (item.getType()) {
+                case "pizza" -> {
+                    Pizza p = pizzaRepository.findById(item.getProductId()).get();
+                    p.setStockQuantity(p.getStockQuantity() - item.getQuantity());
+                    pizzaRepository.save(p);
+                }
+                case "bebida" -> {
+                    Bebida b = bebidaRepository.findById(item.getProductId()).get();
+                    b.setStockQuantity(b.getStockQuantity() - item.getQuantity());
+                    bebidaRepository.save(b);
+                }
+                case "extra" -> {
+                    Extra e = extraRepository.findById(item.getProductId()).get();
+                    e.setStockQuantity(e.getStockQuantity() - item.getQuantity());
+                    extraRepository.save(e);
+                }
+                case "promo" -> {
+                    Promotion pr = promotionRepository.findById(item.getProductId()).get();
+                    pr.setStockQuantity(pr.getStockQuantity() - item.getQuantity());
+                    promotionRepository.save(pr);
+                }
+            }
+        }
+
         double total = items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
         ObjectMapper objectMapper = new ObjectMapper();
         String itemsJson;

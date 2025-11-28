@@ -112,8 +112,14 @@ function updateQuantity(type, id, size, qty, containerId, isModal) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item)
     })
-    .then(() => loadCart(containerId, isModal))
-    .catch(err => alert('Error actualizando: ' + err));
+    .then(async response => {
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || 'Error en servidor');
+        }
+        return loadCart(containerId, isModal);
+    })
+    .catch(err => alert(err.message));
 }
 
 function removeItem(type, id, size, containerId, isModal) {

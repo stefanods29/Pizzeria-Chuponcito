@@ -66,8 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(item)
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Error en servidor');
+        .then(async response => {
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Error en servidor');
+            }
             return response.text();
         })
         .then(message => {
@@ -84,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 loadCartInModal();
             }
         })
-        .catch(err => alert('Error al agregar al carrito: ' + err));
+        .catch(err => alert(err.message));
     }
 
     // Para modal de pizzas

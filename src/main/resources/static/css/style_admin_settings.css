@@ -63,6 +63,7 @@
     display: inline-block;
     transition: transform 0.3s ease;
     background: linear-gradient(45deg, var(--brand), var(--accent));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
