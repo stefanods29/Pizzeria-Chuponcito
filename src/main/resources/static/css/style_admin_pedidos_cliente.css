@@ -105,3 +105,33 @@ h2, h5 {
     background-color: var(--card-bg);
     border-color: rgba(255, 255, 255, 0.1);
 }
+
+/* Admin Warning Section */
+.admin-warning-section {
+    margin-top: 3rem;
+    padding: 2rem 0;
+}
+
+.admin-logo {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem;
+    opacity: 0.9;
+}
+
+.admin-warning-text {
+    font-size: 1.1rem;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* Light mode - black text */
+[data-theme="light"] .admin-warning-text {
+    color: #000000;
+}
+
+/* Dark mode - orange text */
+[data-theme="dark"] .admin-warning-text {
+    color: var(--brand);
+}

@@ -54,7 +54,9 @@
                                                 <button class="btn btn-sm btn-accion promo-btn" type="button"
                                                     th:data-id="${promo.id}" th:data-name="${promo.name}"
                                                     th:data-description="${promo.description}"
-                                                    th:data-price="${promo.promoPrice}" data-bs-toggle="modal"
+                                                    th:data-price="${promo.promoPrice}"
+                                                    th:data-image-url="${promo.imageUrl}"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#promoModal">
                                                     Ordenar
                                                 </button>
@@ -108,18 +110,28 @@
 
         <!-- Modal Promociones -->
         <div class="modal fade" id="promoModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="promoTitle">Detalles de Promoción</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <p id="promoDesc"></p>
-                        <h6>Contenido:</h6>
-                        <ul id="promoIngredients">
-                            <li></li>
-                        </ul>
+                        <div class="row g-3">
+                            <!-- Imagen a la izquierda -->
+                            <div class="col-md-5">
+                                <img id="promoImage" src="/images/default-promo.png" class="img-fluid rounded" 
+                                     alt="Promoción" style="width: 100%; max-height: 300px; object-fit: cover;">
+                            </div>
+                            <!-- Información a la derecha -->
+                            <div class="col-md-7">
+                                <p id="promoDesc"></p>
+                                <h6>Contenido:</h6>
+                                <ul id="promoIngredients">
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

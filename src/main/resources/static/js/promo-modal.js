@@ -73,6 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const detalles = Array.isArray(data.detalles) ? data.detalles : [];
       renderDetalles(detalles);
       
+      // Actualizar la imagen del modal
+      const imageEl = document.getElementById('promoImage');
+      if (imageEl) {
+        imageEl.src = data.imageUrl || '/images/default-promo.png';
+        imageEl.alt = data.name || 'Promoción';
+      }
+      
       // Guardar datos de la promoción para agregar al carrito
       currentPromoData = {
         id: promoId,

@@ -2,77 +2,111 @@
 
 /* Accordion Styles */
 .accordion-item {
-    background-color: var(--card-bg);
-    border: 1px solid rgba(var(--gray-4-rgb), 0.2);
-    color: var(--text-color);
+  background-color: var(--card-bg);
+  border: 1px solid rgba(var(--gray-4-rgb), 0.2);
+  color: var(--text-color);
 }
 
 .accordion-button {
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    box-shadow: none;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: none;
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: rgba(var(--brand-rgb), 0.1);
-    color: var(--brand);
-    box-shadow: none;
+  background-color: rgba(var(--brand-rgb), 0.1);
+  color: var(--brand);
+  box-shadow: none;
 }
 
 .accordion-button::after {
-    filter: grayscale(1);
+  filter: grayscale(1);
 }
 
 [data-theme="dark"] .accordion-button::after {
-    filter: invert(1);
+  filter: invert(1);
 }
 
 [data-theme="dark"] .accordion-button:not(.collapsed)::after {
-    filter: invert(1) sepia(1) saturate(5) hue-rotate(35deg);
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(35deg);
 }
 
 /* Table Styles */
 .table {
-    color: var(--text-color);
-    border-color: rgba(var(--gray-4-rgb), 0.2);
+  color: var(--text-color);
+  border-color: rgba(var(--gray-4-rgb), 0.2);
 }
 
 .table > :not(caption) > * > * {
-    background-color: transparent;
-    color: var(--text-color);
-    border-bottom-color: rgba(var(--gray-4-rgb), 0.2);
+  background-color: transparent;
+  color: var(--text-color);
+  border-bottom-color: rgba(var(--gray-4-rgb), 0.2);
 }
 
 .table-bordered {
-    border-color: rgba(var(--gray-4-rgb), 0.2);
+  border-color: rgba(var(--gray-4-rgb), 0.2);
 }
 
 /* Text Colors */
-h2, h5 {
-    color: var(--brand);
+h2,
+h5 {
+  color: var(--brand);
 }
 
 .text-muted {
-    color: rgba(var(--text-rgb), 0.6) !important;
+  color: rgba(var(--text-rgb), 0.6) !important;
 }
 
 [data-theme="dark"] .text-muted {
-    color: rgba(255, 255, 255, 0.6) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
 /* Badge Styles */
 .badge.bg-primary {
-    background-color: var(--brand) !important;
-    color: var(--button-text);
+  background-color: var(--brand) !important;
+  color: var(--button-text);
 }
 
 /* Alert Styles */
 .alert-info {
-    background-color: rgba(var(--brand-rgb), 0.1);
-    border-color: rgba(var(--brand-rgb), 0.2);
-    color: var(--text-color);
+  background-color: rgba(var(--brand-rgb), 0.1);
+  border-color: rgba(var(--brand-rgb), 0.2);
+  color: var(--text-color);
 }
 
 .alert-link {
-    color: var(--brand);
+  color: var(--brand);
+}
+
+/* Back Button Styles */
+.btn-back {
+  background: var(--button-bg);
+  border: none;
+  color: #000000; /* Black text in light mode */
+  font-weight: 700;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(var(--brand-rgb), 0.45);
+  filter: brightness(1.08);
+  color: #000000;
+}
+
+/* Dark mode text color */
+[data-theme="dark"] .btn-back {
+  color: #ffffff; /* White text in dark mode */
+}
+
+[data-theme="dark"] .btn-back:hover {
+  color: #ffffff;
 }
