@@ -1,0 +1,128 @@
+/* style_admin_settings.css */
+
+/* Use global variables from style_Index.css */
+
+.text-brand {
+    color: var(--brand) !important;
+}
+
+/* Page Header */
+.display-5 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-color);
+}
+
+.lead {
+    color: rgba(var(--text-rgb), 0.8) !important;
+}
+
+/* Cards */
+.card {
+    border: 1px solid rgba(var(--gray-4-rgb), 0.1);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.05) 0%, rgba(var(--brand-rgb), 0) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(var(--brand-rgb), 0.15);
+    border-color: rgba(var(--brand-rgb), 0.3);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-body {
+    padding: 2.5rem 2rem;
+}
+
+/* Icons */
+.card i {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+    background: linear-gradient(45deg, var(--brand), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card:hover i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Typography */
+.card-title {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.card-text {
+    color: rgba(var(--text-rgb), 0.7) !important;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+/* Button (Stretched Link) */
+.btn-outline-danger {
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    border-width: 2px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    
+    /* Override bootstrap danger with brand colors */
+    color: var(--brand);
+    border-color: var(--brand);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--brand);
+    border-color: var(--brand);
+    color: var(--button-text);
+    box-shadow: 0 4px 10px rgba(var(--brand-rgb), 0.3);
+}
+
+.btn-outline-danger:focus, 
+.btn-outline-danger:active, 
+.btn-outline-danger.active {
+    background-color: var(--brand) !important;
+    border-color: var(--brand) !important;
+    color: var(--button-text) !important;
+    box-shadow: 0 4px 10px rgba(var(--brand-rgb), 0.3);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    .card i {
+        font-size: 2.5rem;
+    }
+}

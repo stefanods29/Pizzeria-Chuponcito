@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -580,6 +583,188 @@ public class ControladorProyecto {
         }
 
         return "adminPedidosCliente";
+    }
+    // --- ADMIN SETTINGS & CRUD ---
+
+    @GetMapping("/admin/settings")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminSettings(@RequestParam(required = false) String type, Model model) {
+        model.addAttribute("activePage", "admin");
+
+        if (type == null) {
+            model.addAttribute("title", "Configuración Admin — Chuponcito");
+            model.addAttribute("cssFile", "style_admin_settings.css");
+            return "adminSettings";
+        }
+
+        // CRUD View
+        model.addAttribute("cssFile", "style_admin_crud.css");
+        model.addAttribute("type", type);
+
+        switch (type) {
+            case "pizza":
+                model.addAttribute("title", "Gestión de Pizzas");
+                model.addAttribute("typeDisplay", "Pizzas");
+                model.addAttribute("items", pizzaRepository.findAll());
+                break;
+            case "bebida":
+                model.addAttribute("title", "Gestión de Bebidas");
+                model.addAttribute("typeDisplay", "Bebidas");
+                model.addAttribute("items", bebidaRepository.findAll());
+                break;
+            case "extra":
+                model.addAttribute("title", "Gestión de Extras");
+                model.addAttribute("typeDisplay", "Extras");
+                model.addAttribute("items", extraRepository.findAll());
+                break;
+            case "promo":
+                model.addAttribute("title", "Gestión de Promociones");
+                model.addAttribute("typeDisplay", "Promociones");
+                model.addAttribute("items", promotionRepository.findAll());
+                break;
+            default:
+                return "redirect:/admin/settings";
+        }
+
+        return "adminCrud";
+    }
+
+    @PostMapping("/admin/settings/save")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String saveItem(@RequestParam String type,
+            @RequestParam(required = false) Long id,
+            @RequestParam String name,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String imageUrl,
+            @RequestParam(defaultValue = "0") int stockQuantity,
+            @RequestParam(defaultValue = "5") int lowStockThreshold,
+            // Specific fields
+            @RequestParam(required = false) Double price,
+            @RequestParam(required = false) String size, // Bebida size
+            @RequestParam(required = false) String ingredientsList, // Comma separated
+            @RequestParam(required = false) String sizesJson, // JSON string for Pizza sizes
+            @RequestParam(required = false) Double promoPrice,
+            @RequestParam(required = false) Boolean isActive,
+            @RequestParam(required = false) LocalDate validFrom,
+            @RequestParam(required = false) LocalDate validTo,
+            @RequestParam(required = false) String itemsJson, // JSON for Promo items
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            switch (type) {
+                case "pizza":
+                    Pizza pizza = (id != null) ? pizzaRepository.findById(id).orElse(new Pizza()) : new Pizza();
+                    pizza.setName(name);
+                    pizza.setDescription(description);
+                    pizza.setImageUrl(imageUrl);
+                    pizza.setStockQuantity(stockQuantity);
+                    pizza.setLowStockThreshold(lowStockThreshold);
+
+                    if (ingredientsList != null && !ingredientsList.isBlank()) {
+                        pizza.setIngredients(java.util.Arrays.asList(ingredientsList.split("\\s*,\\s*")));
+                    }
+                    if (sizesJson != null && !sizesJson.isBlank()) {
+                        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                        Map<String, Double> sizesMap = mapper.readValue(sizesJson, Map.class);
+                        pizza.setSizes(sizesMap);
+                    }
+                    pizzaRepository.save(pizza);
+                    break;
+
+                case "bebida":
+                    Bebida bebida = (id != null) ? bebidaRepository.findById(id).orElse(new Bebida()) : new Bebida();
+                    bebida.setName(name);
+                    bebida.setDescription(description);
+                    bebida.setImageUrl(imageUrl);
+                    bebida.setStockQuantity(stockQuantity);
+                    bebida.setLowStockThreshold(lowStockThreshold);
+                    if (price != null)
+                        bebida.setPrice(price);
+                    if (size != null)
+                        bebida.setSize(size);
+                    bebidaRepository.save(bebida);
+                    break;
+
+                case "extra":
+                    Extra extra = (id != null) ? extraRepository.findById(id).orElse(new Extra()) : new Extra();
+                    extra.setName(name);
+                    extra.setDescription(description);
+                    extra.setImageUrl(imageUrl);
+                    extra.setStockQuantity(stockQuantity);
+                    extra.setLowStockThreshold(lowStockThreshold);
+                    if (price != null)
+                        extra.setPrice(price);
+                    extraRepository.save(extra);
+                    break;
+
+                case "promo":
+                    Promotion promo = (id != null) ? promotionRepository.findById(id).orElse(new Promotion())
+                            : new Promotion();
+                    promo.setName(name);
+                    promo.setDescription(description);
+                    promo.setImageUrl(imageUrl);
+                    promo.setStockQuantity(stockQuantity);
+                    promo.setLowStockThreshold(lowStockThreshold);
+                    if (promoPrice != null)
+                        promo.setPromoPrice(BigDecimal.valueOf(promoPrice));
+                    promo.setActive(isActive != null && isActive);
+                    promo.setValidFrom(validFrom);
+                    promo.setValidTo(validTo);
+                    if (itemsJson != null)
+                        promo.setItems(itemsJson);
+                    promotionRepository.save(promo);
+                    break;
+            }
+            redirectAttributes.addFlashAttribute("message", "Item guardado correctamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error al guardar: " + e.getMessage());
+        }
+
+        return "redirect:/admin/settings?type=" + type;
+    }
+
+    @GetMapping("/admin/settings/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteItem(@RequestParam String type, @RequestParam Long id, RedirectAttributes redirectAttributes) {
+        try {
+            switch (type) {
+                case "pizza":
+                    pizzaRepository.deleteById(id);
+                    break;
+                case "bebida":
+                    bebidaRepository.deleteById(id);
+                    break;
+                case "extra":
+                    extraRepository.deleteById(id);
+                    break;
+                case "promo":
+                    promotionRepository.deleteById(id);
+                    break;
+            }
+            redirectAttributes.addFlashAttribute("message", "Item eliminado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
+        }
+        return "redirect:/admin/settings?type=" + type;
+    }
+
+    @GetMapping("/admin/settings/get")
+    @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
+    public Object getItem(@RequestParam String type, @RequestParam Long id) {
+        switch (type) {
+            case "pizza":
+                return pizzaRepository.findById(id).orElse(null);
+            case "bebida":
+                return bebidaRepository.findById(id).orElse(null);
+            case "extra":
+                return extraRepository.findById(id).orElse(null);
+            case "promo":
+                return promotionRepository.findById(id).orElse(null);
+            default:
+                return null;
+        }
     }
 
     @GetMapping("/carrito")

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(
+          title=${title},
+          cssFile=${cssFile},
+          activePage=${activePage},
+          content=~{::content})}">
+
+<head>
+    <title th:text="${title}">Configuración Admin — Chuponcito</title>
+</head>
+
+<body>
+    <div th:fragment="content">
+        <div class="container py-5">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h1 class="display-5 fw-bold text-brand">Configuración de Administración</h1>
+                    <p class="lead text-muted">Gestiona el inventario y productos de la pizzería</p>
+                </div>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <!-- Pizzas -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-pie-chart-fill fs-1 text-brand"></i>
+                            </div>
+                            <h3 class="card-title h4">Pizzas</h3>
+                            <p class="card-text text-muted small">Gestionar sabores, tamaños e ingredientes.</p>
+                            <a href="/admin/settings?type=pizza"
+                                class="btn btn-outline-danger w-100 stretched-link">Gestionar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bebidas -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-cup-straw fs-1 text-brand"></i>
+                            </div>
+                            <h3 class="card-title h4">Bebidas</h3>
+                            <p class="card-text text-muted small">Gestionar catálogo de bebidas y precios.</p>
+                            <a href="/admin/settings?type=bebida"
+                                class="btn btn-outline-danger w-100 stretched-link">Gestionar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extras -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-plus-circle-dotted fs-1 text-brand"></i>
+                            </div>
+                            <h3 class="card-title h4">Extras</h3>
+                            <p class="card-text text-muted small">Gestionar salsas y complementos adicionales.</p>
+                            <a href="/admin/settings?type=extra"
+                                class="btn btn-outline-danger w-100 stretched-link">Gestionar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promociones -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-tags-fill fs-1 text-brand"></i>
+                            </div>
+                            <h3 class="card-title h4">Promociones</h3>
+                            <p class="card-text text-muted small">Crear y editar ofertas especiales y combos.</p>
+                            <a href="/admin/settings?type=promo"
+                                class="btn btn-outline-danger w-100 stretched-link">Gestionar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
