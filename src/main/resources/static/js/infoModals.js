@@ -2,11 +2,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const pizzaModal = document.getElementById('pizzaModal');
     const extraModal = document.getElementById('extraModal');
     const bebidaModal = document.getElementById('bebidaModal');
-    // promoModal es manejado por promo-modal.js, no se usa aquí
     const pizzaTitle = document.getElementById('pizzaTitle');
     const pizzaDesc = document.getElementById('pizzaDesc');
     const pizzaIngredients = document.getElementById('pizzaIngredients');
-    const pizzaSizeSelect = document.getElementById('pizzaSize');  // Select de tamaños
+    const pizzaSizeSelect = document.getElementById('pizzaSize'); 
     const extraTitle = document.getElementById('extraTitle');
     const extraDesc = document.getElementById('extraDesc');
     const extraIngredients = document.getElementById('extraIngredients');
@@ -250,7 +249,5 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCart(item);
     });
 
-    // NOTA: El modal de promociones ahora es manejado por promo-modal.js
-    // Se removió el código duplicado para evitar doble agregado al carrito
-    // El listener de promociones está en promo-modal.js que se carga desde layout.html
+
 });

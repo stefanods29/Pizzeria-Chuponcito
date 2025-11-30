@@ -495,12 +495,9 @@ body {
   color: rgba(var(--text-rgb), 0.6) !important;
 }
 
-/* Fix for Bootstrap text-muted in dark mode */
 [data-theme="dark"] .text-muted {
   color: rgba(255, 255, 255, 0.6) !important;
 }
-
-/* Cart Item Styles in Modal */
 .cart-item {
   border-color: rgba(var(--brand-rgb), 0.2) !important;
   background: rgba(var(--text-rgb), 0.02);
@@ -623,7 +620,6 @@ body {
   }
 }
 
-/* Fix cart button badge positioning to prevent layout shift */
 #cartBtn {
   position: relative;
 }

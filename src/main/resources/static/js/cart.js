@@ -57,7 +57,7 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
                 }
             } // Actualiza badge en navbar
             
-            // Update modal buttons visibility
+            // Actualiza botones de checkout y clear en modal
             if (isModal) {
                 const checkoutBtn = document.getElementById('goToCheckoutBtn');
                 const clearBtn = document.getElementById('clearCartBtn');
@@ -67,7 +67,6 @@ function loadCart(containerId = 'cartItemsContainer', isModal = false) {
                 if (clearBtn) clearBtn.style.display = hasItems ? 'inline-block' : 'none';
             }
             
-            // Setup event listeners con event delegation
             setupCartEventListeners(containerId, isModal);
         })
         .catch(err => console.error('Error cargando carrito:', err));

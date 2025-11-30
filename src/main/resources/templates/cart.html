@@ -5,7 +5,7 @@
     activePage=${activePage},
     content=~{::content})}">
 <head>
-    <script src="/js/cart.js" defer></script> <!-- JS compartido para render -->
+    <script src="/js/cart.js" defer></script> <!-- JS para render -->
 </head>
 <body>
     <div th:fragment="content">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <div id="cartTotal" class="h3 text-brand">Total: S/ 0.00</div>
-                        <!-- Botón para checkout (futuro) -->
+                        <!-- Botón para checkout -->
                         <button class="btn btn-accion mt-2" onclick="proceedToCheckout()">Proceder al Pago</button>
                     </div>
                 </div>

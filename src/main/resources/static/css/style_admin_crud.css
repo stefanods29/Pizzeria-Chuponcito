@@ -215,6 +215,18 @@
     color: var(--text-color);
 }
 
+.form-select option {
+    background-color: rgb(var(--bg-rgb));
+    color: var(--text-color);
+}
+
+.form-control:disabled, .form-select:disabled {
+    background-color: rgba(var(--gray-4-rgb), 0.1);
+    color: rgba(var(--text-rgb), 0.5);
+    border-color: rgba(var(--gray-4-rgb), 0.1);
+    opacity: 1;
+}
+
 .modal-footer {
     border-top: 1px solid rgba(var(--gray-4-rgb), 0.1);
     padding: 1.5rem;
@@ -231,7 +243,6 @@
     border-color: rgba(var(--gray-4-rgb), 0.8);
 }
 
-/* Checkbox */
 .form-check-input {
     background-color: var(--form-bg);
     border-color: var(--form-border);
@@ -244,4 +255,36 @@
 
 .form-check-label {
     color: var(--text-color);
+}
+
+#priceListContainer, #promoItemsContainer {
+    background-color: rgba(var(--gray-4-rgb), 0.05);
+    border-color: rgba(var(--gray-4-rgb), 0.2) !important;
+}
+.btn-outline-success {
+    color: var(--secondary-accent);
+    border-color: var(--secondary-accent);
+    border-radius: 8px;
+}
+
+.btn-outline-success:hover {
+    background-color: var(--secondary-accent);
+    color: #fff;
+    border-color: var(--secondary-accent);
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
 }

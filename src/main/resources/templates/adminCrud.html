@@ -11,7 +11,10 @@
 
 <body>
     <div th:fragment="content">
+
         <div class="container py-5">
+
+            <!-- Header + Botón Agregar -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <a href="/admin/settings" class="text-decoration-none text-muted mb-2 d-inline-block">
@@ -24,7 +27,7 @@
                 </button>
             </div>
 
-            <!-- Alerts -->
+            <!-- Mensajes flash -->
             <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
                 <span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -34,7 +37,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <!-- Table -->
+            <!-- Tabla principal -->
             <div class="card shadow-sm border-0">
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -60,13 +63,15 @@
                                     </td>
                                     <td th:text="${item.name}">Nombre</td>
 
-                                    <!-- Pizza Description -->
+                                    <!-- Descripción solo para pizzas -->
                                     <td th:if="${type == 'pizza'}"
                                         th:text="${#strings.abbreviate(item.description, 50)}">Desc</td>
 
-                                    <!-- Price for others -->
+                                    <!-- Precio para bebida/extra -->
                                     <td th:if="${type == 'bebida' or type == 'extra'}"
                                         th:text="'S/ ' + ${#numbers.formatDecimal(item.price, 1, 2)}">S/ 0.00</td>
+
+                                    <!-- Precio promo -->
                                     <td th:if="${type == 'promo'}"
                                         th:text="'S/ ' + ${#numbers.formatDecimal(item.promoPrice, 1, 2)}">S/ 0.00</td>
 
@@ -85,7 +90,8 @@
                                     </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(items)}">
-                                    <td colspan="6" class="text-center py-4 text-muted">No hay registros encontrados.
+                                    <td colspan="7" class="text-center py-4 text-muted">
+                                        No hay registros encontrados.
                                     </td>
                                 </tr>
                             </tbody>
@@ -93,211 +99,160 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal Form -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <form th:action="@{/admin/settings/save}" method="post">
-                        <input type="hidden" name="type" th:value="${type}">
-                        <input type="hidden" id="itemId" name="id">
+            <!-- Modal -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form th:action="@{/admin/settings/save}" method="post" onsubmit="return prepareFormSubmit()">
+                            <input type="hidden" name="type" th:value="${type}">
+                            <input type="hidden" id="itemId" name="id">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Agregar/Editar Item</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row g-3">
-                                <!-- Common Fields -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="name" id="itemName" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">URL Imagen</label>
-                                    <input type="text" class="form-control" name="imageUrl" id="itemImage">
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Descripción</label>
-                                    <textarea class="form-control" name="description" id="itemDescription"
-                                        rows="2"></textarea>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Stock</label>
-                                    <input type="number" class="form-control" name="stockQuantity" id="itemStock"
-                                        required value="0">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Alerta Stock Bajo</label>
-                                    <input type="number" class="form-control" name="lowStockThreshold" id="itemLowStock"
-                                        required value="5">
-                                </div>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle">Agregar/Editar Ítem</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
 
-                                <!-- Specific Fields: Pizza -->
-                                <div th:if="${type == 'pizza'}" class="col-12 border-top pt-3 mt-2">
-                                    <h6 class="fw-bold">Detalles Pizza</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label">Ingredientes (Separados por coma)</label>
-                                        <input type="text" class="form-control" name="ingredientsList"
-                                            id="pizzaIngredients" placeholder="Queso, Tomate, Orégano">
+                            <div class="modal-body">
+                                <div class="row g-3">
+
+                                    <!-- Campos comunes -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" name="name" id="itemName" required>
                                     </div>
-                                    <!-- Sizes are complex map, simplifying for this demo to fixed sizes or JSON string -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Precios por Tamaño (JSON: {"Personal": 15.0,
-                                            "Familiar": 30.0})</label>
-                                        <textarea class="form-control font-monospace" name="sizesJson" id="pizzaSizes"
-                                            rows="3">{"Personal": 0.0, "Mediana": 0.0, "Familiar": 0.0}</textarea>
+                                    <div class="col-md-6">
+                                        <label class="form-label">URL Imagen</label>
+                                        <input type="text" class="form-control" name="imageUrl" id="itemImage">
                                     </div>
-                                </div>
-
-                                <!-- Specific Fields: Bebida -->
-                                <div th:if="${type == 'bebida'}" class="col-12 border-top pt-3 mt-2">
-                                    <h6 class="fw-bold">Detalles Bebida</h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Precio</label>
-                                            <input type="number" step="0.1" class="form-control" name="price"
-                                                id="bebidaPrice">
+                                    <div class="col-12">
+                                        <label class="form-label">Descripción</label>
+                                        <textarea class="form-control" name="description" id="itemDescription"
+                                            rows="2"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Stock</label>
+                                        <input type="number" class="form-control" name="stockQuantity" id="itemStock"
+                                            required value="0">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Alerta Stock Bajo</label>
+                                        <input type="number" class="form-control" name="lowStockThreshold"
+                                            id="itemLowStock" required value="5">
+                                    </div>
+                                    <!-- Si es pizza -->
+                                    <div th:if="${type == 'pizza'}" class="col-12 border-top pt-3 mt-2">
+                                        <h6 class="fw-bold">Detalles Pizza</h6>
+                                        <div class="mb-3">
+                                            <label class="form-label">Ingredientes (separados por coma)</label>
+                                            <input type="text" class="form-control" name="ingredientsList"
+                                                id="pizzaIngredients" placeholder="Queso, Tomate, Orégano">
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Tamaño (ej. 500ml)</label>
-                                            <input type="text" class="form-control" name="size" id="bebidaSize">
+                                        <div class="mb-3">
+                                            <label class="form-label">Precios por Tamaño</label>
+                                            <div id="priceListContainer" class="border rounded p-3">
+                                                <div id="priceList" class="mb-2"></div>
+                                                <button type="button" class="btn btn-sm btn-outline-success"
+                                                    onclick="addPriceRow()">
+                                                    <i class="bi bi-plus-circle me-1"></i>Agregar Tamaño
+                                                </button>
+                                            </div>
+                                            <input type="hidden" name="sizesJson" id="pizzaSizes">
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Specific Fields: Extra -->
-                                <div th:if="${type == 'extra'}" class="col-12 border-top pt-3 mt-2">
-                                    <h6 class="fw-bold">Detalles Extra</h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Precio</label>
-                                            <input type="number" step="0.1" class="form-control" name="price"
-                                                id="extraPrice">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Specific Fields: Promo -->
-                                <div th:if="${type == 'promo'}" class="col-12 border-top pt-3 mt-2">
-                                    <h6 class="fw-bold">Detalles Promoción</h6>
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Precio Promo</label>
-                                            <input type="number" step="0.1" class="form-control" name="promoPrice"
-                                                id="promoPrice">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check mt-4">
-                                                <input class="form-check-input" type="checkbox" name="isActive"
-                                                    id="promoActive" checked>
-                                                <label class="form-check-label" for="promoActive">Activa</label>
+                                    <!-- Si es bebida -->
+                                    <div th:if="${type == 'bebida'}" class="col-12 border-top pt-3 mt-2">
+                                        <h6 class="fw-bold">Detalles Bebida</h6>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Precio</label>
+                                                <input type="number" step="0.1" class="form-control" name="price"
+                                                    id="bebidaPrice">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Tamaño (ej. 500ml)</label>
+                                                <input type="text" class="form-control" name="size" id="bebidaSize">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Válido Desde</label>
-                                            <input type="date" class="form-control" name="validFrom"
-                                                id="promoValidFrom">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Válido Hasta</label>
-                                            <input type="date" class="form-control" name="validTo" id="promoValidTo">
-                                        </div>
-                                        <div class="col-12">
-                                            <label class="form-label">Items (JSON)</label>
-                                            <textarea class="form-control font-monospace" name="itemsJson"
-                                                id="promoItems" rows="2"></textarea>
+                                    </div>
+
+                                    <!-- Si es extra -->
+                                    <div th:if="${type == 'extra'}" class="col-12 border-top pt-3 mt-2">
+                                        <h6 class="fw-bold">Detalles Extra</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Precio</label>
+                                                <input type="number" step="0.1" class="form-control" name="price"
+                                                    id="extraPrice">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                    <!-- Si es promoción -->
+                                    <div th:if="${type == 'promo'}" class="col-12 border-top pt-3 mt-2">
+                                        <h6 class="fw-bold">Detalles Promoción</h6>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Precio Promo</label>
+                                                <input type="number" step="0.1" class="form-control" name="promoPrice"
+                                                    id="promoPrice">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check mt-4">
+                                                    <input class="form-check-input" type="checkbox" name="isActive"
+                                                        id="promoActive" checked>
+                                                    <label class="form-check-label" for="promoActive">Activa</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Válido Desde</label>
+                                                <input type="date" class="form-control" name="validFrom"
+                                                    id="promoValidFrom">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Válido Hasta</label>
+                                                <input type="date" class="form-control" name="validTo"
+                                                    id="promoValidTo">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="form-label">Items de la Promoción</label>
+                                                <div id="promoItemsContainer" class="border rounded p-3">
+                                                    <div id="promoItemsList" class="mb-2"></div>
+                                                    <button type="button" class="btn btn-sm btn-outline-success"
+                                                        onclick="addPromoRow()">
+                                                        <i class="bi bi-plus-circle me-1"></i>Agregar Item
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" name="itemsJson" id="promoItems">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-accion">Guardar</button>
-                        </div>
-                    </form>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-accion">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
+            <!-- Scripts necesarios (solo una vez) -->
+            <script th:inline="javascript">
+                const allPizzas = /*[[${allPizzas}]]*/[];
+                const allBebidas = /*[[${allBebidas}]]*/[];
+                const allExtras = /*[[${allExtras}]]*/[];
+            </script>
+            <script src="/js/crud.js"></script>
+
         </div>
-
-        <script th:inline="javascript">
-            // Initialize modal variable
-            let editModal;
-
-            document.addEventListener('DOMContentLoaded', function () {
-                editModal = new bootstrap.Modal(document.getElementById('editModal'));
-            });
-
-            function clearForm() {
-                document.getElementById('itemId').value = '';
-                document.getElementById('itemName').value = '';
-                document.getElementById('itemImage').value = '';
-                document.getElementById('itemDescription').value = '';
-                document.getElementById('itemStock').value = '0';
-                document.getElementById('itemLowStock').value = '5';
-                document.getElementById('modalTitle').innerText = 'Agregar Nuevo';
-
-                // Clear specific fields if they exist
-                if (document.getElementById('pizzaIngredients')) document.getElementById('pizzaIngredients').value = '';
-                if (document.getElementById('pizzaSizes')) document.getElementById('pizzaSizes').value = '{"Personal": 0.0, "Mediana": 0.0, "Familiar": 0.0}';
-                if (document.getElementById('bebidaPrice')) document.getElementById('bebidaPrice').value = '';
-                if (document.getElementById('bebidaSize')) document.getElementById('bebidaSize').value = '';
-                if (document.getElementById('extraPrice')) document.getElementById('extraPrice').value = '';
-                if (document.getElementById('promoPrice')) document.getElementById('promoPrice').value = '';
-                if (document.getElementById('promoActive')) document.getElementById('promoActive').checked = true;
-                if (document.getElementById('promoValidFrom')) document.getElementById('promoValidFrom').value = '';
-                if (document.getElementById('promoValidTo')) document.getElementById('promoValidTo').value = '';
-                if (document.getElementById('promoItems')) document.getElementById('promoItems').value = '';
-            }
-
-            function editItem(id, type) {
-                document.getElementById('modalTitle').innerText = 'Editar Item';
-
-                fetch(`/admin/settings/get?type=${type}&id=${id}`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (!data) {
-                            alert('Error: No se encontraron datos para este ítem.');
-                            return;
-                        }
-
-                        document.getElementById('itemId').value = data.id || '';
-                        document.getElementById('itemName').value = data.name || '';
-                        document.getElementById('itemImage').value = data.imageUrl || '';
-                        document.getElementById('itemDescription').value = data.description || '';
-                        document.getElementById('itemStock').value = data.stockQuantity || 0;
-                        document.getElementById('itemLowStock').value = data.lowStockThreshold || 5;
-
-                        if (type === 'pizza') {
-                            document.getElementById('pizzaIngredients').value = data.ingredients ? data.ingredients.join(', ') : '';
-                            document.getElementById('pizzaSizes').value = data.sizes ? JSON.stringify(data.sizes) : '{}';
-                        } else if (type === 'bebida') {
-                            document.getElementById('bebidaPrice').value = data.price || '';
-                            document.getElementById('bebidaSize').value = data.size || '';
-                        } else if (type === 'extra') {
-                            document.getElementById('extraPrice').value = data.price || '';
-                        } else if (type === 'promo') {
-                            document.getElementById('promoPrice').value = data.promoPrice || '';
-                            document.getElementById('promoActive').checked = data.isActive;
-                            document.getElementById('promoValidFrom').value = data.validFrom || '';
-                            document.getElementById('promoValidTo').value = data.validTo || '';
-                            document.getElementById('promoItems').value = data.items || '';
-                        }
-
-                        editModal.show();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Hubo un error al cargar los datos del ítem.');
-                    });
-            }
-        </script>
+        <!-- ====================== FIN FRAGMENTO CONTENT ====================== -->
     </div>
 </body>
 

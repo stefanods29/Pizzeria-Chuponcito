@@ -11,7 +11,7 @@ public class CustomUserDetails implements UserDetails {
     private Long id;
     private String email; // Para auth/login
     private String username; // Para mostrar en navbar
-    private String displayName; // ¡FIX: Para navbar "Bienvenido, Nombre"
+    private String displayName; // Para navbar "Bienvenido, Nombre"
     private String password; // Hasheada
     private boolean enabled;
     private Role role;
@@ -55,7 +55,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email; // Usa email para auth
+        return email; 
     }
 
     @Override

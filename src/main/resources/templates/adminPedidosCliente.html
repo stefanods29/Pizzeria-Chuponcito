@@ -7,7 +7,7 @@
     <div th:fragment="content">
         <div class="container py-5" style="max-width: 1000px;">
 
-            <!-- Back Button if viewing specific user -->
+            <!-- Botón de Volver si se está viendo un usuario específico -->
             <div class="mb-3" th:if="${selectedUser != null}">
                 <a href="/admin/pedidos-cliente" class="btn btn-outline-secondary">
                     &larr; Volver a Lista de Clientes
@@ -19,7 +19,7 @@
                 Pedidos por Cliente
             </h2>
 
-            <!-- Search Form -->
+            <!-- Formulario de búsqueda -->
             <div class="card shadow-sm mb-4" th:if="${selectedUser == null}">
                 <div class="card-body">
                     <form action="/admin/pedidos-cliente" method="get" class="row g-3 align-items-center">
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <!-- State 1: List of Users -->
+            <!-- Lista de Usuarios -->
             <div th:if="${selectedUser == null}">
                 <div class="card shadow-sm">
                     <div class="card-body">
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <!-- State 2: List of Orders for Selected User -->
+            <!-- Lista de Pedidos para el Usuario Seleccionado -->
             <div th:if="${selectedUser != null}">
                 <div th:if="${orders.empty}" class="alert alert-info text-center">
                     Este usuario no ha realizado ningún pedido.
@@ -154,7 +154,6 @@
                 </div>
             </div>
 
-            <!-- Logo and Warning Message -->
             <div class="row mt-5 mb-4">
                 <div class="col-12 text-center admin-warning-section">
                     <img src="/images/logo.png" alt="Logo Chuponcito" class="admin-logo mb-3">

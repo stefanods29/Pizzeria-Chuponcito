@@ -48,10 +48,8 @@
                   <h5 class="card-title" th:text="${pizza.name}">Pizza</h5>
                   <p class="card-text" th:text="${pizza.description}">Descripción</p>
                   <div class="d-flex justify-content-between align-items-center">
-                    <!-- Precio default de Mediana (con check null) -->
                     <strong
                       th:text="${pizza.sizes != null and pizza.sizes['Mediana'] != null} ? 'S/' + ${#numbers.formatDecimal(pizza.sizes['Mediana'], 1, 2)} : 'S/ --'">Precio</strong>
-                    <!-- FIX: Ingredients como string simple, sizes como toString() -->
                     <button class="btn btn-sm btn-outline-secondary pizza-btn" data-bs-toggle="modal"
                       data-bs-target="#pizzaModal"
                       th:attr="data-id=${pizza.id}, data-name=${pizza.name}, data-desc=${pizza.description}, data-ingredients=${pizza.ingredients.toString().replace('[', '').replace(']', '')}, data-sizes=${pizza.sizes.toString()}"
@@ -123,7 +121,7 @@
                     <p>Crujiente y sabroso, el toque perfecto de sal.</p>
                   </div>
                 </div>
-                <!-- Segunda copia: Duplicado para loop seamless -->
+                <!-- Segunda copia: Duplicado para loop -->
                 <div class="feature-card-wrapper">
                   <div class="tarjeta-caracteristica p-4 h-100">
                     <img src="images/pizza.png" width="72" alt="Queso">
@@ -184,7 +182,7 @@
           <h3 class="fw-bold text-center mb-4">Qué dicen nuestros clientes</h3>
           <div id="carouselTestimonials" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-              <!-- Testimonial 1 -->
+              <!-- Testimonio 1 -->
               <div class="carousel-item active">
                 <div class="testimonial-card mx-auto">
                   <div class="testimonial-content">
@@ -209,7 +207,7 @@
                 </div>
               </div>
 
-              <!-- Testimonial 2 -->
+              <!-- Testimonio 2 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
                   <div class="testimonial-content">
@@ -234,7 +232,7 @@
                 </div>
               </div>
 
-              <!-- Testimonial 3 -->
+              <!-- Testimonio 3 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
                   <div class="testimonial-content">
@@ -259,7 +257,7 @@
                 </div>
               </div>
 
-              <!-- Testimonial 4 -->
+              <!-- Testimonio 4 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
                   <div class="testimonial-content">
@@ -284,7 +282,7 @@
                 </div>
               </div>
 
-              <!-- Testimonial 5 -->
+              <!-- Testimonio 5 -->
               <div class="carousel-item">
                 <div class="testimonial-card mx-auto">
                   <div class="testimonial-content">
@@ -310,7 +308,7 @@
               </div>
             </div>
 
-            <!-- Carousel Controls -->
+            <!-- Controles del Carousel -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselTestimonials"
               data-bs-slide="prev">
               <span class="carousel-control-prev-icon"></span>
@@ -322,7 +320,7 @@
               <span class="visually-hidden">Siguiente</span>
             </button>
 
-            <!-- Carousel Indicators -->
+            <!-- Indicadores del Carousel -->
             <div class="carousel-indicators">
               <button type="button" data-bs-target="#carouselTestimonials" data-bs-slide-to="0" class="active"></button>
               <button type="button" data-bs-target="#carouselTestimonials" data-bs-slide-to="1"></button>
@@ -422,7 +420,7 @@
       </section>
     </main>
 
-    <!-- Include modals fragment -->
+    <!-- Modales -->
     <div th:replace="~{fragments/modals :: modals}"></div>
   </div>
 

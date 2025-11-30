@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
       items.forEach(it => {
         const nombre = it.nombre || 'Desconocido';
         const cantidad = it.cantidad ?? 1;
-        out += `<li>${nombre} <strong>x${cantidad}</strong></li>`;
+        const size = it.size ? ` (${it.size})` : '';
+        out += `<li>${nombre}${size} <strong>x${cantidad}</strong></li>`;
       });
       out += '</ul>';
       return out;

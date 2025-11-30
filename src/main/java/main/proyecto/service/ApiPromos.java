@@ -21,6 +21,7 @@ import main.proyecto.repository.BebidaRepository;
 import main.proyecto.repository.ExtraRepository;
 import main.proyecto.repository.PizzaRepository;
 import main.proyecto.repository.PromotionRepository;
+
 @RestController
 public class ApiPromos {
     @Autowired
@@ -58,6 +59,9 @@ public class ApiPromos {
                         detalle.put("tipo", "pizza");
                         detalle.put("nombre", pizza != null ? pizza.getName() : "Pizza desconocida");
                         detalle.put("cantidad", item.get("quantity"));
+                        if (item.containsKey("size")) {
+                            detalle.put("size", item.get("size"));
+                        }
                     } else if (item.containsKey("bebida_id")) {
                         Long bebidaId = Long.valueOf(item.get("bebida_id").toString());
                         Bebida bebida = bebidaRepository.findById(bebidaId).orElse(null);

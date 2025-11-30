@@ -25,10 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         return new CustomUserDetails(
-                user.getId(),                    // ¡FIX: ID primero
+                user.getId(),                    // ID 
                 user.getEmail(),                 // correo para auth/login
                 user.getUsername(),              // nombre para mostrar
-                user.getUsername(),              // ¡FIX: displayName fallback a username (agrega getDisplayName() en User si quieres full name)
+                user.getUsername(),              // displayName fallback a username
                 user.getPassword(),              // Hasheado
                 user.isEnabled(),
                 user.getRole()

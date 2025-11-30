@@ -87,7 +87,6 @@
                                 <h5 th:text="${extra.name}">Extra</h5>
                                 <p th:text="${extra.description}">Descripción</p>
                                 <strong th:text="'S/' + ${extra.price}">Precio</strong>
-                                <!-- FIX: Ingredients como string simple -->
                                 <button class="btn btn-sm btn-accion mt-2 extra-btn" data-bs-toggle="modal"
                                     data-bs-target="#extraModal"
                                     th:attr="data-id=${extra.id}, data-name=${extra.name}, data-desc=${extra.description}, data-ingredients=${extra.ingredients.toString().replace('[', '').replace(']', '')}, data-price=${extra.price}"
@@ -119,7 +118,6 @@
                                 <p th:text="${bebida.description}">Descripción</p>
                                 <small th:text="${bebida.size}">Tamaño</small>
                                 <strong th:text="'S/' + ${bebida.price}">Precio</strong>
-                                <!-- FIX: Usa 'bebida' en lugar de 'pizza', y ingredients como string simple -->
                                 <button class="btn btn-sm btn-accion mt-2 bebida-btn" data-bs-toggle="modal"
                                     data-bs-target="#bebidaModal" th:attr="data-id=${bebida.id}, data-name=${bebida.name}, data-desc=${bebida.description}, 
                                     data-ingredients=${bebida.ingredients != null ? bebida.ingredients.toString().replace('[', '').replace(']', '') : ''}, 

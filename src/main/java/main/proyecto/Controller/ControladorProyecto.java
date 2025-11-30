@@ -621,6 +621,9 @@ public class ControladorProyecto {
                 model.addAttribute("title", "Gestión de Promociones");
                 model.addAttribute("typeDisplay", "Promociones");
                 model.addAttribute("items", promotionRepository.findAll());
+                model.addAttribute("allPizzas", pizzaRepository.findAll());
+                model.addAttribute("allBebidas", bebidaRepository.findAll());
+                model.addAttribute("allExtras", extraRepository.findAll());
                 break;
             default:
                 return "redirect:/admin/settings";
@@ -651,6 +654,7 @@ public class ControladorProyecto {
             RedirectAttributes redirectAttributes) {
 
         try {
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
             switch (type) {
                 case "pizza":
                     Pizza pizza = (id != null) ? pizzaRepository.findById(id).orElse(new Pizza()) : new Pizza();
@@ -664,8 +668,9 @@ public class ControladorProyecto {
                         pizza.setIngredients(java.util.Arrays.asList(ingredientsList.split("\\s*,\\s*")));
                     }
                     if (sizesJson != null && !sizesJson.isBlank()) {
-                        com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                        Map<String, Double> sizesMap = mapper.readValue(sizesJson, Map.class);
+                        com.fasterxml.jackson.core.type.TypeReference<Map<String, Double>> typeRef = new com.fasterxml.jackson.core.type.TypeReference<Map<String, Double>>() {
+                        };
+                        Map<String, Double> sizesMap = mapper.readValue(sizesJson, typeRef);
                         pizza.setSizes(sizesMap);
                     }
                     pizzaRepository.save(pizza);
@@ -716,7 +721,9 @@ public class ControladorProyecto {
                     break;
             }
             redirectAttributes.addFlashAttribute("message", "Item guardado correctamente.");
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error al guardar: " + e.getMessage());
         }

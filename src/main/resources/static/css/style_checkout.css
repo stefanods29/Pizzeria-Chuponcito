@@ -21,14 +21,12 @@
   padding: 1.5rem;
 }
 
-/* Images */
 .img-thumbnail {
   background-color: var(--card-bg);
   border-color: rgba(var(--text-rgb), 0.1);
   border-radius: 0.5rem;
 }
 
-/* Forms */
 .form-label {
   color: var(--text-color);
   font-weight: 500;
@@ -58,7 +56,6 @@
   color: var(--text-color);
 }
 
-/* Accordion (FAQ) */
 .accordion-item {
   background: transparent;
   border: 1px solid rgba(var(--brand-rgb), 0.1);
@@ -105,7 +102,6 @@
   padding: 1.25rem;
 }
 
-/* Payment Icons */
 .bi-credit-card,
 .bi-cash-stack,
 .bi-arrow-left-right {
@@ -118,7 +114,6 @@
   transform: scale(1.1);
 }
 
-/* Text Colors */
 .text-muted {
   color: rgba(var(--text-rgb), 0.6) !important;
 }
@@ -127,13 +122,11 @@
   color: var(--secondary-accent) !important;
 }
 
-/* Sticky Summary */
 .sticky-top {
   z-index: 100;
-  top: 80px !important; /* Adjust for navbar height */
+  top: 80px !important;
 }
 
-/* Alerts */
 .alert {
   border: none;
   border-radius: var(--radius);
@@ -151,7 +144,6 @@
   border: 1px solid rgba(var(--secondary-accent-rgb), 0.2);
 }
 
-/* Buttons */
 .btn-accion {
   background: var(--button-bg);
   color: var(--button-text);

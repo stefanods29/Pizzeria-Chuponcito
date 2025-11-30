@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const html = document.documentElement;
   const icon = themeToggle.querySelector('i');
 
-  // Sync icon with current theme
+  // Sincronizar icono con tema actual
   const syncIcon = () => {
     const currentTheme = html.getAttribute('data-theme');
     if (currentTheme === 'dark') {
@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Initialize icon state
+  // Inicializar estado del icono
   syncIcon();
 
-  // Function to toggle theme
+  // Funcion para cambiar de tema
   const toggleTheme = () => {
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';

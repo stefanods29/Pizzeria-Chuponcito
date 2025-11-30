@@ -1,7 +1,3 @@
-/* Order Confirmation Page Styles */
-
-/* CSS Variables are inherited from layout */
-/* Dark/Light mode colors defined in main CSS files */
 
 * {
   box-sizing: border-box;
@@ -14,7 +10,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Success Icon Animation */
 .success-icon-container {
   animation: scaleIn 0.5s ease-out;
 }
@@ -45,8 +40,7 @@ body {
   }
 }
 
-/* Card Styling */
-.confirmation-card {
+.confirmation-card { 
   background: var(--card-bg) !important;
   color: var(--text-color) !important;
   border-radius: var(--radius, 0.75rem);
@@ -91,7 +85,6 @@ body {
   color: var(--text-color);
 }
 
-/* List Group Items */
 .list-group-item {
   background: rgba(var(--brand-rgb), 0.03);
   border: 1px solid rgba(var(--brand-rgb), 0.08);
@@ -104,7 +97,6 @@ body {
   transform: translateX(4px);
 }
 
-/* Badges */
 .badge {
   padding: 0.5rem 0.75rem;
   border-radius: 999px;
@@ -127,7 +119,6 @@ body {
   box-shadow: 0 2px 8px rgba(52, 145, 42, 0.3);
 }
 
-/* Buttons */
 .btn-warning {
   background: linear-gradient(135deg, var(--brand), var(--accent));
   border: none;
@@ -163,7 +154,6 @@ body {
   box-shadow: 0 4px 16px rgba(var(--brand-rgb), 0.3);
 }
 
-/* Typography */
 h2,
 h4,
 h5,
@@ -195,13 +185,11 @@ hr {
   opacity: 1;
 }
 
-/* Container Responsive */
 .container {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-/* Success Message Animation */
 .success-message {
   animation: fadeIn 0.8s ease-out 0.3s both;
 }
@@ -215,9 +203,6 @@ hr {
   }
 }
 
-/* Responsive Breakpoints */
-
-/* Tablets */
 @media (max-width: 991.98px) {
   .card-body {
     padding: 1.5rem;
@@ -239,7 +224,6 @@ hr {
   }
 }
 
-/* Mobile Landscape */
 @media (max-width: 767.98px) {
   .card-header,
   .card-body {
@@ -275,7 +259,6 @@ hr {
     margin-top: 0;
   }
 
-  /* Ensure proper spacing in button container */
   .mt-4 {
     margin-top: 2rem !important;
   }
@@ -289,7 +272,6 @@ hr {
   }
 }
 
-/* Mobile Portrait */
 @media (max-width: 576px) {
   .container {
     padding-left: 0.75rem;
@@ -340,7 +322,6 @@ hr {
   }
 }
 
-/* Extra Small Devices */
 @media (max-width: 420px) {
   h2 {
     font-size: 1.25rem;
@@ -363,7 +344,6 @@ hr {
     font-size: 0.85rem;
   }
 
-  /* Extra spacing for tiny screens */
   .btn-warning,
   .btn-outline-secondary {
     padding: 0.7rem 1rem;
@@ -385,7 +365,6 @@ hr {
   }
 }
 
-/* Print Styles */
 @media print {
   .btn-warning,
   .btn-outline-secondary {
