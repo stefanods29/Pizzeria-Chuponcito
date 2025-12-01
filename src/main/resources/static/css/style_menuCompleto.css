@@ -1,3 +1,6 @@
+/* =========================================
+   Definiciones de Tema (Claro/Oscuro)
+   ========================================= */
 [data-theme="dark"] {
   --bg-rgb: 47, 47, 47;
   --text-rgb: 251, 231, 205;
@@ -88,6 +91,9 @@
   --shadow: rgba(0, 0, 0, 0.08);
 }
 
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * {
   box-sizing: border-box;
 }
@@ -99,6 +105,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   Sección Hero del Menú
+   ========================================= */
 .menu-hero {
   padding: 6rem 0;
   background: var(--hero-bg);
@@ -158,6 +182,9 @@ body {
   transform: translateY(-2px);
 }
 
+/* =========================================
+   Rejilla del Menú (Tarjetas)
+   ========================================= */
 .rejilla-menu .card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -190,6 +217,29 @@ body {
   width: 100%;
 }
 
+.card-body {
+  color: var(--text-color);
+  padding: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.card-title {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.card-subtitle {
+  color: rgba(var(--text-rgb), 0.7);
+}
+
+.card-text {
+  color: rgba(var(--text-rgb), 0.8);
+}
+
+/* =========================================
+   Botones
+   ========================================= */
 #btn-ver-pizzas {
   justify-content: center;
   background-color: #c9943e;
@@ -222,40 +272,6 @@ body {
   color: var(--button-text);
 }
 
-.btn-outline {
-  border: 2px solid var(--accent);
-  color: var(--brand);
-  background: transparent;
-  border-radius: var(--radius);
-  transition: 0.3s ease;
-}
-
-.btn-outline:hover {
-  background: var(--brand);
-  color: var(--button-text);
-}
-
-
-.card-body {
-  color: var(--text-color);
-  padding: 1.5rem;
-  position: relative;
-  z-index: 2;
-}
-
-.card-title {
-  color: var(--text-color);
-  font-weight: 600;
-}
-
-.card-subtitle {
-  color: rgba(var(--text-rgb), 0.7);
-}
-
-.card-text {
-  color: rgba(var(--text-rgb), 0.8);
-}
-
 .btn-outline-secondary.pizza-btn,
 .btn-outline-secondary.promo-btn {
   border-color: var(--link-color);
@@ -269,6 +285,9 @@ body {
   color: var(--button-text);
 }
 
+/* =========================================
+   Sección de Extras
+   ========================================= */
 #extras {
   background: var(--hero-bg);
 }
@@ -288,21 +307,100 @@ body {
   color: var(--brand);
 }
 
-#promos .card {
-  background: var(--card-bg);
+/* =========================================
+   Promociones Especiales (Marquee)
+   ========================================= */
+#promociones-especiales {
+  background: var(--background);
+  overflow: hidden;
+}
+
+.promo-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.promo-marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.promo-track {
+  display: flex;
+  animation: promoScroll 12s linear infinite;
+  gap: 1.5rem;
+}
+
+.promo-card-wrapper {
+  flex: 0 0 auto;
+  width: calc(33.333% - 1rem);
+  max-width: 350px;
+}
+
+.promo-card {
+  transition: all 0.3s ease;
   border-radius: var(--radius);
-  box-shadow: 0 4px 12px var(--shadow);
-  transition: transform 0.3s ease;
+  border: none;
+  overflow: hidden;
+  background: var(--card-bg);
 }
 
-#promos .card:hover {
-  transform: translateY(-4px);
+.promo-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 32px var(--shadow);
+  animation-play-state: paused;
 }
 
-#promos .card-body {
-  color: var(--text-color);
+.promo-card .card-img-top {
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
 }
 
+.promo-btn {
+  border-radius: var(--radius);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.promo-btn:hover {
+  background: var(--brand);
+  color: var(--button-text);
+  transform: scale(1.05);
+}
+
+@keyframes promoScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50%));
+  }
+}
+
+.promo-marquee-container:hover .promo-track {
+  animation-play-state: paused;
+}
+
+[data-theme="dark"] #promociones-especiales {
+  background: rgb(var(--bg-rgb));
+}
+
+[data-theme="dark"] .promo-card {
+  background: rgba(var(--text-rgb), 0.1);
+}
+
+[data-theme="dark"] .promo-card .text-muted {
+  color: rgba(var(--text-rgb), 0.9) !important;
+}
+
+[data-theme="light"] .promo-card {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================
+   Modales
+   ========================================= */
 .modal-content {
   background: var(--modal-bg);
   color: var(--modal-text);
@@ -319,7 +417,6 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -408,116 +505,9 @@ body {
   border-radius: var(--radius);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-section {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-@media (max-width: 1200px) {
-  .menu-hero {
-    padding: 4rem 1.5rem;
-  }
-
-  .menu-hero h1 {
-    font-size: 2.5rem;
-    text-align: center;
-  }
-
-  .menu-hero .lead {
-    font-size: 1.1rem;
-    text-align: center;
-  }
-
-  .imagen-hero-menu {
-    max-width: 100%;
-    margin: 0 auto;
-    display: block;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .hero-buttons .btn {
-    width: 80%;
-    text-align: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .menu-hero {
-    padding: 3rem 1rem;
-  }
-
-  .menu-hero h1 {
-    font-size: 2rem;
-  }
-
-  .menu-hero .lead {
-    font-size: 1rem;
-  }
-
-  .imagen-hero-menu {
-    width: 90%;
-  }
-
-  .hero-buttons .btn {
-    min-width: 100%;
-  }
-
-  .rejilla-menu .card img {
-    height: 150px;
-  }
-}
-
-@media (max-width: 480px) {
-  .menu-hero {
-    padding: 2rem 0.5rem;
-  }
-
-  .menu-hero h1 {
-    font-size: 1.5rem;
-  }
-
-  .menu-hero .lead {
-    font-size: 0.95rem;
-  }
-
-  .imagen-hero-menu {
-    width: 100%;
-  }
-
-  .hero-buttons {
-    gap: 0.75rem;
-  }
-
-  .rejilla-menu .card img {
-    height: 120px;
-  }
-
-  .modal-body {
-    padding: 1.5rem 1rem;
-  }
-
-  .modal-header,
-  .modal-footer {
-    padding: 1rem;
-  }
-}
-
+/* =========================================
+   Estilos Específicos para Modo Oscuro (Carrito y Otros)
+   ========================================= */
 [data-theme="dark"] #cartItemsContainer .bi-cart-x {
   color: rgba(var(--text-rgb), 0.8) !important;
   filter: brightness(1.2);
@@ -583,109 +573,116 @@ section {
   font-size: 1.1rem;
 }
 
+/* =========================================
+   Media Queries y Responsive
+   ========================================= */
+@media (max-width: 1200px) {
+  .menu-hero {
+    padding: 4rem 1.5rem;
+  }
+
+  .menu-hero h1 {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .menu-hero .lead {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .imagen-hero-menu {
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero-buttons .btn {
+    width: 80%;
+    text-align: center;
+  }
+}
+
 @media (max-width: 768px) {
+  .menu-hero {
+    padding: 3rem 1rem;
+  }
+
+  .menu-hero h1 {
+    font-size: 2rem;
+  }
+
+  .menu-hero .lead {
+    font-size: 1rem;
+  }
+
+  .imagen-hero-menu {
+    width: 90%;
+  }
+
+  .hero-buttons .btn {
+    min-width: 100%;
+  }
+
+  .rejilla-menu .card img {
+    height: 150px;
+  }
+
+  .promo-card-wrapper {
+    width: calc(100% - 1rem);
+  }
+
+  .promo-track {
+    animation-duration: 18s;
+    gap: 1rem;
+  }
+
   [data-theme="dark"] .bi-cart-x {
     font-size: 3rem !important;
   }
+  
   [data-theme="dark"] #cartItemsContainer small.text-muted {
     font-size: 0.9rem !important;
   }
 }
 
-#promociones-especiales {
-  background: var(--background);
-  overflow: hidden;
-}
-
-.promo-marquee-container {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.promo-marquee-wrapper {
-  width: 100%;
-  overflow: hidden;
-}
-
-.promo-track {
-  display: flex;
-  animation: promoScroll 12s linear infinite;
-  gap: 1.5rem;
-}
-
-.promo-card-wrapper {
-  flex: 0 0 auto;
-  width: calc(33.333% - 1rem);
-  max-width: 350px;
-}
-
-.promo-card {
-  transition: all 0.3s ease;
-  border-radius: var(--radius);
-  border: none;
-  overflow: hidden;
-  background: var(--card-bg);
-}
-
-.promo-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 32px var(--shadow);
-  animation-play-state: paused;
-}
-
-.promo-card .card-img-top {
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
-}
-
-.promo-btn {
-  border-radius: var(--radius);
-  border-color: var(--brand);
-  color: var(--brand);
-}
-
-.promo-btn:hover {
-  background: var(--brand);
-  color: var(--button-text);
-  transform: scale(1.05);
-}
-
-@keyframes promoScroll {
-  0% {
-    transform: translateX(0);
+@media (max-width: 480px) {
+  .menu-hero {
+    padding: 2rem 0.5rem;
   }
-  100% {
-    transform: translateX(calc(-50%));
+
+  .menu-hero h1 {
+    font-size: 1.5rem;
   }
-}
 
-.promo-marquee-container:hover .promo-track {
-  animation-play-state: paused;
-}
-
-[data-theme="dark"] #promociones-especiales {
-  background: rgb(var(--bg-rgb));
-}
-
-[data-theme="dark"] .promo-card {
-  background: rgba(var(--text-rgb), 0.1);
-}
-
-[data-theme="dark"] .promo-card .text-muted {
-  color: rgba(var(--text-rgb), 0.9) !important;
-}
-
-[data-theme="light"] .promo-card {
-border: 2px solid rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 768px) {
-  .promo-card-wrapper {
-    width: calc(100% - 1rem);
+  .menu-hero .lead {
+    font-size: 0.95rem;
   }
-  .promo-track {
-    animation-duration: 18s;
-    gap: 1rem;
+
+  .imagen-hero-menu {
+    width: 100%;
+  }
+
+  .hero-buttons {
+    gap: 0.75rem;
+  }
+
+  .rejilla-menu .card img {
+    height: 120px;
+  }
+
+  .modal-body {
+    padding: 1.5rem 1rem;
+  }
+
+  .modal-header,
+  .modal-footer {
+    padding: 1rem;
   }
 }

@@ -63,6 +63,9 @@
                                         <span th:if="${pizza.stockQuantity <= 0}"
                                             class="text-danger small">Agotado</span>
                                     </div>
+                                    <small
+                                        th:if="${pizza.stockQuantity > 0 and pizza.stockQuantity <= pizza.lowStockThreshold}"
+                                        class="text-warning">Quedan Pocos</small>
                                 </div>
                             </div>
                         </div>
@@ -92,6 +95,9 @@
                                     th:attr="data-id=${extra.id}, data-name=${extra.name}, data-desc=${extra.description}, data-ingredients=${extra.ingredients.toString().replace('[', '').replace(']', '')}, data-price=${extra.price}"
                                     th:if="${extra.stockQuantity > 0}">Detalles</button>
                                 <span th:if="${extra.stockQuantity <= 0}" class="text-danger small">Agotado</span>
+                                <small
+                                    th:if="${extra.stockQuantity > 0 and extra.stockQuantity <= extra.lowStockThreshold}"
+                                    class="text-warning d-block">Quedan Pocos</small>
                             </div>
                         </div>
                     </div>
@@ -124,6 +130,9 @@
                                     data-price=${bebida.price}, data-size=${bebida.size}"
                                     th:if="${bebida.stockQuantity > 0}">Detalles</button>
                                 <span th:if="${bebida.stockQuantity <= 0}" class="text-danger small">Agotado</span>
+                                <small
+                                    th:if="${bebida.stockQuantity > 0 and bebida.stockQuantity <= bebida.lowStockThreshold}"
+                                    class="text-warning d-block">Quedan Pocos</small>
                             </div>
                         </div>
                     </div>
@@ -135,7 +144,7 @@
 
 
 
-           
+
         </main>
 
         <!-- Include modals fragment -->

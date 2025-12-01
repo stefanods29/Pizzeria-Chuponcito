@@ -1,3 +1,6 @@
+/* =========================================
+   Estilos del Acordeón
+   ========================================= */
 .accordion-item {
     background-color: var(--card-bg);
     border: 1px solid rgba(var(--gray-4-rgb), 0.2);
@@ -28,6 +31,9 @@
     filter: invert(1) sepia(1) saturate(5) hue-rotate(35deg);
 }
 
+/* =========================================
+   Estilos de Tablas
+   ========================================= */
 .table {
     color: var(--text-color);
     border-color: rgba(var(--gray-4-rgb), 0.2);
@@ -41,32 +47,6 @@
 
 .table-bordered {
     border-color: rgba(var(--gray-4-rgb), 0.2);
-}
-
-h2, h5 {
-    color: var(--brand);
-}
-
-.text-muted {
-    color: rgba(var(--text-rgb), 0.6) !important;
-}
-
-[data-theme="dark"] .text-muted {
-    color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.badge.bg-primary {
-    background-color: var(--brand) !important;
-    color: var(--button-text);
-}
-.alert-info {
-    background-color: rgba(var(--brand-rgb), 0.1);
-    border-color: rgba(var(--brand-rgb), 0.2);
-    color: var(--text-color);
-}
-
-.alert-link {
-    color: var(--brand);
 }
 
 .table-hover tbody tr:hover {
@@ -90,11 +70,50 @@ h2, h5 {
     color: var(--text-color);
 }
 
+/* =========================================
+   Tipografía y Textos
+   ========================================= */
+h2, h5 {
+    color: var(--brand);
+}
+
+.text-muted {
+    color: rgba(var(--text-rgb), 0.6) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* =========================================
+   Insignias y Alertas
+   ========================================= */
+.badge.bg-primary {
+    background-color: var(--brand) !important;
+    color: var(--button-text);
+}
+
+.alert-info {
+    background-color: rgba(var(--brand-rgb), 0.1);
+    border-color: rgba(var(--brand-rgb), 0.2);
+    color: var(--text-color);
+}
+
+.alert-link {
+    color: var(--brand);
+}
+
+/* =========================================
+   Tarjetas (Modo Oscuro)
+   ========================================= */
 [data-theme="dark"] .card {
     background-color: var(--card-bg);
     border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* =========================================
+   Sección de Advertencia Admin
+   ========================================= */
 .admin-warning-section {
     margin-top: 3rem;
     padding: 2rem 0;
@@ -117,6 +136,7 @@ h2, h5 {
 [data-theme="light"] .admin-warning-text {
     color: #000000;
 }
+
 [data-theme="dark"] .admin-warning-text {
     color: var(--brand);
 }

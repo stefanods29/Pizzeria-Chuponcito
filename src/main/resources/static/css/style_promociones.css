@@ -1,3 +1,6 @@
+/* =========================================
+   Definiciones de Tema (Claro/Oscuro)
+   ========================================= */
 [data-theme="dark"] {
   --bg-rgb: 47, 47, 47;
   --text-rgb: 251, 231, 205;
@@ -89,6 +92,9 @@
   --shadow: rgba(0, 0, 0, 0.08);
 }
 
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * {
   box-sizing: border-box;
 }
@@ -100,6 +106,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   Sección Hero de Promociones
+   ========================================= */
 .promo-hero {
   padding: 6rem 0;
   background: var(--hero-bg);
@@ -126,45 +150,13 @@ body {
   color: rgba(var(--text-rgb), 0.8);
   font-size: 1.2rem;
 }
+
 .promo-hero .btn-container {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
   margin-top: 1.5rem;
-}
-
-@media (max-width: 575.98px) {
-  .promo-hero .btn-container {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .promo-hero .btn-container .btn {
-    width: 100%;
-    margin: 0;
-  }
-}
-
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .promo-hero .btn-container {
-    gap: 0.875rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .promo-hero .btn-container {
-    gap: 1rem;
-  }
-}
-.insignia-caliente {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--brand), var(--accent));
-  color: var(--button-text);
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
 }
 
 .imagen-hero-promo {
@@ -177,6 +169,19 @@ body {
 
 .imagen-hero-promo:hover {
   transform: scale(1.02);
+}
+
+/* =========================================
+   Botones e Insignias
+   ========================================= */
+.insignia-caliente {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  color: var(--button-text);
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.3);
 }
 
 .btn-outline {
@@ -192,6 +197,25 @@ body {
   color: var(--button-text);
 }
 
+.btn-outline-secondary.promo-btn {
+  border-color: var(--link-color);
+  color: var(--link-color);
+}
+
+[data-theme="light"] .btn-outline-secondary.promo-btn {
+  border-color: var(--text-color);
+  color: var(--text-color);
+}
+
+.btn-outline-secondary.promo-btn:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--button-text);
+}
+
+/* =========================================
+   Rejilla de Promociones
+   ========================================= */
 .promo-grid .promo-card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -260,22 +284,9 @@ body {
   color: rgba(var(--text-rgb), 0.8);
 }
 
-.btn-outline-secondary.promo-btn {
-  border-color: var(--link-color);
-  color: var(--link-color);
-}
-
-[data-theme="light"] .btn-outline-secondary.promo-btn {
-  border-color: var(--text-color);
-  color: var(--text-color);
-}
-
-.btn-outline-secondary.promo-btn:hover {
-  background: var(--brand);
-  border-color: var(--brand);
-  color: var(--button-text);
-}
-
+/* =========================================
+   Tarjeta de Combo
+   ========================================= */
 .combo-card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -309,7 +320,9 @@ body {
   object-fit: cover;
 }
 
-
+/* =========================================
+   Modales
+   ========================================= */
 .modal-content {
   background: var(--modal-bg);
   color: var(--modal-text);
@@ -326,7 +339,6 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -397,6 +409,9 @@ body {
   border-radius: var(--radius);
 }
 
+/* =========================================
+   Lista de Ingredientes en Modal
+   ========================================= */
 #promoIngredients {
   margin-top: 10px;
   padding: 0;
@@ -444,40 +459,9 @@ body {
   margin-bottom: 10px;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-section {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-@media (max-width: 767px) {
-  .promo-hero {
-    padding: 3rem 0;
-  }
-
-  .promo-hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .promo-grid .card-img-top {
-    height: 150px;
-  }
-
-  .modal-body {
-    padding: 1.5rem;
-  }
-}
-
+/* =========================================
+   Estilos Específicos para Modo Oscuro (Carrito y Otros)
+   ========================================= */
 [data-theme="dark"] #cartItemsContainer .bi-cart-x {
   color: rgba(var(--text-rgb), 0.8) !important;
   filter: brightness(1.2);
@@ -543,7 +527,50 @@ section {
   font-size: 1.1rem;
 }
 
+/* =========================================
+   Media Queries y Responsive
+   ========================================= */
+@media (max-width: 575.98px) {
+  .promo-hero .btn-container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .promo-hero .btn-container .btn {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .promo-hero .btn-container {
+    gap: 0.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .promo-hero .btn-container {
+    gap: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .promo-hero {
+    padding: 3rem 0;
+  }
+
+  .promo-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .promo-grid .card-img-top {
+    height: 150px;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
   [data-theme="dark"] .bi-cart-x {
     font-size: 3rem !important;
   }

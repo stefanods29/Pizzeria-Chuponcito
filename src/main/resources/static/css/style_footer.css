@@ -1,3 +1,6 @@
+/* =========================================
+   Definiciones de Tema (Claro/Oscuro)
+   ========================================= */
 [data-theme="dark"] {
   --brand-rgb: 201, 148, 62;
   --accent-rgb: 226, 179, 86;
@@ -21,6 +24,10 @@
   --brand: rgb(var(--brand-rgb));
   --accent: rgb(var(--accent-rgb));
 }
+
+/* =========================================
+   Diseño de Página (Sticky Footer)
+   ========================================= */
 html, body {
   height: 100%;
   margin: 0;
@@ -32,21 +39,32 @@ body {
   min-height: 100vh;
 }
 
+/* Empuja el footer hacia abajo */
 body > div:nth-child(2) {
   flex: 1 0 auto;
 }
+
+/* =========================================
+   Estilos del Footer
+   ========================================= */
 footer {
   background: var(--footer-bg);
   border-top: 1px solid rgba(var(--gray-4-rgb), 0.2);
   padding: 3rem 0;
 }
+
 footer a {
   color: var(--link-color);
   transition: color 0.2s ease;
 }
+
 footer a:hover {
   color: var(--brand);
 }
+
+/* =========================================
+   Responsive
+   ========================================= */
 @media (max-width: 768px) {
   footer {
     padding: 2rem 0;

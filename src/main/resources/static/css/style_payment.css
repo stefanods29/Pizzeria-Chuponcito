@@ -1,8 +1,6 @@
-/* Payment Page Styles */
-
-/* CSS Variables are inherited from layout */
-/* Dark/Light mode colors defined in main CSS files */
-
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * {
   box-sizing: border-box;
 }
@@ -14,7 +12,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Cards */
+/* =========================================
+   Tarjetas
+   ========================================= */
 .card {
   background: var(--card-bg);
   border: 1px solid rgba(var(--brand-rgb), 0.1);
@@ -33,7 +33,9 @@ body {
   font-weight: 600;
 }
 
-/* Typography */
+/* =========================================
+   Tipografía
+   ========================================= */
 h2, h4, h5, h6 {
   color: var(--text-color);
   font-weight: 700;
@@ -44,7 +46,6 @@ h2, h4, h5, h6 {
   font-size: 1.1rem;
 }
 
-/* Custom class for payment status */
 .payment-status-text {
   color: var(--text-color);
   font-size: 1rem;
@@ -63,7 +64,9 @@ strong {
   font-weight: 600;
 }
 
-/* Spinner */
+/* =========================================
+   Spinner de Carga
+   ========================================= */
 .spinner-border {
   width: 3rem;
   height: 3rem;
@@ -75,7 +78,9 @@ strong {
   border-right-color: transparent;
 }
 
-/* Alert Styles */
+/* =========================================
+   Alertas
+   ========================================= */
 .alert {
   border-radius: var(--radius, 0.75rem);
   padding: 1.25rem;
@@ -111,6 +116,9 @@ strong {
   font-weight: 600;
 }
 
+/* =========================================
+   Botones
+   ========================================= */
 .container .btn-accion {
   background: var(--button-bg);
   border: none;
@@ -131,6 +139,9 @@ strong {
   color: var(--button-text);
 }
 
+/* =========================================
+   Utilidades de Color
+   ========================================= */
 .bg-success {
   background-color: var(--secondary-accent) !important;
 }
@@ -171,10 +182,14 @@ strong {
   color: rgb(239, 83, 80) !important;
 }
 
+/* =========================================
+   Contenedores y Estado
+   ========================================= */
 .container {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+
 #paymentStatus {
   min-height: 30px;
   transition: all 0.3s ease;
@@ -194,6 +209,9 @@ strong {
   }
 }
 
+/* =========================================
+   Media Queries y Responsive
+   ========================================= */
 @media (max-width: 991.98px) {
   h2 {
     font-size: 1.75rem;

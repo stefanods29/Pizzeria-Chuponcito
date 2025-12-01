@@ -1,3 +1,6 @@
+/* =========================================
+   Definiciones de Tema (Claro/Oscuro)
+   ========================================= */
 [data-theme="dark"] {
   --bg-rgb: 47, 47, 47;
   --text-rgb: 251, 231, 205;
@@ -60,6 +63,9 @@
   --shadow-light: rgba(0, 0, 0, 0.04);
 }
 
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * {
   box-sizing: border-box;
 }
@@ -74,6 +80,9 @@ body {
   padding-bottom: 2rem;
 }
 
+/* =========================================
+   Contenedor del Formulario de Login
+   ========================================= */
 #loginForm {
   padding: 4rem 0;
   background: var(--hero-bg);
@@ -111,6 +120,9 @@ body {
   background: var(--card-bg);
 }
 
+/* =========================================
+   Logotipo y Títulos
+   ========================================= */
 .login-logo {
   max-height: 60px;
   width: auto;
@@ -138,6 +150,9 @@ body {
   margin-bottom: 2rem;
 }
 
+/* =========================================
+   Elementos del Formulario
+   ========================================= */
 #loginForm .form-label {
   color: var(--text-color);
   font-weight: 600;
@@ -175,6 +190,7 @@ body {
   color: var(--form-placeholder);
 }
 
+/* Checkbox */
 .form-check-input {
   border: 2px solid var(--form-border);
   background: var(--form-bg);
@@ -193,6 +209,9 @@ body {
   font-size: 0.875rem;
 }
 
+/* =========================================
+   Botones
+   ========================================= */
 #submitBtn {
   background: var(--button-bg);
   border: none;
@@ -218,6 +237,9 @@ body {
   cursor: not-allowed;
 }
 
+/* =========================================
+   Alertas y Mensajes
+   ========================================= */
 #alertMessage {
   border-radius: var(--radius);
   border: none;
@@ -238,6 +260,9 @@ body {
   border-left: 3px solid var(--accent);
 }
 
+/* =========================================
+   Utilidades de Texto
+   ========================================= */
 .text-muted {
   color: rgba(var(--text-rgb), 0.8) !important;
 }
@@ -253,6 +278,9 @@ body {
   color: var(--accent);
 }
 
+/* =========================================
+   Responsive
+   ========================================= */
 @media (max-width: 991.98px) {
   #loginForm {
     padding: 3rem 0;

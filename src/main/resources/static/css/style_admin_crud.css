@@ -1,20 +1,23 @@
-/* style_admin_crud.css */
-
-/* Use global variables from style_Index.css */
+/* =========================================
+   Estilos Globales y Utilidades
+   ========================================= */
+/* Uso de variables globales de style_Index.css */
 
 .text-brand {
     color: var(--brand) !important;
 }
 
-/* Header */
+.text-muted {
+    color: rgba(var(--text-rgb), 0.6) !important;
+}
+
+/* =========================================
+   Encabezado y Botones de Acción Principal
+   ========================================= */
 .display-6 {
     font-weight: 700;
     font-size: 2rem;
     color: var(--text-color);
-}
-
-.text-muted {
-    color: rgba(var(--text-rgb), 0.6) !important;
 }
 
 .btn-accion {
@@ -35,7 +38,9 @@
     color: var(--button-text);
 }
 
-/* Table Card */
+/* =========================================
+   Tarjetas y Contenedores
+   ========================================= */
 .card {
     border-radius: var(--radius);
     overflow: hidden;
@@ -44,14 +49,16 @@
     border: 1px solid rgba(var(--gray-4-rgb), 0.1);
 }
 
-/* Table Styles */
+/* =========================================
+   Estilos de Tablas
+   ========================================= */
 .table {
     margin-bottom: 0;
     color: var(--text-color);
     border-color: rgba(var(--gray-4-rgb), 0.1);
 }
 
-/* Override Bootstrap table cell styles */
+/* Sobrescribir estilos de celdas de Bootstrap */
 .table>:not(caption)>*>* {
     padding: .5rem .5rem;
     color: var(--text-color);
@@ -111,7 +118,9 @@
     cursor: zoom-in;
 }
 
-/* Action Buttons */
+/* =========================================
+   Botones de Acción en Tablas
+   ========================================= */
 .btn-outline-primary {
     color: var(--brand);
     border-color: var(--brand);
@@ -125,9 +134,9 @@
     border-color: var(--brand);
 }
 
-/* Delete Button (outline-danger) */
+/* Botón Eliminar (outline-danger) */
 .btn-outline-danger {
-    color: var(--brand);
+    color: var(--brand); /* Se mantiene brand para consistencia visual inicial */
     border-color: var(--brand);
     border-radius: 8px;
     padding: 0.4rem 0.6rem;
@@ -145,9 +154,39 @@
     border-color: var(--brand);
 }
 
+/* Botón Éxito */
+.btn-outline-success {
+    color: var(--secondary-accent);
+    border-color: var(--secondary-accent);
+    border-radius: 8px;
+}
 
+.btn-outline-success:hover {
+    background-color: var(--secondary-accent);
+    color: #fff;
+    border-color: var(--secondary-accent);
+}
 
-/* Alerts */
+/* Redefinición específica para peligro real si es necesario */
+.btn-outline-danger.real-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger.real-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* =========================================
+   Alertas
+   ========================================= */
 .alert {
     border: none;
     border-radius: 12px;
@@ -159,18 +198,18 @@
     color: var(--secondary-accent);
 }
 
-
-/* Modal */
+/* =========================================
+   Modales
+   ========================================= */
 .modal-content {
     border: 1px solid rgba(var(--gray-4-rgb), 0.2);
     border-radius: 16px;
     box-shadow: 0 10px 40px var(--shadow);
-    background-color: var(--bg-color); /* Need to ensure this variable exists or use card-bg */
-    background: var(--card-bg); /* Use card-bg which is safer */
+    background-color: var(--card-bg);
     backdrop-filter: blur(10px);
 }
 
-/* Fix for modal background in dark mode if card-bg is transparent */
+/* Corrección para fondo de modal en modo oscuro */
 [data-theme="dark"] .modal-content {
     background-color: rgb(var(--bg-rgb));
     border: 1px solid rgba(var(--gray-4-rgb), 0.1);
@@ -191,6 +230,14 @@
     color: var(--text-color);
 }
 
+.modal-footer {
+    border-top: 1px solid rgba(var(--gray-4-rgb), 0.1);
+    padding: 1.5rem;
+}
+
+/* =========================================
+   Formularios
+   ========================================= */
 .form-label {
     font-weight: 600;
     font-size: 0.9rem;
@@ -227,22 +274,6 @@
     opacity: 1;
 }
 
-.modal-footer {
-    border-top: 1px solid rgba(var(--gray-4-rgb), 0.1);
-    padding: 1.5rem;
-}
-
-.btn-secondary {
-    background-color: transparent;
-    border: 1px solid rgba(var(--gray-4-rgb), 0.5);
-    color: var(--text-color);
-}
-
-.btn-secondary:hover {
-    background-color: rgba(var(--gray-4-rgb), 0.1);
-    border-color: rgba(var(--gray-4-rgb), 0.8);
-}
-
 .form-check-input {
     background-color: var(--form-bg);
     border-color: var(--form-border);
@@ -257,34 +288,19 @@
     color: var(--text-color);
 }
 
+/* Contenedores Específicos de Formularios */
 #priceListContainer, #promoItemsContainer {
     background-color: rgba(var(--gray-4-rgb), 0.05);
     border-color: rgba(var(--gray-4-rgb), 0.2) !important;
 }
-.btn-outline-success {
-    color: var(--secondary-accent);
-    border-color: var(--secondary-accent);
-    border-radius: 8px;
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid rgba(var(--gray-4-rgb), 0.5);
+    color: var(--text-color);
 }
 
-.btn-outline-success:hover {
-    background-color: var(--secondary-accent);
-    color: #fff;
-    border-color: var(--secondary-accent);
-}
-
-.btn-outline-danger {
-    color: #dc3545;
-    border-color: #dc3545;
-}
-
-.btn-outline-danger:hover {
-    background-color: #dc3545;
-    color: #fff;
-    border-color: #dc3545;
-}
-
-.btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
+.btn-secondary:hover {
+    background-color: rgba(var(--gray-4-rgb), 0.1);
+    border-color: rgba(var(--gray-4-rgb), 0.8);
 }

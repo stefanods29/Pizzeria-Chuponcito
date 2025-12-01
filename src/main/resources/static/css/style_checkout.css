@@ -1,4 +1,6 @@
-
+/* =========================================
+   Tarjetas y Contenedores
+   ========================================= */
 .card {
   background: var(--card-bg);
   border: 1px solid rgba(var(--brand-rgb), 0.1);
@@ -27,6 +29,9 @@
   border-radius: 0.5rem;
 }
 
+/* =========================================
+   Formularios
+   ========================================= */
 .form-label {
   color: var(--text-color);
   font-weight: 500;
@@ -56,6 +61,9 @@
   color: var(--text-color);
 }
 
+/* =========================================
+   Acordeón (Métodos de Pago)
+   ========================================= */
 .accordion-item {
   background: transparent;
   border: 1px solid rgba(var(--brand-rgb), 0.1);
@@ -102,6 +110,9 @@
   padding: 1.25rem;
 }
 
+/* =========================================
+   Iconos y Animaciones
+   ========================================= */
 .bi-credit-card,
 .bi-cash-stack,
 .bi-arrow-left-right {
@@ -114,6 +125,9 @@
   transform: scale(1.1);
 }
 
+/* =========================================
+   Utilidades y Alertas
+   ========================================= */
 .text-muted {
   color: rgba(var(--text-rgb), 0.6) !important;
 }
@@ -144,6 +158,9 @@
   border: 1px solid rgba(var(--secondary-accent-rgb), 0.2);
 }
 
+/* =========================================
+   Botones de Acción
+   ========================================= */
 .btn-accion {
   background: var(--button-bg);
   color: var(--button-text);

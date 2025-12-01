@@ -1,4 +1,6 @@
-
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * {
   box-sizing: border-box;
 }
@@ -10,6 +12,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* =========================================
+   Animaciones
+   ========================================= */
 .success-icon-container {
   animation: scaleIn 0.5s ease-out;
 }
@@ -40,15 +45,17 @@ body {
   }
 }
 
-.confirmation-card { 
-  background: var(--card-bg) !important;
-  color: var(--text-color) !important;
-  border-radius: var(--radius, 0.75rem);
-  box-shadow: 0 8px 32px var(--shadow);
-  border: 1px solid rgba(var(--brand-rgb), 0.1);
-  position: relative;
-  overflow: hidden;
-  animation: slideUp 0.6s ease-out;
+.success-message {
+  animation: fadeIn 0.8s ease-out 0.3s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -60,6 +67,20 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* =========================================
+   Tarjeta de Confirmación
+   ========================================= */
+.confirmation-card { 
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-radius: var(--radius, 0.75rem);
+  box-shadow: 0 8px 32px var(--shadow);
+  border: 1px solid rgba(var(--brand-rgb), 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
 }
 
 .confirmation-card::before {
@@ -85,6 +106,9 @@ body {
   color: var(--text-color);
 }
 
+/* =========================================
+   Listas y Elementos
+   ========================================= */
 .list-group-item {
   background: rgba(var(--brand-rgb), 0.03);
   border: 1px solid rgba(var(--brand-rgb), 0.08);
@@ -97,6 +121,9 @@ body {
   transform: translateX(4px);
 }
 
+/* =========================================
+   Badges (Etiquetas)
+   ========================================= */
 .badge {
   padding: 0.5rem 0.75rem;
   border-radius: 999px;
@@ -119,6 +146,9 @@ body {
   box-shadow: 0 2px 8px rgba(52, 145, 42, 0.3);
 }
 
+/* =========================================
+   Botones
+   ========================================= */
 .btn-warning {
   background: linear-gradient(135deg, var(--brand), var(--accent));
   border: none;
@@ -154,6 +184,9 @@ body {
   box-shadow: 0 4px 16px rgba(var(--brand-rgb), 0.3);
 }
 
+/* =========================================
+   Tipografía
+   ========================================= */
 h2,
 h4,
 h5,
@@ -180,6 +213,9 @@ strong {
   font-weight: 600;
 }
 
+/* =========================================
+   Utilidades
+   ========================================= */
 hr {
   border-color: rgba(var(--brand-rgb), 0.15);
   opacity: 1;
@@ -190,19 +226,9 @@ hr {
   padding-right: 1rem;
 }
 
-.success-message {
-  animation: fadeIn 0.8s ease-out 0.3s both;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
+/* =========================================
+   Media Queries y Responsive
+   ========================================= */
 @media (max-width: 991.98px) {
   .card-body {
     padding: 1.5rem;
@@ -365,6 +391,9 @@ hr {
   }
 }
 
+/* =========================================
+   Estilos de Impresión
+   ========================================= */
 @media print {
   .btn-warning,
   .btn-outline-secondary {

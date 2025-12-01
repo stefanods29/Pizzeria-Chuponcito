@@ -49,6 +49,9 @@
                                             <h5 class="card-title" th:text="${promo.name}">Nombre</h5>
                                             <p class="card-text flex-grow-1" th:text="${promo.description}">Descripción
                                             </p>
+                                            <small
+                                                th:if="${promo.stockQuantity > 0 and promo.stockQuantity <= promo.lowStockThreshold}"
+                                                class="text-warning d-block mb-2">Quedan Pocos</small>
                                             <div class="d-flex justify-content-between align-items-end">
                                                 <strong th:text="'S/' + ${promo.promoPrice}">S/0.00</strong>
                                                 <button class="btn btn-sm btn-accion promo-btn" type="button"
@@ -97,6 +100,9 @@
                                             Detalles
                                         </button>
                                     </div>
+                                    <small
+                                        th:if="${promo.stockQuantity > 0 and promo.stockQuantity <= promo.lowStockThreshold}"
+                                        class="text-warning d-block">Quedan Pocos</small>
                                 </div>
                             </div>
                         </div>

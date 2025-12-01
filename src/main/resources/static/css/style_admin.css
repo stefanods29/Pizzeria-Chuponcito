@@ -1,3 +1,6 @@
+/* =========================================
+   Estilos del Acordeón
+   ========================================= */
 .accordion-item {
     background-color: var(--card-bg);
     border: 1px solid rgba(var(--gray-4-rgb), 0.2);
@@ -28,6 +31,9 @@
     filter: invert(1) sepia(1) saturate(5) hue-rotate(35deg);
 }
 
+/* =========================================
+   Estilos de Tablas
+   ========================================= */
 .table {
     color: var(--text-color);
     border-color: rgba(var(--gray-4-rgb), 0.2);
@@ -43,6 +49,9 @@
     border-color: rgba(var(--gray-4-rgb), 0.2);
 }
 
+/* =========================================
+   Tipografía y Textos
+   ========================================= */
 h2, h5 {
     color: var(--brand);
 }
@@ -55,10 +64,14 @@ h2, h5 {
     color: rgba(255, 255, 255, 0.6) !important;
 }
 
+/* =========================================
+   Insignias y Alertas
+   ========================================= */
 .badge.bg-primary {
     background-color: var(--brand) !important;
     color: var(--button-text);
 }
+
 .alert-info {
     background-color: rgba(var(--brand-rgb), 0.1);
     border-color: rgba(var(--brand-rgb), 0.2);

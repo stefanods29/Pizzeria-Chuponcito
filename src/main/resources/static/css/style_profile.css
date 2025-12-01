@@ -1,3 +1,6 @@
+/* =========================================
+   Definiciones de Tema (Claro/Oscuro)
+   ========================================= */
 [data-theme="dark"] {
   --bg-rgb: 47, 47, 47;
   --text-rgb: 251, 231, 205;
@@ -51,6 +54,9 @@
   --shadow: rgba(0, 0, 0, 0.08);
 }
 
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * { box-sizing: border-box; }
 
 body {
@@ -61,6 +67,9 @@ body {
   padding: 0;
 }
 
+/* =========================================
+   Sección de Perfil
+   ========================================= */
 #profileSection {
   padding: 4rem 0;
   background: var(--hero-bg);
@@ -75,6 +84,9 @@ body {
   pointer-events: none;
 }
 
+/* =========================================
+   Tarjetas
+   ========================================= */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -96,6 +108,9 @@ body {
   padding: 2rem;
 }
 
+/* =========================================
+   Formularios
+   ========================================= */
 .form-label {
   color: var(--text-color);
   font-weight: 600;
@@ -123,6 +138,14 @@ body {
   color: var(--form-placeholder);
 }
 
+.invalid-feedback {
+  color: var(--accent);
+  font-size: 0.875rem;
+}
+
+/* =========================================
+   Botones
+   ========================================= */
 .btn-accion {
   background: var(--button-bg);
   border: none;
@@ -141,11 +164,9 @@ body {
   filter: brightness(1.05);
 }
 
-.invalid-feedback {
-  color: var(--accent);
-  font-size: 0.875rem;
-}
-
+/* =========================================
+   Responsive
+   ========================================= */
 @media (max-width: 767.98px) {
   #profileSection { padding: 3rem 0; }
   .card-body { padding: 1.5rem; }

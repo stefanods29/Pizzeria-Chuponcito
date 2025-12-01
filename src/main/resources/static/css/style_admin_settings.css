@@ -1,3 +1,6 @@
+/* =========================================
+   Tipografía y Utilidades
+   ========================================= */
 .text-brand {
     color: var(--brand) !important;
 }
@@ -12,6 +15,9 @@
     color: rgba(var(--text-rgb), 0.8) !important;
 }
 
+/* =========================================
+   Tarjetas de Configuración
+   ========================================= */
 .card {
     border: 1px solid rgba(var(--gray-4-rgb), 0.1);
     border-radius: var(--radius);
@@ -50,6 +56,22 @@
     padding: 2.5rem 2rem;
 }
 
+.card-title {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.card-text {
+    color: rgba(var(--text-rgb), 0.7) !important;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+/* =========================================
+   Iconos
+   ========================================= */
 .card i {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
@@ -65,19 +87,9 @@
     transform: scale(1.1) rotate(5deg);
 }
 
-.card-title {
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: var(--text-color);
-}
-
-.card-text {
-    color: rgba(var(--text-rgb), 0.7) !important;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 2rem;
-}
-
+/* =========================================
+   Botones de Acción
+   ========================================= */
 .btn-outline-danger {
     border-radius: 50px;
     padding: 0.6rem 1.5rem;
@@ -108,15 +120,9 @@
     box-shadow: 0 4px 10px rgba(var(--brand-rgb), 0.3);
 }
 
-@media (max-width: 768px) {
-    .card-body {
-        padding: 1.5rem;
-    }
-    .card i {
-        font-size: 2.5rem;
-    }
-}
-
+/* =========================================
+   Sección de Advertencia Admin
+   ========================================= */
 .admin-warning-section {
     margin-top: 3rem;
     padding: 2rem 0;
@@ -139,6 +145,19 @@
 [data-theme="light"] .admin-warning-text {
     color: #000000;
 }
+
 [data-theme="dark"] .admin-warning-text {
     color: var(--brand);
+}
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    .card i {
+        font-size: 2.5rem;
+    }
 }

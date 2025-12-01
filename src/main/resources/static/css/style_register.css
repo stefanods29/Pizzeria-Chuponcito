@@ -1,3 +1,6 @@
+/* =========================================
+   Definiciones de Tema (Claro/Oscuro)
+   ========================================= */
 [data-theme="dark"] {
   --bg-rgb: 47, 47, 47;
   --text-rgb: 251, 231, 205;
@@ -79,6 +82,9 @@
   --shadow: rgba(0, 0, 0, 0.08);
 }
 
+/* =========================================
+   Estilos Globales
+   ========================================= */
 * {
   box-sizing: border-box;
 }
@@ -92,6 +98,24 @@ body {
   padding: 0;
 }
 
+section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   Sección de Registro
+   ========================================= */
 #registerSection {
   padding: 4rem 0;
   background: var(--hero-bg);
@@ -106,6 +130,9 @@ body {
   pointer-events: none;
 }
 
+/* =========================================
+   Tarjetas
+   ========================================= */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -127,6 +154,9 @@ body {
   z-index: 2;
 }
 
+/* =========================================
+   Logotipo
+   ========================================= */
 .register-logo {
   transition: transform 0.3s ease;
 }
@@ -135,6 +165,9 @@ body {
   transform: scale(1.05);
 }
 
+/* =========================================
+   Formularios
+   ========================================= */
 .form-label {
   color: var(--text-color);
   font-weight: 600;
@@ -166,14 +199,21 @@ body {
   background: var(--form-bg);
   border: 1px solid var(--form-border);
   color: var(--form-placeholder);
+  padding-left: 0.5rem;  
+  min-width: auto;       
 }
 
 .input-group-text .bi {
   color: var(--form-placeholder);
 }
 
-.text-muted {
-  color: var(--form-placeholder) !important;
+.input-group .form-control {
+  flex: 1 1 auto;       
+}
+
+.form-check-input:checked {
+  background-color: var(--brand);
+  border-color: var(--brand);
 }
 
 .invalid-feedback {
@@ -181,6 +221,9 @@ body {
   font-size: 0.875rem;
 }
 
+/* =========================================
+   Botones
+   ========================================= */
 .btn-accion {
   background: var(--button-bg);
   border: none;
@@ -199,9 +242,11 @@ body {
   filter: brightness(1.05);
 }
 
-.form-check-input:checked {
-  background-color: var(--brand);
-  border-color: var(--brand);
+/* =========================================
+   Utilidades de Texto
+   ========================================= */
+.text-muted {
+  color: var(--form-placeholder) !important;
 }
 
 .text-brand {
@@ -216,21 +261,9 @@ body {
   transition: opacity 0.3s ease;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-section {
-  animation: fadeInUp 0.6s ease-out;
-}
-
+/* =========================================
+   Responsive
+   ========================================= */
 @media (max-width: 767.98px) {
   #registerSection {
     padding: 3rem 0;
@@ -258,13 +291,4 @@ section {
   .card-body {
     padding: 3rem !important;
   }
-}
-
-.input-group-text {
-  padding-left: 0.5rem;  
-  min-width: auto;       
-}
-
-.input-group .form-control {
-  flex: 1 1 auto;       
 }
