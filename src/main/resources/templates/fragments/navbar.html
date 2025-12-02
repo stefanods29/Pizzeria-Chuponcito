@@ -52,7 +52,7 @@
             <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center" type="button"
               data-bs-toggle="dropdown" aria-expanded="false" title="Cuenta" aria-label="Opciones de cuenta">
               <i class="bi bi-person-circle me-1"></i>
-              <span class="d-none d-sm-inline">Cuenta</span>
+              <span>Cuenta</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="/login"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión</a>
@@ -65,8 +65,7 @@
             <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center" type="button"
               data-bs-toggle="dropdown" aria-expanded="false" title="Perfil" aria-label="Perfil de usuario">
               <i class="bi bi-person-circle me-1"></i>
-              <span class="d-none d-sm-inline">Bienvenido, <span
-                  th:text="${#authentication.principal.displayName}">Usuario</span></span>
+              <span>Bienvenido, <span th:text="${#authentication.principal.displayName}">Usuario</span></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <li sec:authorize="hasRole('USER')">
