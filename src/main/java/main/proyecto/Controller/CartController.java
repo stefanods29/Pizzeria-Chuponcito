@@ -30,7 +30,11 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/cart")
-@Controller // Para views en GET /checkout
+@Controller
+/**
+ * Controlador para manejar las operaciones del carrito de compras.
+ * Permite agregar, actualizar, eliminar items y procesar el checkout.
+ */
 public class CartController {
 
     @Autowired
@@ -46,6 +50,12 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Obtiene el contenido actual del carrito de la sesión.
+     * 
+     * @param session La sesión HTTP actual.
+     * @return ResponseEntity con el mapa de items y el total.
+     */
     @GetMapping
     public ResponseEntity<Map<String, Object>> getCart(HttpSession session) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
@@ -61,15 +71,21 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Agrega un item al carrito.
+     * Verifica el stock disponible antes de agregar.
+     * 
+     * @param item    El item a agregar.
+     * @param session La sesión HTTP actual.
+     * @return ResponseEntity con mensaje de éxito o error.
+     */
     @PostMapping("/add")
     public ResponseEntity<?> addItem(@RequestBody CartItem item, HttpSession session) {
         if (item.getQuantity() == null || item.getQuantity() < 1) {
             item.setQuantity(1);
         }
-        // Resolver imageUrl y validar
         resolveItemDetails(item);
 
-        // Check stock
         String errorMsg = checkStock(item, item.getQuantity());
         if (errorMsg != null) {
             return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
@@ -83,7 +99,6 @@ public class CartController {
         CartItem existing = cartMap.get(key);
 
         if (existing != null) {
-            // Check stock for total quantity
             errorMsg = checkStock(item, existing.getQuantity() + item.getQuantity());
             if (errorMsg != null) {
                 return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
@@ -96,6 +111,14 @@ public class CartController {
         return ResponseEntity.ok("Item agregado al carrito exitosamente");
     }
 
+    /**
+     * Actualiza la cantidad de un item en el carrito.
+     * Si la cantidad es menor a 1, elimina el item.
+     * 
+     * @param item    El item con la nueva cantidad.
+     * @param session La sesión HTTP actual.
+     * @return ResponseEntity con mensaje de éxito o error.
+     */
     @PutMapping("/update")
     public ResponseEntity<?> updateItem(@RequestBody CartItem item, HttpSession session) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
@@ -113,7 +136,6 @@ public class CartController {
             return ResponseEntity.ok("Item removido del carrito");
         }
 
-        // Check stock
         String errorMsg = checkStock(item, item.getQuantity());
         if (errorMsg != null) {
             return ResponseEntity.badRequest().body(Map.of("error", errorMsg));
@@ -124,6 +146,13 @@ public class CartController {
         return ResponseEntity.ok("Cantidad actualizada");
     }
 
+    /**
+     * Verifica si hay suficiente stock para un item.
+     * 
+     * @param item     El item a verificar.
+     * @param quantity La cantidad requerida.
+     * @return Mensaje de error si no hay stock, o null si todo está bien.
+     */
     private String checkStock(CartItem item, int quantity) {
         switch (item.getType()) {
             case "pizza" -> {
@@ -170,6 +199,13 @@ public class CartController {
         return null;
     }
 
+    /**
+     * Elimina un item específico del carrito.
+     * 
+     * @param item    El item a eliminar.
+     * @param session La sesión HTTP actual.
+     * @return ResponseEntity con mensaje de éxito o error.
+     */
     @DeleteMapping("/remove")
     public ResponseEntity<String> removeItem(@RequestBody CartItem item, HttpSession session) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
@@ -184,13 +220,25 @@ public class CartController {
         return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Vacía completamente el carrito de compras.
+     * 
+     * @param session La sesión HTTP actual.
+     * @return ResponseEntity con mensaje de éxito.
+     */
     @DeleteMapping("/clear")
     public ResponseEntity<String> clearCart(HttpSession session) {
         session.removeAttribute("cart");
         return ResponseEntity.ok("Carrito limpiado");
     }
 
-    // GET /checkout - Página con lista items + pago
+    /**
+     * Muestra la página de checkout con los items del carrito.
+     * 
+     * @param model   Modelo para pasar datos a la vista.
+     * @param session La sesión HTTP actual.
+     * @return Nombre de la vista 'checkout' o redirección a home si está vacío.
+     */
     @GetMapping("/checkout")
     public String checkoutPage(Model model, HttpSession session) {
         Map<String, CartItem> cartMap = getCartMapSafely(session);
@@ -205,7 +253,15 @@ public class CartController {
         return "checkout";
     }
 
-    // POST /finalizeOrder - Guarda orden después "pago" simulado
+    /**
+     * Finaliza la orden, valida stock nuevamente, actualiza inventario y guarda la
+     * orden.
+     * 
+     * @param requestData Datos de la orden (dirección, teléfono, notas, pago).
+     * @param session     La sesión HTTP actual.
+     * @param auth        Información de autenticación del usuario.
+     * @return ResponseEntity con detalles de la orden creada o error.
+     */
     @PostMapping("/finalizeOrder")
     public ResponseEntity<Map<String, Object>> finalizeOrder(@RequestBody Map<String, Object> requestData,
             HttpSession session, Authentication auth) {
@@ -216,7 +272,6 @@ public class CartController {
 
         List<CartItem> items = new ArrayList<>(cartMap.values());
 
-        // 1. Validate Stock
         for (CartItem item : items) {
             String errorMsg = null;
             switch (item.getType()) {
@@ -267,7 +322,6 @@ public class CartController {
             }
         }
 
-        // 2. Deduct Stock
         for (CartItem item : items) {
             switch (item.getType()) {
                 case "pizza" -> {
@@ -320,7 +374,6 @@ public class CartController {
         order.setItems(itemsJson);
         order.setDeliveryAddress((String) requestData.get("address"));
 
-        // Use user's phone if available, otherwise use the one from request
         String phoneFromRequest = (String) requestData.get("phone");
         order.setPhone(userPhone != null ? userPhone : phoneFromRequest);
         order.setNotes((String) requestData.get("notes"));
@@ -347,17 +400,19 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Muestra la página de confirmación de una orden específica.
+     * 
+     * @param orderId ID de la orden.
+     * @param model   Modelo para pasar datos a la vista.
+     * @return Nombre de la vista 'order-confirmation' o redirección.
+     */
     @GetMapping("/order-confirmation")
     public String orderConfirmationPage(@RequestParam("orderId") Long orderId, Model model) {
         Optional<Order> orderOpt = orderRepository.findById(orderId);
         if (orderOpt.isPresent()) {
             Order order = orderOpt.get();
             model.addAttribute("order", order);
-
-            // Parse items JSON to list for display if needed, or let frontend handle it if
-            // complex
-            // For simplicity, we pass the order. The items string is JSON.
-            // If we want to display items nicely, we should parse it back to List<CartItem>
             ObjectMapper mapper = new ObjectMapper();
             try {
                 List<CartItem> items = Arrays.asList(mapper.readValue(order.getItems(), CartItem[].class));

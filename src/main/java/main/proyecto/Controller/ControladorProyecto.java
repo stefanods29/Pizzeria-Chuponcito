@@ -1,3 +1,4 @@
+
 package main.proyecto.Controller;
 
 import main.proyecto.model.Pizza;
@@ -65,9 +66,14 @@ public class ControladorProyecto {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Muestra la página de inicio con los mejores pizzas y formulario de contacto.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "index".
+     */
     @GetMapping("/")
     public String index(Model model) {
-        // Lógica para obtener las 3 pizzas más vendidas
         List<Order> allOrders = orderRepository.findAll();
         Map<Long, Integer> pizzaCounts = new HashMap<>();
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -83,12 +89,11 @@ public class ControladorProyecto {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace(); // Log error parsing items
+                    e.printStackTrace();
                 }
             }
         }
 
-        // Ordenar por cantidad descendente
         List<Long> topPizzaIds = pizzaCounts.entrySet().stream()
                 .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
                 .limit(3)
@@ -98,14 +103,11 @@ public class ControladorProyecto {
         List<Pizza> topPizzas = new ArrayList<>();
         if (!topPizzaIds.isEmpty()) {
             List<Pizza> foundPizzas = pizzaRepository.findAllById(topPizzaIds);
-            // Mantener el orden del ranking
             for (Long id : topPizzaIds) {
                 foundPizzas.stream().filter(p -> p.getId().equals(id)).findFirst().ifPresent(topPizzas::add);
             }
         }
 
-        // Si no hay suficientes ventas, rellenar con pizzas por defecto (las primeras
-        // 3)
         if (topPizzas.size() < 3) {
             List<Pizza> allPizzas = pizzaRepository.findAll();
             for (Pizza p : allPizzas) {
@@ -127,6 +129,12 @@ public class ControladorProyecto {
         return "index";
     }
 
+    /**
+     * Muestra el menú completo con pizzas, extras y bebidas.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "menuCompleto".
+     */
     @GetMapping("/menuCompleto")
     public String menuCompleto(Model model) {
         List<Pizza> pizzas = pizzaRepository.findAll();
@@ -145,6 +153,12 @@ public class ControladorProyecto {
         return "menuCompleto";
     }
 
+    /**
+     * Muestra las promociones activas y los combos más vendidos.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "promociones".
+     */
     @GetMapping("/promociones")
     public String promociones(Model model) {
         // 1. Obtener todas las promociones activas para la sección de ofertas
@@ -209,6 +223,12 @@ public class ControladorProyecto {
         return "promociones";
     }
 
+    /**
+     * Muestra el formulario de contacto.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "contacto".
+     */
     @GetMapping("/contacto")
     public String contacto(Model model) {
         model.addAttribute("contactRequest", new ContactRequest());
@@ -219,6 +239,12 @@ public class ControladorProyecto {
         return "contacto";
     }
 
+    /**
+     * Muestra el formulario de inicio de sesión.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "login".
+     */
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("title", "Iniciar Sesion — Chuponcito");
@@ -228,6 +254,12 @@ public class ControladorProyecto {
         return "login";
     }
 
+    /**
+     * Muestra el formulario de registro de usuarios.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "register".
+     */
     @GetMapping("/register")
     public String registerForm(Model model) {
         model.addAttribute("registerRequest", new RegisterRequest());
@@ -238,6 +270,15 @@ public class ControladorProyecto {
         return "register";
     }
 
+    /**
+     * Procesa el registro de un nuevo usuario.
+     * 
+     * @param registerRequest    DTO con los datos del registro.
+     * @param bindingResult      Resultado de la validación.
+     * @param model              Modelo para pasar atributos a la vista.
+     * @param redirectAttributes Atributos flash para redirección.
+     * @return redirección a login o al formulario si hay errores.
+     */
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -289,6 +330,15 @@ public class ControladorProyecto {
         return "redirect:/login";
     }
 
+    /**
+     * Procesa el envío del formulario de contacto.
+     * 
+     * @param contactRequest     DTO con los datos del contacto.
+     * @param bindingResult      Resultado de la validación.
+     * @param model              Modelo para pasar atributos a la vista.
+     * @param redirectAttributes Atributos flash para redirección.
+     * @return redirección a inicio o al formulario si hay errores.
+     */
     @PostMapping("/contacto")
     public String contact(@Valid @ModelAttribute("contactRequest") ContactRequest contactRequest,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -306,6 +356,13 @@ public class ControladorProyecto {
     }
 
     // Endpoints para roles
+    /**
+     * Muestra los pedidos del usuario autenticado.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @param auth  Información de autenticación del usuario.
+     * @return nombre de la plantilla "orders".
+     */
     @GetMapping("/user/pedidos")
     @PreAuthorize("hasRole('USER')")
     public String userPedidos(Model model, Authentication auth) {
@@ -345,6 +402,13 @@ public class ControladorProyecto {
         return "orders";
     }
 
+    /**
+     * Muestra el perfil del usuario autenticado.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @param auth  Información de autenticación del usuario.
+     * @return nombre de la plantilla "profile".
+     */
     @GetMapping("/user/perfil")
     @PreAuthorize("hasRole('USER')")
     public String userPerfil(Model model, Authentication auth) {
@@ -370,6 +434,16 @@ public class ControladorProyecto {
         return "profile";
     }
 
+    /**
+     * Actualiza la información del perfil del usuario.
+     * 
+     * @param request            DTO con los datos actualizados.
+     * @param bindingResult      Resultado de la validación.
+     * @param model              Modelo para pasar atributos a la vista.
+     * @param auth               Información de autenticación del usuario.
+     * @param redirectAttributes Atributos flash para redirección.
+     * @return redirección al perfil o al login si ocurre un error.
+     */
     @PostMapping("/user/update")
     @PreAuthorize("hasRole('USER')")
     public String updateProfile(@Valid @ModelAttribute("profileUpdateRequest") ProfileUpdateRequest request,
@@ -466,6 +540,12 @@ public class ControladorProyecto {
         return "redirect:/user/perfil";
     }
 
+    /**
+     * Muestra todos los pedidos para el administrador.
+     * 
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "adminTodosPedidos".
+     */
     @GetMapping("/admin/todos-pedidos")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminTodosPedidos(Model model) {
@@ -508,6 +588,15 @@ public class ControladorProyecto {
         return "adminTodosPedidos";
     }
 
+    /**
+     * Permite al administrador filtrar pedidos por cliente.
+     * 
+     * @param userId     ID opcional del usuario.
+     * @param searchType Tipo de búsqueda (id, email, etc.).
+     * @param searchTerm Término de búsqueda.
+     * @param model      Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "adminPedidosCliente".
+     */
     @GetMapping("/admin/pedidos-cliente")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminPedidosCliente(@RequestParam(required = false) Long userId,
@@ -586,6 +675,13 @@ public class ControladorProyecto {
     }
     // --- ADMIN SETTINGS & CRUD ---
 
+    /**
+     * Muestra la página de configuración del administrador.
+     * 
+     * @param type  Tipo de entidad a gestionar (pizza, bebida, etc.).
+     * @param model Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla correspondiente.
+     */
     @GetMapping("/admin/settings")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminSettings(@RequestParam(required = false) String type, Model model) {
@@ -632,6 +728,28 @@ public class ControladorProyecto {
         return "adminCrud";
     }
 
+    /**
+     * Guarda o actualiza un elemento del catálogo (pizza, bebida, extra, promo).
+     * 
+     * @param type               Tipo de elemento.
+     * @param id                 ID opcional del elemento (para edición).
+     * @param name               Nombre del elemento.
+     * @param description        Descripción opcional.
+     * @param imageUrl           URL de la imagen opcional.
+     * @param stockQuantity      Cantidad en stock.
+     * @param lowStockThreshold  Umbral de stock bajo.
+     * @param price              Precio (si corresponde).
+     * @param size               Tamaño (para bebidas).
+     * @param ingredientsList    Lista de ingredientes (para pizzas).
+     * @param sizesJson          JSON de tamaños (para pizzas).
+     * @param promoPrice         Precio promocional (para promos).
+     * @param isActive           Estado activo (para promos).
+     * @param validFrom          Fecha de inicio (para promos).
+     * @param validTo            Fecha de fin (para promos).
+     * @param itemsJson          JSON de items (para promos).
+     * @param redirectAttributes Atributos flash para redirección.
+     * @return redirección a la página de configuración.
+     */
     @PostMapping("/admin/settings/save")
     @PreAuthorize("hasRole('ADMIN')")
     public String saveItem(@RequestParam String type,
@@ -731,6 +849,14 @@ public class ControladorProyecto {
         return "redirect:/admin/settings?type=" + type;
     }
 
+    /**
+     * Elimina un elemento del catálogo.
+     * 
+     * @param type               Tipo de elemento.
+     * @param id                 ID del elemento a eliminar.
+     * @param redirectAttributes Atributos flash para redirección.
+     * @return redirección a la página de configuración.
+     */
     @GetMapping("/admin/settings/delete")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteItem(@RequestParam String type, @RequestParam Long id, RedirectAttributes redirectAttributes) {
@@ -756,6 +882,13 @@ public class ControladorProyecto {
         return "redirect:/admin/settings?type=" + type;
     }
 
+    /**
+     * Obtiene los datos de un elemento del catálogo en formato JSON.
+     * 
+     * @param type Tipo de elemento.
+     * @param id   ID del elemento.
+     * @return objeto JSON del elemento solicitado.
+     */
     @GetMapping("/admin/settings/get")
     @ResponseBody
     @PreAuthorize("hasRole('ADMIN')")
@@ -774,6 +907,13 @@ public class ControladorProyecto {
         }
     }
 
+    /**
+     * Muestra la página del carrito de compras.
+     * 
+     * @param model   Modelo para pasar atributos a la vista.
+     * @param session Sesión HTTP del usuario.
+     * @return nombre de la plantilla "cart".
+     */
     @GetMapping("/carrito")
     public String carrito(Model model, HttpSession session) {
         model.addAttribute("title", "Carrito de Compras — Chuponcito");
@@ -784,6 +924,13 @@ public class ControladorProyecto {
     }
 
     // GET /checkout - Página con lista items + pago
+    /**
+     * Muestra la página de checkout con los items del carrito.
+     * 
+     * @param model   Modelo para pasar atributos a la vista.
+     * @param session Sesión HTTP del usuario.
+     * @return nombre de la plantilla "checkout".
+     */
     @GetMapping("/checkout")
     public String checkoutPage(Model model, HttpSession session) {
         @SuppressWarnings("unchecked")
@@ -801,6 +948,14 @@ public class ControladorProyecto {
     }
 
     // GET /payment - Página de pago simulada
+    /**
+     * Muestra la página de simulación de pago.
+     * 
+     * @param model   Modelo para pasar atributos a la vista.
+     * @param session Sesión HTTP del usuario.
+     * @param auth    Información de autenticación del usuario.
+     * @return nombre de la plantilla "payment".
+     */
     @GetMapping("/payment")
     public String paymentPage(Model model, HttpSession session, Authentication auth) {
         model.addAttribute("title", "Pago — Chuponcito");
@@ -832,6 +987,15 @@ public class ControladorProyecto {
         return "payment";
     }
 
+    /**
+     * Procesa la información de pago enviada desde el formulario.
+     * 
+     * @param paymentType        Tipo de pago seleccionado.
+     * @param address            Dirección de entrega.
+     * @param session            Sesión HTTP del usuario.
+     * @param redirectAttributes Atributos flash para redirección.
+     * @return redirección al flujo de pago o al checkout en caso de error.
+     */
     @PostMapping("/payment")
     public String processPayment(@RequestParam("paymentType") String paymentType,
             @RequestParam("address") String address, // Recibir dirección del form
@@ -858,6 +1022,13 @@ public class ControladorProyecto {
         return "redirect:/payment"; // Redirige al GET /payment para mostrar la simulación
     }
 
+    /**
+     * Muestra la página de confirmación de una orden completada.
+     * 
+     * @param orderId ID de la orden a mostrar.
+     * @param model   Modelo para pasar atributos a la vista.
+     * @return nombre de la plantilla "order-confirmation".
+     */
     @GetMapping("/order-confirmation")
     public String orderConfirmationPage(@RequestParam("orderId") Long orderId, Model model) {
         Optional<Order> orderOpt = orderRepository.findById(orderId);
