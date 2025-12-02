@@ -229,6 +229,19 @@ section {
   color: var(--button-text);
 }
 
+.btn-outline-secondary.pizza-btn,
+.btn-outline-secondary.promo-btn {
+  border-color: var(--link-color);
+  color: var(--link-color);
+}
+
+.btn-outline-secondary.pizza-btn:hover,
+.btn-outline-secondary.promo-btn:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--button-text);
+}
+
 .btn-accion {
   background: var(--button-bg);
   border: none;

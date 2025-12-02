@@ -50,22 +50,6 @@
                                     <th th:if="${type == 'pizza'}">Descripción</th>
                                     <th th:if="${type != 'pizza'}">Precio</th>
                                     <th>Stock</th>
-                                    <th class="text-end pe-4">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="item : ${items}">
-                                    <td class="ps-4" th:text="${item.id}">1</td>
-                                    <td>
-                                        <img th:src="${item.imageUrl}" alt="Img" class="rounded"
-                                            style="width: 40px; height: 40px; object-fit: cover;"
-                                            onerror="this.src='/images/placeholder.png'">
-                                    </td>
-                                    <td th:text="${item.name}">Nombre</td>
-
-                                    <!-- Descripción solo para pizzas -->
-                                    <td th:if="${type == 'pizza'}"
-                                        th:text="${#strings.abbreviate(item.description, 50)}">Desc</td>
 
                                     <!-- Precio para bebida/extra -->
                                     <td th:if="${type == 'bebida' or type == 'extra'}"
@@ -94,7 +78,7 @@
                                         No hay registros encontrados.
                                     </td>
                                 </tr>
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </div>
